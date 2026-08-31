@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="light dark">
+<title>Draft Report &middot; Boats And Bros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap">
+<style>:root{
+ --paper:#F7F5F0; --card:#FFFFFF; --ink:#141B2B; --ink2:#3B4459; --mute:#767C8C;
+ --rule:#DDD8CE; --rule2:#EBE7DF; --band:#141B2B;
+ --amber:#8A4E06; --amber-bg:#FBEEDA; --blue:#24518F; --blue-bg:#E1E9F6;
+ --onblue:#FFFFFF; --onamber:#FFFFFF;
+ --shadow:0 1px 2px rgba(20,27,43,.05),0 8px 28px rgba(20,27,43,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --paper:#101521; --card:#171E2D; --ink:#F2F0EC; --ink2:#C3C8D4; --mute:#8B93A5;
+ --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19;
+ --amber:#E9A94C; --amber-bg:#3A2B14; --blue:#7BA6E8; --blue-bg:#1B2740;
+ --onblue:#0D1220; --onamber:#241708;
+ --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+ --paper:#101521; --card:#171E2D; --ink:#F2F0EC; --ink2:#C3C8D4; --mute:#8B93A5;
+ --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19;
+ --amber:#E9A94C; --amber-bg:#3A2B14; --blue:#7BA6E8; --blue-bg:#1B2740;
+ --onblue:#0D1220; --onamber:#241708;
+ --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+ font-family:Lato,-apple-system,Segoe UI,sans-serif;font-size:16px;line-height:1.55;
+ font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 70px}
+.band+.wrap{padding-top:26px}
+.band{background:var(--band);color:#F2F0EC}
+.nav{background:var(--band);border-bottom:1px solid rgba(255,255,255,.09)}
+.nav .wrap{display:flex;gap:2px;padding:0 20px;overflow-x:auto}
+.nav a{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:11.5px;
+ font-weight:500;color:#96A0B4;text-decoration:none;padding:14px 15px;white-space:nowrap;
+ border-bottom:2px solid transparent}
+.nav a:hover{color:#F2F0EC}
+.nav a.on{color:#F2F0EC;border-bottom-color:var(--amber)}
+.nav a:focus-visible{outline:2px solid var(--amber);outline-offset:-4px}
+.band .wrap.hero{padding-top:40px;padding-bottom:36px}
+.kick{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:12px;
+ font-weight:500;color:var(--amber);margin:0 0 10px}
+h1{font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,58px);line-height:1;
+ margin:0;letter-spacing:-.01em;text-wrap:balance}
+.dek{font-size:19px;line-height:1.5;color:#C9CEDA;max-width:68ch;margin:14px 0 0}
+.dek b{color:#F2F0EC}
+h2{font-family:Oswald,sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;
+ letter-spacing:.16em;color:var(--mute);margin:42px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+h3{font-family:Oswald,sans-serif;font-weight:600;font-size:22px;margin:0;letter-spacing:-.005em}
+h4{font-family:Oswald,sans-serif;font-weight:600;font-size:11.5px;text-transform:uppercase;
+ letter-spacing:.13em;color:var(--mute);margin:0 0 8px}
+h4.mt{margin-top:18px}
+a{color:var(--blue)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{font-family:Oswald,sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.08em;
+ font-size:10.5px;color:var(--mute);text-align:left;padding:0 10px 7px;white-space:nowrap;
+ border-bottom:1px solid var(--rule)}
+td{padding:8px 10px;border-bottom:1px solid var(--rule2)}
+.num{text-align:right}th.num{text-align:right}
+.b{font-weight:900}.dim{color:var(--mute)}
+.pos{color:var(--blue);font-weight:700}.neg{color:var(--amber);font-weight:700}
+.stand tbody tr:nth-child(odd){background:var(--rule2)}
+.stand .rk{font-family:Oswald,sans-serif;font-weight:700;font-size:17px;width:34px;color:var(--mute)}
+.stand .tm{font-weight:700;white-space:nowrap}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.tile{background:var(--card);border:1px solid var(--rule);border-radius:11px;padding:16px 18px;
+ box-shadow:var(--shadow)}
+.tile .lab{font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+ color:var(--mute)}
+.tile .v{font-family:Oswald,sans-serif;font-weight:700;font-size:32px;line-height:1.1;margin-top:2px}
+.tile .s{font-size:13px;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px 22px;
+ margin-bottom:16px;box-shadow:var(--shadow)}
+.grade{font-family:Oswald,sans-serif;font-weight:700;font-size:15px;padding:3px 9px;border-radius:4px;
+ display:inline-block;min-width:42px;text-align:center}
+.gA{background:var(--blue);color:var(--onblue)}
+.gB{background:var(--blue-bg);color:var(--blue)}
+.gC{background:var(--amber-bg);color:var(--amber)}
+.gD{background:var(--amber);color:var(--onamber)}
+.empty{background:var(--card);border:1px dashed var(--rule);border-radius:11px;padding:28px 22px;
+ text-align:center;color:var(--mute)}
+.empty strong{display:block;font-family:Oswald,sans-serif;font-size:17px;color:var(--ink);
+ text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+.cta{display:inline-block;font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;
+ font-size:11.5px;font-weight:500;background:var(--blue);color:var(--onblue);text-decoration:none;
+ padding:10px 16px;border-radius:6px;margin-top:14px}
+.cta:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+@media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:520px){.wrap{padding-left:14px;padding-right:14px}.card,.tile{padding:16px 14px}
+ .band .wrap.hero{padding-top:28px;padding-bottom:26px}}
+.pill{font-family:Oswald,sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+ padding:2px 7px;border-radius:3px;background:var(--rule2);color:var(--mute)}
+.pill.live{background:var(--blue-bg);color:var(--blue)}
+
+
+:root{
+ --paper:#F7F5F0; --card:#FFFFFF; --ink:#141B2B; --ink2:#3B4459; --mute:#767C8C;
+ --rule:#DDD8CE; --rule2:#EBE7DF; --band:#141B2B;
+ --amber:#8A4E06; --amber-bg:#FBEEDA; --blue:#24518F; --blue-bg:#E1E9F6;
+ --onblue:#FFFFFF; --onamber:#FFFFFF;
+ --shadow:0 1px 2px rgba(20,27,43,.05),0 8px 28px rgba(20,27,43,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --paper:#101521; --card:#171E2D; --ink:#F2F0EC; --ink2:#C3C8D4; --mute:#8B93A5;
+ --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19;
+ --amber:#E9A94C; --amber-bg:#3A2B14; --blue:#7BA6E8; --blue-bg:#1B2740;
+ --onblue:#0D1220; --onamber:#241708;
+ --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+ --paper:#101521; --card:#171E2D; --ink:#F2F0EC; --ink2:#C3C8D4; --mute:#8B93A5;
+ --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19;
+ --amber:#E9A94C; --amber-bg:#3A2B14; --blue:#7BA6E8; --blue-bg:#1B2740;
+ --onblue:#0D1220; --onamber:#241708;
+ --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+ font-family:Lato,-apple-system,Segoe UI,sans-serif;font-size:16px;line-height:1.55;
+ font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+.hero{background:var(--band);color:#F2F0EC;padding:46px 0 40px;margin-bottom:28px}
+.hero .wrap{padding-bottom:0}
+.kick{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:12px;
+ font-weight:500;color:var(--amber);margin:0 0 10px}
+h1{font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(34px,6vw,60px);line-height:1;
+ margin:0 0 16px;letter-spacing:-.01em;text-wrap:balance}
+.dek{font-size:19px;line-height:1.5;color:#C9CEDA;max-width:70ch;margin:0 0 6px}
+.dek b{color:#F2F0EC}
+h2{font-family:Oswald,sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;
+ letter-spacing:.16em;color:var(--mute);margin:44px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+h3{font-family:Oswald,sans-serif;font-weight:600;font-size:23px;margin:0;letter-spacing:-.005em}
+h4{font-family:Oswald,sans-serif;font-weight:600;font-size:11.5px;text-transform:uppercase;
+ letter-spacing:.13em;color:var(--mute);margin:0 0 8px}
+h4.mt{margin-top:18px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{font-family:Oswald,sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.08em;
+ font-size:10.5px;color:var(--mute);text-align:left;padding:0 10px 7px;white-space:nowrap;border-bottom:1px solid var(--rule)}
+td{padding:8px 10px;border-bottom:1px solid var(--rule2)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+th.num{text-align:right}
+.b{font-weight:900}
+.pos{color:var(--blue);font-weight:700}
+.neg{color:var(--amber);font-weight:700}
+.dim{color:var(--mute)}
+/* standings */
+.stand tbody tr:nth-child(odd){background:var(--rule2)}
+.stand .rk{font-family:Oswald,sans-serif;font-weight:700;font-size:17px;width:34px;color:var(--mute)}
+.stand .tm{font-weight:700;white-space:nowrap}
+.grade{font-family:Oswald,sans-serif;font-weight:700;font-size:15px;letter-spacing:.02em;
+ padding:3px 9px;border-radius:4px;display:inline-block;min-width:42px;text-align:center}
+.grade.big{font-size:30px;padding:4px 14px;min-width:70px}
+.gA{background:var(--blue);color:var(--onblue)}
+.gB{background:var(--blue-bg);color:var(--blue)}
+.gC{background:var(--amber-bg);color:var(--amber)}
+.gD{background:var(--amber);color:var(--onamber)}
+/* cards */
+.card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:22px 24px;
+ margin-bottom:18px;box-shadow:var(--shadow)}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.chl{display:flex;gap:14px;align-items:flex-start}
+.rank{font-family:Oswald,sans-serif;font-weight:700;font-size:40px;line-height:.9;color:var(--rule);
+ min-width:44px}
+.tag{margin:2px 0 0;color:var(--mute);font-size:14.5px;font-style:italic}
+.chr{display:flex;align-items:center;gap:16px}
+.wk{font-family:Oswald,sans-serif;font-weight:700;font-size:29px;line-height:1;display:flex;
+ flex-direction:column;align-items:flex-end}
+.wk small{font-family:Oswald,sans-serif;font-weight:400;font-size:10px;letter-spacing:.13em;
+ text-transform:uppercase;color:var(--mute);margin-top:3px}
+.verdict{margin:16px 0 20px;font-size:16.5px;line-height:1.62;color:var(--ink2);max-width:75ch}
+.warn{background:var(--amber-bg);color:var(--amber);border-left:3px solid var(--amber);
+ padding:9px 13px;margin:16px 0 0;font-weight:700;font-size:14.5px;border-radius:0 5px 5px 0}
+.grid{display:grid;grid-template-columns:minmax(240px,1fr) minmax(260px,1.1fr);gap:26px}
+.col{min-width:0}
+@media(max-width:720px){.grid{grid-template-columns:minmax(0,1fr)}}
+.lu td{padding:6px 8px}
+.lu .slot{font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+ color:var(--mute);width:52px}
+.lu .pl{font-weight:700}
+.lu tfoot td{border-top:2px solid var(--ink);border-bottom:none;padding-top:8px;
+ font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--mute)}
+.lu tfoot td.num{font-family:Lato,sans-serif;font-size:16px;color:var(--ink);letter-spacing:0}
+.prow{display:grid;grid-template-columns:44px 1fr 46px 30px;align-items:center;gap:8px;margin-bottom:6px}
+.plab{font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.1em;color:var(--mute)}
+.pbar{background:var(--rule2);border-radius:3px;height:9px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--blue);border-radius:3px}
+.pnum{text-align:right;font-size:13.5px;font-weight:700}
+.prank{text-align:right;font-family:Oswald,sans-serif;font-size:11.5px;color:var(--mute)}
+.vsplit{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vsplit>div{background:var(--rule2);border-radius:7px;padding:9px 11px}
+.vl{display:block;font-family:Oswald,sans-serif;font-size:10px;letter-spacing:.12em;
+ text-transform:uppercase;color:var(--mute)}
+.vn{display:block;font-family:Oswald,sans-serif;font-weight:700;font-size:21px;line-height:1.2}
+.vr{display:block;font-size:11.5px;color:var(--mute)}
+.lst{margin:0;font-size:14px;line-height:1.65;color:var(--ink2)}
+.bp{color:var(--mute);font-size:12px;white-space:nowrap}
+.det{margin-top:18px;border-top:1px solid var(--rule2);padding-top:12px}
+summary{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:11px;
+ color:var(--blue);cursor:pointer;font-weight:500}
+summary:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.det table{margin-top:10px}
+.pk td.pk,.pk .pk{font-family:Oswald,sans-serif;color:var(--mute);font-size:12.5px;width:54px}
+.pp{font-family:Oswald,sans-serif;font-size:11px;letter-spacing:.06em;color:var(--mute);width:42px}
+.bw{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;border-top:1px solid var(--rule2);padding-top:14px}
+@media(max-width:620px){.bw{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:520px){.wrap{padding-left:14px;padding-right:14px}
+ .card{padding:18px 15px}
+ .hero{padding:32px 0 28px}
+ .grid{gap:20px}
+ .col{min-width:0}}
+.bwi{font-size:14.5px}
+.bwl{display:block;font-family:Oswald,sans-serif;font-size:9.5px;letter-spacing:.13em;
+ text-transform:uppercase;margin-bottom:2px}
+.bwl.up{color:var(--blue)} .bwl.dn{color:var(--amber)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+</style></head><body>
+<nav class="nav"><div class="wrap"><a href="index.html">Home</a><a href="draft.html" class="on">Draft</a><a href="standings.html">Standings</a><a href="money.html">Money</a><a href="weeks.html">Weekly</a></div></nav>
+
+
+<div class="hero"><div class="wrap">
+  <p class="kick">Boats And Bros &middot; 2026 &middot; 8-team superflex &middot; full PPR</p>
+  <h1>The Draft Report</h1>
+  <p class="dek">Every roster in the league, graded on what each manager actually controlled.
+  The headline: <b>the team that won the draft is not the team that won the night.</b>
+  tylerdean added 117 points of value with his picks, the best in the league by 29 &mdash; and still
+  finished third, because Jdbss94 walked in with 399 points of keeper value and only had to avoid
+  mistakes.</p>
+</div></div>
+
+<div class="wrap">
+<h2>Final standings</h2>
+<div class="scroll"><table class="stand">
+<thead><tr><th></th><th>Team</th><th class="num">Pts/wk</th><th class="num">Season</th>
+<th class="num">Swing</th><th class="num">Draft value</th><th class="num">Keeper value</th><th>Grade</th></tr></thead>
+<tbody><tr>
+<td class="rk">1</td><td class="tm">Jdbss94</td>
+<td class="num b">165.1</td><td class="num">2807</td>
+<td class="num">27.5</td>
+<td class="num pos">+42.7</td>
+<td class="num">399.3</td>
+<td class="gr"><span class="grade gA">A</span></td></tr><tr>
+<td class="rk">2</td><td class="tm">johnny792</td>
+<td class="num b">161.7</td><td class="num">2749</td>
+<td class="num">26.1</td>
+<td class="num neg">-73.3</td>
+<td class="num">325.8</td>
+<td class="gr"><span class="grade gB">B</span></td></tr><tr>
+<td class="rk">3</td><td class="tm">tylerdean</td>
+<td class="num b">159.8</td><td class="num">2717</td>
+<td class="num">26.1</td>
+<td class="num pos">+117.5</td>
+<td class="num">264.4</td>
+<td class="gr"><span class="grade gA">A</span></td></tr><tr>
+<td class="rk">4</td><td class="tm">GreenyKC</td>
+<td class="num b">159.4</td><td class="num">2709</td>
+<td class="num">26.0</td>
+<td class="num pos">+7.3</td>
+<td class="num">199.3</td>
+<td class="gr"><span class="grade gB">B+</span></td></tr><tr>
+<td class="rk">5</td><td class="tm">1browneric2025</td>
+<td class="num b">153.0</td><td class="num">2601</td>
+<td class="num">25.2</td>
+<td class="num pos">+88.4</td>
+<td class="num">169.6</td>
+<td class="gr"><span class="grade gA">A-</span></td></tr><tr>
+<td class="rk">6</td><td class="tm">mzacharias95</td>
+<td class="num b">152.9</td><td class="num">2600</td>
+<td class="num">24.8</td>
+<td class="num neg">-248.8</td>
+<td class="num">268.6</td>
+<td class="gr"><span class="grade gC">C-</span></td></tr><tr>
+<td class="rk">7</td><td class="tm">JMac010</td>
+<td class="num b">148.3</td><td class="num">2521</td>
+<td class="num">24.4</td>
+<td class="num neg">-106.1</td>
+<td class="num">172.2</td>
+<td class="gr"><span class="grade gC">C-</span></td></tr><tr>
+<td class="rk">8</td><td class="tm">BenTheRN</td>
+<td class="num b">146.3</td><td class="num">2487</td>
+<td class="num">23.1</td>
+<td class="num neg">-43.5</td>
+<td class="num">189.5</td>
+<td class="gr"><span class="grade gC">C+</span></td></tr></tbody></table></div>
+
+<h2>Team by team</h2>
+<article class="card" id="t1">
+ <header class="ch">
+   <div class="chl"><span class="rank">1</span>
+     <div><h3>Jdbss94</h3>
+     <p class="tag">Won the offseason and did not give it back.</p></div></div>
+   <div class="chr"><span class="grade big gA">A</span>
+     <span class="wk">165.1<small>pts/wk</small></span></div>
+ </header>
+ 
+ <p class="verdict">Bijan, Nacua and Smith-Njigba is the best keeper hand anybody brought &mdash; 399 points of value before a single pick was made, more than double the field average. The draft itself was ordinary, third-best by value added, but starting that far ahead makes ordinary plenty. Daniels and Mahomes is a top-four superflex room and Herbert is on the bench as insurance nobody else can match. The one soft spot is tight end: Fannin at 185.5 ranks sixth, and Kincaid in round 13 was the single best late-round value of the draft.</p>
+ <div class="grid">
+   <div class="col">
+     <h4>Starting lineup</h4>
+     <table class="lu"><tbody><tr><td class="slot">QB</td><td class="pl">Jayden Daniels</td><td class="num">367.7</td></tr><tr><td class="slot">QB</td><td class="pl">Patrick Mahomes</td><td class="num">355.8</td></tr><tr><td class="slot">RB</td><td class="pl">Bijan Robinson</td><td class="num">350.2</td></tr><tr><td class="slot">RB</td><td class="pl">Breece Hall</td><td class="num">238.2</td></tr><tr><td class="slot">WR</td><td class="pl">Puka Nacua</td><td class="num">345.4</td></tr><tr><td class="slot">WR</td><td class="pl">Jaxon Smith-Njigba</td><td class="num">316.5</td></tr><tr><td class="slot">TE</td><td class="pl">Harold Fannin Jr.</td><td class="num">185.5</td></tr><tr><td class="slot">FLEX</td><td class="pl">Bucky Irving</td><td class="num">214.8</td></tr><tr><td class="slot">FLEX</td><td class="pl">Terry McLaurin</td><td class="num">211.2</td></tr><tr><td class="slot">K</td><td class="pl">Cameron Dicker</td><td class="num">106.0</td></tr><tr><td class="slot">DEF</td><td class="pl">Los Angeles Rams</td><td class="num">116.0</td></tr></tbody>
+     <tfoot><tr><td colspan="2">Season total</td><td class="num b">2807</td></tr></tfoot></table>
+   </div>
+   <div class="col">
+     <h4>Where they rank</h4>
+     <div class="bars"><div class="prow"><span class="plab">QB</span>
+      <span class="pbar"><i style="width:90%"></i></span>
+      <span class="pnum">724</span><span class="prank">#4</span></div><div class="prow"><span class="plab">RB</span>
+      <span class="pbar"><i style="width:88%"></i></span>
+      <span class="pnum">588</span><span class="prank">#3</span></div><div class="prow"><span class="plab">WR</span>
+      <span class="pbar"><i style="width:100%"></i></span>
+      <span class="pnum">662</span><span class="prank">#1</span></div><div class="prow"><span class="plab">TE</span>
+      <span class="pbar"><i style="width:74%"></i></span>
+      <span class="pnum">186</span><span class="prank">#6</span></div><div class="prow"><span class="plab">FLEX</span>
+      <span class="pbar"><i style="width:92%"></i></span>
+      <span class="pnum">426</span><span class="prank">#7</span></div></div>
+     <h4 class="mt">Value added</h4>
+     <div class="vsplit">
+       <div><span class="vl">Keepers</span><span class="vn">+399.3</span></div>
+       <div><span class="vl">Draft</span><span class="vn pos">+42.7</span><span class="vr">draft rank #3</span></div>
+     </div>
+     <h4 class="mt">Keepers</h4><p class="lst">Bijan Robinson <span class='bp'>RB 350</span>, Puka Nacua <span class='bp'>WR 345</span>, Jaxon Smith-Njigba <span class='bp'>WR 316</span></p>
+     <h4 class="mt">Bench</h4><p class="lst">Justin Herbert <span class='bp'>QB 353</span>, Mike Evans <span class='bp'>WR 208</span>, DK Metcalf <span class='bp'>WR 192</span>, Chuba Hubbard <span class='bp'>RB 168</span>, Dalton Kincaid <span class='bp'>TE 161</span>, RJ Harvey <span class='bp'>RB 158</span></p>
+   </div>
+ </div>
+ <details class="det"><summary>All 14 picks</summary>
+   <table class="pk"><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th class="num">Proj</th></tr></thead><tbody><tr><td class="pk">1.04</td><td class="pl">Jayden Daniels</td><td class="pp">QB</td><td class="num">367.7</td></tr><tr><td class="pk">2.05</td><td class="pl">Justin Herbert</td><td class="pp">QB</td><td class="num">352.6</td></tr><tr><td class="pk">3.04</td><td class="pl">Patrick Mahomes</td><td class="pp">QB</td><td class="num">355.8</td></tr><tr><td class="pk">4.05</td><td class="pl">Breece Hall</td><td class="pp">RB</td><td class="num">238.2</td></tr><tr><td class="pk">5.04</td><td class="pl">Bucky Irving</td><td class="pp">RB</td><td class="num">214.8</td></tr><tr><td class="pk">6.05</td><td class="pl">Harold Fannin Jr.</td><td class="pp">TE</td><td class="num">185.5</td></tr><tr><td class="pk">7.04</td><td class="pl">Terry McLaurin</td><td class="pp">WR</td><td class="num">211.2</td></tr><tr><td class="pk">8.05</td><td class="pl">Mike Evans</td><td class="pp">WR</td><td class="num">208.1</td></tr><tr><td class="pk">9.04</td><td class="pl">DK Metcalf</td><td class="pp">WR</td><td class="num">192.5</td></tr><tr><td class="pk">10.05</td><td class="pl">Los Angeles Rams</td><td class="pp">DEF</td><td class="num">116.0</td></tr><tr><td class="pk">11.04</td><td class="pl">RJ Harvey</td><td class="pp">RB</td><td class="num">158.1</td></tr><tr><td class="pk">12.05</td><td class="pl">Cameron Dicker</td><td class="pp">K</td><td class="num">106.0</td></tr><tr><td class="pk">13.04</td><td class="pl">Dalton Kincaid</td><td class="pp">TE</td><td class="num">161.3</td></tr><tr><td class="pk">14.05</td><td class="pl">Chuba Hubbard</td><td class="pp">RB</td><td class="num">167.8</td></tr></tbody></table>
+ </details>
+ <div class="bw">
+   <div class="bwi"><span class="bwl up">Best value</span> Dalton Kincaid <span class="bp">TE &middot; 13.04</span> <b class="pos">+34.3</b></div>
+   <div class="bwi"><span class="bwl dn">Worst value</span> Justin Herbert <span class="bp">QB &middot; 2.05</span> <b class="neg">-20.7</b></div>
+ </div>
+</article>
+<article class="card" id="t2">
+ <header class="ch">
+   <div class="chl"><span class="rank">2</span>
+     <div><h3>johnny792</h3>
+     <p class="tag">Elite running backs carried a scattered draft.</p></div></div>
+   <div class="chr"><span class="grade big gB">B</span>
+     <span class="wk">161.7<small>pts/wk</small></span></div>
+ </header>
+ 
+ <p class="verdict">Gibbs and Taylor is the best backfield in the league by 71 points, and Jefferson makes the receiving room work. But this was a scattered night &mdash; sixth in draft value, and two picks did real damage. Kyle Pitts in round 3 at 183.9 is a tight end available eight rounds later, and Mendoza in round 11 is a third quarterback who projects 232. Stafford and Goff is a functional superflex pair, not a scary one. Second place is built almost entirely on what was already on the roster.</p>
+ <div class="grid">
+   <div class="col">
+     <h4>Starting lineup</h4>
+     <table class="lu"><tbody><tr><td class="slot">QB</td><td class="pl">Matthew Stafford</td><td class="num">359.1</td></tr><tr><td class="slot">QB</td><td class="pl">Jared Goff</td><td class="num">351.4</td></tr><tr><td class="slot">RB</td><td class="pl">Jahmyr Gibbs</td><td class="num">363.3</td></tr><tr><td class="slot">RB</td><td class="pl">Jonathan Taylor</td><td class="num">301.9</td></tr><tr><td class="slot">WR</td><td class="pl">Justin Jefferson</td><td class="num">267.6</td></tr><tr><td class="slot">WR</td><td class="pl">George Pickens</td><td class="num">250.8</td></tr><tr><td class="slot">TE</td><td class="pl">Kyle Pitts</td><td class="num">183.9</td></tr><tr><td class="slot">FLEX</td><td class="pl">Cam Skattebo</td><td class="num">226.7</td></tr><tr><td class="slot">FLEX</td><td class="pl">D&#x27;Andre Swift</td><td class="num">220.4</td></tr><tr><td class="slot">K</td><td class="pl">Brandon Aubrey</td><td class="num">116.0</td></tr><tr><td class="slot">DEF</td><td class="pl">Philadelphia Eagles</td><td class="num">108.0</td></tr></tbody>
+     <tfoot><tr><td colspan="2">Season total</td><td class="num b">2749</td></tr></tfoot></table>
+   </div>
+   <div class="col">
+     <h4>Where they rank</h4>
+     <div class="bars"><div class="prow"><span class="plab">QB</span>
+      <span class="pbar"><i style="width:88%"></i></span>
+      <span class="pnum">710</span><span class="prank">#7</span></div><div class="prow"><span class="plab">RB</span>
+      <span class="pbar"><i style="width:100%"></i></span>
+      <span class="pnum">665</span><span class="prank">#1</span></div><div class="prow"><span class="plab">WR</span>
+      <span class="pbar"><i style="width:78%"></i></span>
+      <span class="pnum">518</span><span class="prank">#5</span></div><div class="prow"><span class="plab">TE</span>
+      <span class="pbar"><i style="width:73%"></i></span>
+      <span class="pnum">184</span><span class="prank">#7</span></div><div class="prow"><span class="plab">FLEX</span>
+      <span class="pbar"><i style="width:97%"></i></span>
+      <span class="pnum">447</span><span class="prank">#3</span></div></div>
+     <h4 class="mt">Value added</h4>
+     <div class="vsplit">
+       <div><span class="vl">Keepers</span><span class="vn">+325.8</span></div>
+       <div><span class="vl">Draft</span><span class="vn neg">-73.3</span><span class="vr">draft rank #6</span></div>
+     </div>
+     <h4 class="mt">Keepers</h4><p class="lst">Jonathan Taylor <span class='bp'>RB 302</span>, Justin Jefferson <span class='bp'>WR 268</span>, Jahmyr Gibbs <span class='bp'>RB 363</span></p>
+     <h4 class="mt">Bench</h4><p class="lst">Fernando Mendoza <span class='bp'>QB 232</span>, Courtland Sutton <span class='bp'>WR 193</span>, Travis Kelce <span class='bp'>TE 180</span>, Brian Thomas Jr. <span class='bp'>WR 180</span>, Xavier Worthy <span class='bp'>WR 166</span>, Stefon Diggs <span class='bp'>WR 164</span></p>
+   </div>
+ </div>
+ <details class="det"><summary>All 14 picks</summary>
+   <table class="pk"><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th class="num">Proj</th></tr></thead><tbody><tr><td class="pk">1.07</td><td class="pl">George Pickens</td><td class="pp">WR</td><td class="num">250.8</td></tr><tr><td class="pk">2.02</td><td class="pl">Matthew Stafford</td><td class="pp">QB</td><td class="num">359.1</td></tr><tr><td class="pk">3.07</td><td class="pl">Kyle Pitts</td><td class="pp">TE</td><td class="num">183.9</td></tr><tr><td class="pk">4.02</td><td class="pl">Jared Goff</td><td class="pp">QB</td><td class="num">351.4</td></tr><tr><td class="pk">5.07</td><td class="pl">D&#x27;Andre Swift</td><td class="pp">RB</td><td class="num">220.4</td></tr><tr><td class="pk">6.02</td><td class="pl">Cam Skattebo</td><td class="pp">RB</td><td class="num">226.7</td></tr><tr><td class="pk">7.07</td><td class="pl">Brian Thomas Jr.</td><td class="pp">WR</td><td class="num">179.7</td></tr><tr><td class="pk">8.02</td><td class="pl">Courtland Sutton</td><td class="pp">WR</td><td class="num">192.9</td></tr><tr><td class="pk">9.07</td><td class="pl">Travis Kelce</td><td class="pp">TE</td><td class="num">180.0</td></tr><tr><td class="pk">10.02</td><td class="pl">Stefon Diggs</td><td class="pp">WR</td><td class="num">164.2</td></tr><tr><td class="pk">11.07</td><td class="pl">Fernando Mendoza</td><td class="pp">QB</td><td class="num">231.8</td></tr><tr><td class="pk">12.02</td><td class="pl">Brandon Aubrey</td><td class="pp">K</td><td class="num">116.0</td></tr><tr><td class="pk">13.07</td><td class="pl">Philadelphia Eagles</td><td class="pp">DEF</td><td class="num">108.0</td></tr><tr><td class="pk">14.02</td><td class="pl">Xavier Worthy</td><td class="pp">WR</td><td class="num">166.3</td></tr></tbody></table>
+ </details>
+ <div class="bw">
+   <div class="bwi"><span class="bwl up">Best value</span> Travis Kelce <span class="bp">TE &middot; 9.07</span> <b class="pos">+22.5</b></div>
+   <div class="bwi"><span class="bwl dn">Worst value</span> Fernando Mendoza <span class="bp">QB &middot; 11.07</span> <b class="neg">-63.7</b></div>
+ </div>
+</article>
+<article class="card" id="t3">
+ <header class="ch">
+   <div class="chl"><span class="rank">3</span>
+     <div><h3>tylerdean</h3>
+     <p class="tag">Best draft in the league, third-best roster.</p></div></div>
+   <div class="chr"><span class="grade big gA">A</span>
+     <span class="wk">159.8<small>pts/wk</small></span></div>
+ </header>
+ 
+ <p class="verdict">The best draft of the night, and it was not close &mdash; 117 points of value added, 29 clear of second. Lamar at 1.03 was the pick the room let slide, McBride is the top tight end in the league, and Jordan Love in round 11 plus Dobbins with the very last skill pick were both steals. Rice at 2.06 came four picks after he should have gone. If this team wins the league, the draft is the reason, and the bench &mdash; Waddle, Montgomery, Harrison, Henderson &mdash; is deeper than anyone else's.</p>
+ <div class="grid">
+   <div class="col">
+     <h4>Starting lineup</h4>
+     <table class="lu"><tbody><tr><td class="slot">QB</td><td class="pl">Lamar Jackson</td><td class="num">383.8</td></tr><tr><td class="slot">QB</td><td class="pl">Kyler Murray</td><td class="num">329.8</td></tr><tr><td class="slot">RB</td><td class="pl">Christian McCaffrey</td><td class="num">324.6</td></tr><tr><td class="slot">RB</td><td class="pl">James Cook</td><td class="num">269.6</td></tr><tr><td class="slot">WR</td><td class="pl">Rashee Rice</td><td class="num">259.0</td></tr><tr><td class="slot">WR</td><td class="pl">Nico Collins</td><td class="num">252.1</td></tr><tr><td class="slot">TE</td><td class="pl">Trey McBride</td><td class="num">251.0</td></tr><tr><td class="slot">FLEX</td><td class="pl">Travis Etienne</td><td class="num">230.1</td></tr><tr><td class="slot">FLEX</td><td class="pl">Jameson Williams</td><td class="num">214.7</td></tr><tr><td class="slot">K</td><td class="pl">Harrison Mevis</td><td class="num">106.0</td></tr><tr><td class="slot">DEF</td><td class="pl">Los Angeles Chargers</td><td class="num">96.0</td></tr></tbody>
+     <tfoot><tr><td colspan="2">Season total</td><td class="num b">2717</td></tr></tfoot></table>
+   </div>
+   <div class="col">
+     <h4>Where they rank</h4>
+     <div class="bars"><div class="prow"><span class="plab">QB</span>
+      <span class="pbar"><i style="width:88%"></i></span>
+      <span class="pnum">714</span><span class="prank">#6</span></div><div class="prow"><span class="plab">RB</span>
+      <span class="pbar"><i style="width:89%"></i></span>
+      <span class="pnum">594</span><span class="prank">#2</span></div><div class="prow"><span class="plab">WR</span>
+      <span class="pbar"><i style="width:77%"></i></span>
+      <span class="pnum">511</span><span class="prank">#6</span></div><div class="prow"><span class="plab">TE</span>
+      <span class="pbar"><i style="width:100%"></i></span>
+      <span class="pnum">251</span><span class="prank">#1</span></div><div class="prow"><span class="plab">FLEX</span>
+      <span class="pbar"><i style="width:96%"></i></span>
+      <span class="pnum">445</span><span class="prank">#4</span></div></div>
+     <h4 class="mt">Value added</h4>
+     <div class="vsplit">
+       <div><span class="vl">Keepers</span><span class="vn">+264.4</span></div>
+       <div><span class="vl">Draft</span><span class="vn pos">+117.5</span><span class="vr">draft rank #1</span></div>
+     </div>
+     <h4 class="mt">Keepers</h4><p class="lst">Christian McCaffrey <span class='bp'>RB 325</span>, James Cook <span class='bp'>RB 270</span>, Trey McBride <span class='bp'>TE 251</span></p>
+     <h4 class="mt">Bench</h4><p class="lst">Jordan Love <span class='bp'>QB 328</span>, Jaylen Waddle <span class='bp'>WR 213</span>, David Montgomery <span class='bp'>RB 199</span>, Marvin Harrison Jr. <span class='bp'>WR 191</span>, TreVeyon Henderson <span class='bp'>RB 187</span>, J.K. Dobbins <span class='bp'>RB 173</span></p>
+   </div>
+ </div>
+ <details class="det"><summary>All 14 picks</summary>
+   <table class="pk"><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th class="num">Proj</th></tr></thead><tbody><tr><td class="pk">1.03</td><td class="pl">Lamar Jackson</td><td class="pp">QB</td><td class="num">383.8</td></tr><tr><td class="pk">2.06</td><td class="pl">Nico Collins</td><td class="pp">WR</td><td class="num">252.1</td></tr><tr><td class="pk">3.03</td><td class="pl">Rashee Rice</td><td class="pp">WR</td><td class="num">259.0</td></tr><tr><td class="pk">4.06</td><td class="pl">Travis Etienne</td><td class="pp">RB</td><td class="num">230.1</td></tr><tr><td class="pk">5.03</td><td class="pl">Jaylen Waddle</td><td class="pp">WR</td><td class="num">213.2</td></tr><tr><td class="pk">6.06</td><td class="pl">David Montgomery</td><td class="pp">RB</td><td class="num">199.4</td></tr><tr><td class="pk">7.03</td><td class="pl">Jameson Williams</td><td class="pp">WR</td><td class="num">214.7</td></tr><tr><td class="pk">8.06</td><td class="pl">Marvin Harrison Jr.</td><td class="pp">WR</td><td class="num">191.1</td></tr><tr><td class="pk">9.03</td><td class="pl">Kyler Murray</td><td class="pp">QB</td><td class="num">329.8</td></tr><tr><td class="pk">10.06</td><td class="pl">TreVeyon Henderson</td><td class="pp">RB</td><td class="num">186.9</td></tr><tr><td class="pk">11.03</td><td class="pl">Jordan Love</td><td class="pp">QB</td><td class="num">328.0</td></tr><tr><td class="pk">12.06</td><td class="pl">Los Angeles Chargers</td><td class="pp">DEF</td><td class="num">96.0</td></tr><tr><td class="pk">13.03</td><td class="pl">Harrison Mevis</td><td class="pp">K</td><td class="num">106.0</td></tr><tr><td class="pk">14.06</td><td class="pl">J.K. Dobbins</td><td class="pp">RB</td><td class="num">172.7</td></tr></tbody></table>
+ </details>
+ <div class="bw">
+   <div class="bwi"><span class="bwl up">Best value</span> J.K. Dobbins <span class="bp">RB &middot; 14.06</span> <b class="pos">+35.8</b></div>
+   <div class="bwi"><span class="bwl dn">Worst value</span> Jaylen Waddle <span class="bp">WR &middot; 5.03</span> <b class="neg">-8.2</b></div>
+ </div>
+</article>
+<article class="card" id="t4">
+ <header class="ch">
+   <div class="chl"><span class="rank">4</span>
+     <div><h3>GreenyKC</h3>
+     <p class="tag">Quietly efficient. Two quarterbacks over 365.</p></div></div>
+   <div class="chr"><span class="grade big gB">B+</span>
+     <span class="wk">159.4<small>pts/wk</small></span></div>
+ </header>
+ 
+ <p class="verdict">Burrow and Purdy is 744 points of quarterback, second in the league, and Henry at 1.01 set the tone. St. Brown and Olave is a real receiving room. The problem is that nothing here is elite at the position that matters most in this format &mdash; fifth in running back, third in receiver, third in tight end. Solid everywhere, dominant nowhere. Charbonnet with the last pick of the draft was the only genuine waste.</p>
+ <div class="grid">
+   <div class="col">
+     <h4>Starting lineup</h4>
+     <table class="lu"><tbody><tr><td class="slot">QB</td><td class="pl">Joe Burrow</td><td class="num">378.0</td></tr><tr><td class="slot">QB</td><td class="pl">Brock Purdy</td><td class="num">365.9</td></tr><tr><td class="slot">RB</td><td class="pl">Derrick Henry</td><td class="num">268.2</td></tr><tr><td class="slot">RB</td><td class="pl">Kenneth Walker</td><td class="num">255.3</td></tr><tr><td class="slot">WR</td><td class="pl">Amon-Ra St. Brown</td><td class="num">307.5</td></tr><tr><td class="slot">WR</td><td class="pl">Chris Olave</td><td class="num">255.8</td></tr><tr><td class="slot">TE</td><td class="pl">Colston Loveland</td><td class="num">212.7</td></tr><tr><td class="slot">FLEX</td><td class="pl">Zay Flowers</td><td class="num">239.2</td></tr><tr><td class="slot">FLEX</td><td class="pl">D.J. Moore</td><td class="num">201.8</td></tr><tr><td class="slot">K</td><td class="pl">Cam Little</td><td class="num">112.0</td></tr><tr><td class="slot">DEF</td><td class="pl">Seattle Seahawks</td><td class="num">113.0</td></tr></tbody>
+     <tfoot><tr><td colspan="2">Season total</td><td class="num b">2709</td></tr></tfoot></table>
+   </div>
+   <div class="col">
+     <h4>Where they rank</h4>
+     <div class="bars"><div class="prow"><span class="plab">QB</span>
+      <span class="pbar"><i style="width:92%"></i></span>
+      <span class="pnum">744</span><span class="prank">#2</span></div><div class="prow"><span class="plab">RB</span>
+      <span class="pbar"><i style="width:79%"></i></span>
+      <span class="pnum">524</span><span class="prank">#5</span></div><div class="prow"><span class="plab">WR</span>
+      <span class="pbar"><i style="width:85%"></i></span>
+      <span class="pnum">563</span><span class="prank">#2</span></div><div class="prow"><span class="plab">TE</span>
+      <span class="pbar"><i style="width:85%"></i></span>
+      <span class="pnum">213</span><span class="prank">#3</span></div><div class="prow"><span class="plab">FLEX</span>
+      <span class="pbar"><i style="width:95%"></i></span>
+      <span class="pnum">441</span><span class="prank">#5</span></div></div>
+     <h4 class="mt">Value added</h4>
+     <div class="vsplit">
+       <div><span class="vl">Keepers</span><span class="vn">+199.3</span></div>
+       <div><span class="vl">Draft</span><span class="vn pos">+7.3</span><span class="vr">draft rank #4</span></div>
+     </div>
+     <h4 class="mt">Keepers</h4><p class="lst">Amon-Ra St. Brown <span class='bp'>WR 308</span>, Joe Burrow <span class='bp'>QB 378</span>, Kenneth Walker <span class='bp'>RB 255</span></p>
+     <h4 class="mt">Bench</h4><p class="lst">Parker Washington <span class='bp'>WR 192</span>, Jadarian Price <span class='bp'>RB 186</span>, Wan&#x27;Dale Robinson <span class='bp'>WR 177</span>, Kenny Gainwell <span class='bp'>RB 168</span>, Jonathon Brooks <span class='bp'>RB 163</span>, Zach Charbonnet <span class='bp'>RB 110</span></p>
+   </div>
+ </div>
+ <details class="det"><summary>All 14 picks</summary>
+   <table class="pk"><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th class="num">Proj</th></tr></thead><tbody><tr><td class="pk">1.01</td><td class="pl">Derrick Henry</td><td class="pp">RB</td><td class="num">268.2</td></tr><tr><td class="pk">2.08</td><td class="pl">Chris Olave</td><td class="pp">WR</td><td class="num">255.8</td></tr><tr><td class="pk">3.01</td><td class="pl">Colston Loveland</td><td class="pp">TE</td><td class="num">212.7</td></tr><tr><td class="pk">4.08</td><td class="pl">Zay Flowers</td><td class="pp">WR</td><td class="num">239.2</td></tr><tr><td class="pk">5.01</td><td class="pl">Brock Purdy</td><td class="pp">QB</td><td class="num">365.9</td></tr><tr><td class="pk">6.08</td><td class="pl">D.J. Moore</td><td class="pp">WR</td><td class="num">201.8</td></tr><tr><td class="pk">7.01</td><td class="pl">Jadarian Price</td><td class="pp">RB</td><td class="num">186.1</td></tr><tr><td class="pk">8.08</td><td class="pl">Jonathon Brooks</td><td class="pp">RB</td><td class="num">162.7</td></tr><tr><td class="pk">9.01</td><td class="pl">Parker Washington</td><td class="pp">WR</td><td class="num">191.7</td></tr><tr><td class="pk">10.08</td><td class="pl">Seattle Seahawks</td><td class="pp">DEF</td><td class="num">113.0</td></tr><tr><td class="pk">11.01</td><td class="pl">Kenny Gainwell</td><td class="pp">RB</td><td class="num">167.5</td></tr><tr><td class="pk">12.08</td><td class="pl">Cam Little</td><td class="pp">K</td><td class="num">112.0</td></tr><tr><td class="pk">13.01</td><td class="pl">Wan&#x27;Dale Robinson</td><td class="pp">WR</td><td class="num">177.1</td></tr><tr><td class="pk">14.08</td><td class="pl">Zach Charbonnet</td><td class="pp">RB</td><td class="num">109.5</td></tr></tbody></table>
+ </details>
+ <div class="bw">
+   <div class="bwi"><span class="bwl up">Best value</span> Wan&#x27;Dale Robinson <span class="bp">WR &middot; 13.01</span> <b class="pos">+20.8</b></div>
+   <div class="bwi"><span class="bwl dn">Worst value</span> Zach Charbonnet <span class="bp">RB &middot; 14.08</span> <b class="neg">-25.3</b></div>
+ </div>
+</article>
+<article class="card" id="t5">
+ <header class="ch">
+   <div class="chl"><span class="rank">5</span>
+     <div><h3>1browneric2025</h3>
+     <p class="tag">Second-best draft. Thinnest keeper hand in the league.</p></div></div>
+   <div class="chr"><span class="grade big gA">A-</span>
+     <span class="wk">153.0<small>pts/wk</small></span></div>
+ </header>
+ 
+ <p class="verdict">Second-best draft in the league from the worst keeper position &mdash; 170 points of keeper value, dead last, and still fifth in final strength. Bowers is the biggest positional edge anyone holds at any spot. London, A.J. Brown and Nabers is 525 points of receiver plus the best flex in the league at 463. The hole is running back: 443 points, last by 42, and Jeanty's ankle makes it fragile. Shough at 14.07 was the best value pick of the entire draft, a 328-point quarterback taken 112th.</p>
+ <div class="grid">
+   <div class="col">
+     <h4>Starting lineup</h4>
+     <table class="lu"><tbody><tr><td class="slot">QB</td><td class="pl">Trevor Lawrence</td><td class="num">361.3</td></tr><tr><td class="slot">QB</td><td class="pl">Baker Mayfield</td><td class="num">334.9</td></tr><tr><td class="slot">RB</td><td class="pl">Ashton Jeanty</td><td class="num">254.9</td></tr><tr><td class="slot">RB</td><td class="pl">Jaylen Warren</td><td class="num">188.2</td></tr><tr><td class="slot">WR</td><td class="pl">Drake London</td><td class="num">270.4</td></tr><tr><td class="slot">WR</td><td class="pl">A.J. Brown</td><td class="num">254.2</td></tr><tr><td class="slot">TE</td><td class="pl">Brock Bowers</td><td class="num">247.1</td></tr><tr><td class="slot">FLEX</td><td class="pl">Malik Nabers</td><td class="num">240.0</td></tr><tr><td class="slot">FLEX</td><td class="pl">Tee Higgins</td><td class="num">222.7</td></tr><tr><td class="slot">K</td><td class="pl">Ka&#x27;imi Fairbairn</td><td class="num">113.0</td></tr><tr><td class="slot">DEF</td><td class="pl">Houston Texans</td><td class="num">114.0</td></tr></tbody>
+     <tfoot><tr><td colspan="2">Season total</td><td class="num b">2601</td></tr></tfoot></table>
+   </div>
+   <div class="col">
+     <h4>Where they rank</h4>
+     <div class="bars"><div class="prow"><span class="plab">QB</span>
+      <span class="pbar"><i style="width:86%"></i></span>
+      <span class="pnum">696</span><span class="prank">#8</span></div><div class="prow"><span class="plab">RB</span>
+      <span class="pbar"><i style="width:67%"></i></span>
+      <span class="pnum">443</span><span class="prank">#8</span></div><div class="prow"><span class="plab">WR</span>
+      <span class="pbar"><i style="width:79%"></i></span>
+      <span class="pnum">525</span><span class="prank">#4</span></div><div class="prow"><span class="plab">TE</span>
+      <span class="pbar"><i style="width:98%"></i></span>
+      <span class="pnum">247</span><span class="prank">#2</span></div><div class="prow"><span class="plab">FLEX</span>
+      <span class="pbar"><i style="width:100%"></i></span>
+      <span class="pnum">463</span><span class="prank">#1</span></div></div>
+     <h4 class="mt">Value added</h4>
+     <div class="vsplit">
+       <div><span class="vl">Keepers</span><span class="vn">+169.6</span></div>
+       <div><span class="vl">Draft</span><span class="vn pos">+88.4</span><span class="vr">draft rank #2</span></div>
+     </div>
+     <h4 class="mt">Keepers</h4><p class="lst">A.J. Brown <span class='bp'>WR 254</span>, Brock Bowers <span class='bp'>TE 247</span>, Ashton Jeanty <span class='bp'>RB 255</span></p>
+     <h4 class="mt">Bench</h4><p class="lst">Tyler Shough <span class='bp'>QB 328</span>, Luther Burden III <span class='bp'>WR 209</span>, Rome Odunze <span class='bp'>WR 206</span>, Tony Pollard <span class='bp'>RB 182</span>, Jayden Reed <span class='bp'>WR 181</span>, Mark Andrews <span class='bp'>TE 168</span></p>
+   </div>
+ </div>
+ <details class="det"><summary>All 14 picks</summary>
+   <table class="pk"><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th class="num">Proj</th></tr></thead><tbody><tr><td class="pk">1.02</td><td class="pl">Drake London</td><td class="pp">WR</td><td class="num">270.4</td></tr><tr><td class="pk">2.07</td><td class="pl">Malik Nabers</td><td class="pp">WR</td><td class="num">240.0</td></tr><tr><td class="pk">3.02</td><td class="pl">Trevor Lawrence</td><td class="pp">QB</td><td class="num">361.3</td></tr><tr><td class="pk">4.07</td><td class="pl">Tee Higgins</td><td class="pp">WR</td><td class="num">222.7</td></tr><tr><td class="pk">5.02</td><td class="pl">Baker Mayfield</td><td class="pp">QB</td><td class="num">334.9</td></tr><tr><td class="pk">6.07</td><td class="pl">Luther Burden III</td><td class="pp">WR</td><td class="num">208.6</td></tr><tr><td class="pk">7.02</td><td class="pl">Tony Pollard</td><td class="pp">RB</td><td class="num">181.9</td></tr><tr><td class="pk">8.07</td><td class="pl">Jaylen Warren</td><td class="pp">RB</td><td class="num">188.2</td></tr><tr><td class="pk">9.02</td><td class="pl">Rome Odunze</td><td class="pp">WR</td><td class="num">206.2</td></tr><tr><td class="pk">10.07</td><td class="pl">Houston Texans</td><td class="pp">DEF</td><td class="num">114.0</td></tr><tr><td class="pk">11.02</td><td class="pl">Jayden Reed</td><td class="pp">WR</td><td class="num">181.3</td></tr><tr><td class="pk">12.07</td><td class="pl">Ka&#x27;imi Fairbairn</td><td class="pp">K</td><td class="num">113.0</td></tr><tr><td class="pk">13.02</td><td class="pl">Mark Andrews</td><td class="pp">TE</td><td class="num">168.2</td></tr><tr><td class="pk">14.07</td><td class="pl">Tyler Shough</td><td class="pp">QB</td><td class="num">328.4</td></tr></tbody></table>
+ </details>
+ <div class="bw">
+   <div class="bwi"><span class="bwl up">Best value</span> Tyler Shough <span class="bp">QB &middot; 14.07</span> <b class="pos">+58.1</b></div>
+   <div class="bwi"><span class="bwl dn">Worst value</span> Tony Pollard <span class="bp">RB &middot; 7.02</span> <b class="neg">-18.0</b></div>
+ </div>
+</article>
+<article class="card" id="t6">
+ <header class="ch">
+   <div class="chl"><span class="rank">6</span>
+     <div><h3>mzacharias95</h3>
+     <p class="tag">Three studs, then the worst draft of the night.</p></div></div>
+   <div class="chr"><span class="grade big gC">C-</span>
+     <span class="wk">152.9<small>pts/wk</small></span></div>
+ </header>
+ 
+ <p class="verdict">Chase, Achane and Barkley is a genuinely excellent keeper trio, third-best in the league. Everything after that went wrong. Minus 249 points of draft value is the worst mark of the night by 143, and it is not one bad pick &mdash; Corum in round 7, Mike Washington in round 11, Quentin Johnston and Makai Lemon on the bench. Dak and Caleb Williams is a fine quarterback room and Nix is a luxury third. Last in flex by 65 points. The talent at the top is real; the depth behind it is the thinnest in the league.</p>
+ <div class="grid">
+   <div class="col">
+     <h4>Starting lineup</h4>
+     <table class="lu"><tbody><tr><td class="slot">QB</td><td class="pl">Dak Prescott</td><td class="num">369.5</td></tr><tr><td class="slot">QB</td><td class="pl">Caleb Williams</td><td class="num">358.4</td></tr><tr><td class="slot">RB</td><td class="pl">De&#x27;Von Achane</td><td class="num">284.2</td></tr><tr><td class="slot">RB</td><td class="pl">Saquon Barkley</td><td class="num">260.9</td></tr><tr><td class="slot">WR</td><td class="pl">Ja&#x27;Marr Chase</td><td class="num">330.5</td></tr><tr><td class="slot">WR</td><td class="pl">Ladd McConkey</td><td class="num">222.5</td></tr><tr><td class="slot">TE</td><td class="pl">Sam LaPorta</td><td class="num">187.4</td></tr><tr><td class="slot">FLEX</td><td class="pl">Bhayshul Tuten</td><td class="num">200.4</td></tr><tr><td class="slot">FLEX</td><td class="pl">Michael Wilson</td><td class="num">175.2</td></tr><tr><td class="slot">K</td><td class="pl">Jake Bates</td><td class="num">105.0</td></tr><tr><td class="slot">DEF</td><td class="pl">Denver Broncos</td><td class="num">106.0</td></tr></tbody>
+     <tfoot><tr><td colspan="2">Season total</td><td class="num b">2600</td></tr></tfoot></table>
+   </div>
+   <div class="col">
+     <h4>Where they rank</h4>
+     <div class="bars"><div class="prow"><span class="plab">QB</span>
+      <span class="pbar"><i style="width:90%"></i></span>
+      <span class="pnum">728</span><span class="prank">#3</span></div><div class="prow"><span class="plab">RB</span>
+      <span class="pbar"><i style="width:82%"></i></span>
+      <span class="pnum">545</span><span class="prank">#4</span></div><div class="prow"><span class="plab">WR</span>
+      <span class="pbar"><i style="width:84%"></i></span>
+      <span class="pnum">553</span><span class="prank">#3</span></div><div class="prow"><span class="plab">TE</span>
+      <span class="pbar"><i style="width:75%"></i></span>
+      <span class="pnum">187</span><span class="prank">#5</span></div><div class="prow"><span class="plab">FLEX</span>
+      <span class="pbar"><i style="width:81%"></i></span>
+      <span class="pnum">376</span><span class="prank">#8</span></div></div>
+     <h4 class="mt">Value added</h4>
+     <div class="vsplit">
+       <div><span class="vl">Keepers</span><span class="vn">+268.6</span></div>
+       <div><span class="vl">Draft</span><span class="vn neg">-248.8</span><span class="vr">draft rank #8</span></div>
+     </div>
+     <h4 class="mt">Keepers</h4><p class="lst">Ja&#x27;Marr Chase <span class='bp'>WR 330</span>, De&#x27;Von Achane <span class='bp'>RB 284</span>, Saquon Barkley <span class='bp'>RB 261</span></p>
+     <h4 class="mt">Bench</h4><p class="lst">Bo Nix <span class='bp'>QB 353</span>, Quentin Johnston <span class='bp'>WR 169</span>, Kyle Monangai <span class='bp'>RB 156</span>, Makai Lemon <span class='bp'>WR 155</span>, Blake Corum <span class='bp'>RB 138</span>, Mike Washington Jr. <span class='bp'>RB 75</span></p>
+   </div>
+ </div>
+ <details class="det"><summary>All 14 picks</summary>
+   <table class="pk"><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th class="num">Proj</th></tr></thead><tbody><tr><td class="pk">1.08</td><td class="pl">Caleb Williams</td><td class="pp">QB</td><td class="num">358.4</td></tr><tr><td class="pk">2.01</td><td class="pl">Dak Prescott</td><td class="pp">QB</td><td class="num">369.5</td></tr><tr><td class="pk">3.08</td><td class="pl">Bo Nix</td><td class="pp">QB</td><td class="num">352.8</td></tr><tr><td class="pk">4.01</td><td class="pl">Ladd McConkey</td><td class="pp">WR</td><td class="num">222.5</td></tr><tr><td class="pk">5.08</td><td class="pl">Bhayshul Tuten</td><td class="pp">RB</td><td class="num">200.4</td></tr><tr><td class="pk">6.01</td><td class="pl">Sam LaPorta</td><td class="pp">TE</td><td class="num">187.4</td></tr><tr><td class="pk">7.08</td><td class="pl">Blake Corum</td><td class="pp">RB</td><td class="num">138.2</td></tr><tr><td class="pk">8.01</td><td class="pl">Michael Wilson</td><td class="pp">WR</td><td class="num">175.2</td></tr><tr><td class="pk">9.08</td><td class="pl">Kyle Monangai</td><td class="pp">RB</td><td class="num">156.4</td></tr><tr><td class="pk">10.01</td><td class="pl">Quentin Johnston</td><td class="pp">WR</td><td class="num">168.8</td></tr><tr><td class="pk">11.08</td><td class="pl">Mike Washington Jr.</td><td class="pp">RB</td><td class="num">75.1</td></tr><tr><td class="pk">12.01</td><td class="pl">Makai Lemon</td><td class="pp">WR</td><td class="num">154.6</td></tr><tr><td class="pk">13.08</td><td class="pl">Denver Broncos</td><td class="pp">DEF</td><td class="num">106.0</td></tr><tr><td class="pk">14.01</td><td class="pl">Jake Bates</td><td class="pp">K</td><td class="num">105.0</td></tr></tbody></table>
+ </details>
+ <div class="bw">
+   <div class="bwi"><span class="bwl up">Best value</span> Sam LaPorta <span class="bp">TE &middot; 6.01</span> <b class="pos">-1.5</b></div>
+   <div class="bwi"><span class="bwl dn">Worst value</span> Mike Washington Jr. <span class="bp">RB &middot; 11.08</span> <b class="neg">-84.9</b></div>
+ </div>
+</article>
+<article class="card" id="t7">
+ <header class="ch">
+   <div class="chl"><span class="rank">7</span>
+     <div><h3>JMac010</h3>
+     <p class="tag">Two picks torched, and no defense.</p></div></div>
+   <div class="chr"><span class="grade big gC">C-</span>
+     <span class="wk">148.3<small>pts/wk</small></span></div>
+ </header>
+ <div class="warn">No defense drafted &mdash; that starting slot scores zero every week.</div>
+ <p class="verdict">Hurts and Dart is a workable superflex room and Lamb is a genuine WR1. But two picks cost this team the season before it started. MarShawn Lloyd in round 7 projects 92 points &mdash; the single worst pick of the draft by value &mdash; and Josh Jacobs in round 8 is on the commissioner exempt list and cannot practice or play, which is why he shows up as both the best value on this roster and a player who may never suit up. And there is no defense at all. That is a starting slot scoring zero every week.</p>
+ <div class="grid">
+   <div class="col">
+     <h4>Starting lineup</h4>
+     <table class="lu"><tbody><tr><td class="slot">QB</td><td class="pl">Jalen Hurts</td><td class="num">367.4</td></tr><tr><td class="slot">QB</td><td class="pl">Jaxson Dart</td><td class="num">353.0</td></tr><tr><td class="slot">RB</td><td class="pl">Chase Brown</td><td class="num">273.6</td></tr><tr><td class="slot">RB</td><td class="pl">Jeremiyah Love</td><td class="num">246.2</td></tr><tr><td class="slot">WR</td><td class="pl">CeeDee Lamb</td><td class="num">272.7</td></tr><tr><td class="slot">WR</td><td class="pl">DeVonta Smith</td><td class="num">235.2</td></tr><tr><td class="slot">TE</td><td class="pl">Tyler Warren</td><td class="num">201.0</td></tr><tr><td class="slot">FLEX</td><td class="pl">Josh Jacobs</td><td class="num">233.5</td></tr><tr><td class="slot">FLEX</td><td class="pl">Emeka Egbuka</td><td class="num">227.7</td></tr><tr><td class="slot">K</td><td class="pl">Jason Myers</td><td class="num">111.0</td></tr><tr><td class="slot">DEF</td><td class="pl"><em>empty</em></td><td class="num">0.0</td></tr></tbody>
+     <tfoot><tr><td colspan="2">Season total</td><td class="num b">2521</td></tr></tfoot></table>
+   </div>
+   <div class="col">
+     <h4>Where they rank</h4>
+     <div class="bars"><div class="prow"><span class="plab">QB</span>
+      <span class="pbar"><i style="width:89%"></i></span>
+      <span class="pnum">720</span><span class="prank">#5</span></div><div class="prow"><span class="plab">RB</span>
+      <span class="pbar"><i style="width:78%"></i></span>
+      <span class="pnum">520</span><span class="prank">#6</span></div><div class="prow"><span class="plab">WR</span>
+      <span class="pbar"><i style="width:77%"></i></span>
+      <span class="pnum">508</span><span class="prank">#7</span></div><div class="prow"><span class="plab">TE</span>
+      <span class="pbar"><i style="width:80%"></i></span>
+      <span class="pnum">201</span><span class="prank">#4</span></div><div class="prow"><span class="plab">FLEX</span>
+      <span class="pbar"><i style="width:100%"></i></span>
+      <span class="pnum">461</span><span class="prank">#2</span></div></div>
+     <h4 class="mt">Value added</h4>
+     <div class="vsplit">
+       <div><span class="vl">Keepers</span><span class="vn">+172.2</span></div>
+       <div><span class="vl">Draft</span><span class="vn neg">-106.1</span><span class="vr">draft rank #7</span></div>
+     </div>
+     <h4 class="mt">Keepers</h4><p class="lst">CeeDee Lamb <span class='bp'>WR 273</span>, Jalen Hurts <span class='bp'>QB 367</span>, Chase Brown <span class='bp'>RB 274</span></p>
+     <h4 class="mt">Bench</h4><p class="lst">Sam Darnold <span class='bp'>QB 323</span>, Davante Adams <span class='bp'>WR 215</span>, Rico Dowdle <span class='bp'>RB 176</span>, Jordan Addison <span class='bp'>WR 170</span>, Isaiah Likely <span class='bp'>TE 164</span>, Jordyn Tyson <span class='bp'>WR 115</span></p>
+   </div>
+ </div>
+ <details class="det"><summary>All 14 picks</summary>
+   <table class="pk"><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th class="num">Proj</th></tr></thead><tbody><tr><td class="pk">1.06</td><td class="pl">Jeremiyah Love</td><td class="pp">RB</td><td class="num">246.2</td></tr><tr><td class="pk">2.03</td><td class="pl">Jaxson Dart</td><td class="pp">QB</td><td class="num">353.0</td></tr><tr><td class="pk">3.06</td><td class="pl">Tyler Warren</td><td class="pp">TE</td><td class="num">201.0</td></tr><tr><td class="pk">4.03</td><td class="pl">DeVonta Smith</td><td class="pp">WR</td><td class="num">235.2</td></tr><tr><td class="pk">5.06</td><td class="pl">Emeka Egbuka</td><td class="pp">WR</td><td class="num">227.7</td></tr><tr><td class="pk">6.03</td><td class="pl">Davante Adams</td><td class="pp">WR</td><td class="num">214.8</td></tr><tr><td class="pk">7.06</td><td class="pl">MarShawn Lloyd</td><td class="pp">RB</td><td class="num">92.0</td></tr><tr><td class="pk">8.03</td><td class="pl">Josh Jacobs</td><td class="pp">RB</td><td class="num">233.5</td></tr><tr><td class="pk">9.06</td><td class="pl">Rico Dowdle</td><td class="pp">RB</td><td class="num">176.1</td></tr><tr><td class="pk">10.03</td><td class="pl">Isaiah Likely</td><td class="pp">TE</td><td class="num">164.0</td></tr><tr><td class="pk">11.06</td><td class="pl">Jordan Addison</td><td class="pp">WR</td><td class="num">169.8</td></tr><tr><td class="pk">12.03</td><td class="pl">Sam Darnold</td><td class="pp">QB</td><td class="num">322.7</td></tr><tr><td class="pk">13.06</td><td class="pl">Jason Myers</td><td class="pp">K</td><td class="num">111.0</td></tr><tr><td class="pk">14.03</td><td class="pl">Jordyn Tyson</td><td class="pp">WR</td><td class="num">115.3</td></tr></tbody></table>
+ </details>
+ <div class="bw">
+   <div class="bwi"><span class="bwl up">Best value</span> Josh Jacobs <span class="bp">RB &middot; 8.03</span> <b class="pos">+43.1</b></div>
+   <div class="bwi"><span class="bwl dn">Worst value</span> MarShawn Lloyd <span class="bp">RB &middot; 7.06</span> <b class="neg">-103.7</b></div>
+ </div>
+</article>
+<article class="card" id="t8">
+ <header class="ch">
+   <div class="chl"><span class="rank">8</span>
+     <div><h3>BenTheRN</h3>
+     <p class="tag">The best quarterback room, and almost nothing else.</p></div></div>
+   <div class="chr"><span class="grade big gC">C+</span>
+     <span class="wk">146.3<small>pts/wk</small></span></div>
+ </header>
+ <div class="warn">No defense drafted &mdash; that starting slot scores zero every week.</div>
+ <p class="verdict">Josh Allen and Drake Maye is 808 points of quarterback, the most in the league by 64, and in a superflex that is a real weapon. Everything else is last or close to it &mdash; eighth in running back, eighth in receiver, seventh in tight end. Carnell Tate in round 5 was a 40-point reach and the rest of the night never recovered. Pittman in round 13 was good business. Like JMac010, no defense was drafted, which is a zero in a starting slot for seventeen weeks.</p>
+ <div class="grid">
+   <div class="col">
+     <h4>Starting lineup</h4>
+     <table class="lu"><tbody><tr><td class="slot">QB</td><td class="pl">Josh Allen</td><td class="num">427.8</td></tr><tr><td class="slot">QB</td><td class="pl">Drake Maye</td><td class="num">379.9</td></tr><tr><td class="slot">RB</td><td class="pl">Omarion Hampton</td><td class="num">252.0</td></tr><tr><td class="slot">RB</td><td class="pl">Kyren Williams</td><td class="num">233.0</td></tr><tr><td class="slot">WR</td><td class="pl">Garrett Wilson</td><td class="num">239.1</td></tr><tr><td class="slot">WR</td><td class="pl">Tetairoa McMillan</td><td class="num">231.7</td></tr><tr><td class="slot">TE</td><td class="pl">Tucker Kraft</td><td class="num">176.5</td></tr><tr><td class="slot">FLEX</td><td class="pl">Javonte Williams</td><td class="num">228.6</td></tr><tr><td class="slot">FLEX</td><td class="pl">Quinshon Judkins</td><td class="num">212.1</td></tr><tr><td class="slot">K</td><td class="pl">Evan McPherson</td><td class="num">106.0</td></tr><tr><td class="slot">DEF</td><td class="pl"><em>empty</em></td><td class="num">0.0</td></tr></tbody>
+     <tfoot><tr><td colspan="2">Season total</td><td class="num b">2487</td></tr></tfoot></table>
+   </div>
+   <div class="col">
+     <h4>Where they rank</h4>
+     <div class="bars"><div class="prow"><span class="plab">QB</span>
+      <span class="pbar"><i style="width:100%"></i></span>
+      <span class="pnum">808</span><span class="prank">#1</span></div><div class="prow"><span class="plab">RB</span>
+      <span class="pbar"><i style="width:73%"></i></span>
+      <span class="pnum">485</span><span class="prank">#7</span></div><div class="prow"><span class="plab">WR</span>
+      <span class="pbar"><i style="width:71%"></i></span>
+      <span class="pnum">471</span><span class="prank">#8</span></div><div class="prow"><span class="plab">TE</span>
+      <span class="pbar"><i style="width:70%"></i></span>
+      <span class="pnum">176</span><span class="prank">#8</span></div><div class="prow"><span class="plab">FLEX</span>
+      <span class="pbar"><i style="width:95%"></i></span>
+      <span class="pnum">441</span><span class="prank">#6</span></div></div>
+     <h4 class="mt">Value added</h4>
+     <div class="vsplit">
+       <div><span class="vl">Keepers</span><span class="vn">+189.5</span></div>
+       <div><span class="vl">Draft</span><span class="vn neg">-43.5</span><span class="vr">draft rank #5</span></div>
+     </div>
+     <h4 class="mt">Keepers</h4><p class="lst">Drake Maye <span class='bp'>QB 380</span>, Omarion Hampton <span class='bp'>RB 252</span>, Josh Allen <span class='bp'>QB 428</span></p>
+     <h4 class="mt">Bench</h4><p class="lst">Christian Watson <span class='bp'>WR 198</span>, Rhamondre Stevenson <span class='bp'>RB 188</span>, Michael Pittman Jr. <span class='bp'>WR 186</span>, Carnell Tate <span class='bp'>WR 179</span>, Chris Godwin <span class='bp'>WR 176</span>, KC Concepcion <span class='bp'>WR 163</span></p>
+   </div>
+ </div>
+ <details class="det"><summary>All 14 picks</summary>
+   <table class="pk"><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th class="num">Proj</th></tr></thead><tbody><tr><td class="pk">1.05</td><td class="pl">Garrett Wilson</td><td class="pp">WR</td><td class="num">239.1</td></tr><tr><td class="pk">2.04</td><td class="pl">Kyren Williams</td><td class="pp">RB</td><td class="num">233.0</td></tr><tr><td class="pk">3.05</td><td class="pl">Javonte Williams</td><td class="pp">RB</td><td class="num">228.6</td></tr><tr><td class="pk">4.04</td><td class="pl">Tetairoa McMillan</td><td class="pp">WR</td><td class="num">231.7</td></tr><tr><td class="pk">5.05</td><td class="pl">Carnell Tate</td><td class="pp">WR</td><td class="num">178.9</td></tr><tr><td class="pk">6.04</td><td class="pl">Quinshon Judkins</td><td class="pp">RB</td><td class="num">212.1</td></tr><tr><td class="pk">7.05</td><td class="pl">Tucker Kraft</td><td class="pp">TE</td><td class="num">176.5</td></tr><tr><td class="pk">8.04</td><td class="pl">Christian Watson</td><td class="pp">WR</td><td class="num">197.5</td></tr><tr><td class="pk">9.05</td><td class="pl">Rhamondre Stevenson</td><td class="pp">RB</td><td class="num">188.0</td></tr><tr><td class="pk">10.04</td><td class="pl">Chris Godwin</td><td class="pp">WR</td><td class="num">175.6</td></tr><tr><td class="pk">11.05</td><td class="pl">KC Concepcion</td><td class="pp">WR</td><td class="num">162.8</td></tr><tr><td class="pk">12.04</td><td class="pl">Juwan Johnson</td><td class="pp">TE</td><td class="num">152.0</td></tr><tr><td class="pk">13.05</td><td class="pl">Michael Pittman Jr.</td><td class="pp">WR</td><td class="num">185.7</td></tr><tr><td class="pk">14.04</td><td class="pl">Evan McPherson</td><td class="pp">K</td><td class="num">106.0</td></tr></tbody></table>
+ </details>
+ <div class="bw">
+   <div class="bwi"><span class="bwl up">Best value</span> Michael Pittman Jr. <span class="bp">WR &middot; 13.05</span> <b class="pos">+33.6</b></div>
+   <div class="bwi"><span class="bwl dn">Worst value</span> Carnell Tate <span class="bp">WR &middot; 5.05</span> <b class="neg">-40.5</b></div>
+ </div>
+</article>
+
+<h2>The whole league</h2>
+<div class="two">
+ <div>
+  <h4>Best value picks of the draft</h4>
+  <div class="scroll"><table><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th>Team</th><th class="num">Edge</th></tr></thead>
+  <tbody><tr><td class='pk'>14.07</td><td class='pl'>Tyler Shough</td><td class='pp'>QB</td><td>1browneric2025</td><td class='num pos'>+58.1</td></tr><tr><td class='pk'>8.03</td><td class='pl'>Josh Jacobs</td><td class='pp'>RB</td><td>JMac010</td><td class='num pos'>+43.1</td></tr><tr><td class='pk'>13.02</td><td class='pl'>Mark Andrews</td><td class='pp'>TE</td><td>1browneric2025</td><td class='num pos'>+39.1</td></tr><tr><td class='pk'>14.06</td><td class='pl'>J.K. Dobbins</td><td class='pp'>RB</td><td>tylerdean</td><td class='num pos'>+35.8</td></tr><tr><td class='pk'>13.04</td><td class='pl'>Dalton Kincaid</td><td class='pp'>TE</td><td>Jdbss94</td><td class='num pos'>+34.3</td></tr><tr><td class='pk'>13.05</td><td class='pl'>Michael Pittman Jr.</td><td class='pp'>WR</td><td>BenTheRN</td><td class='num pos'>+33.6</td></tr></tbody></table></div>
+ </div>
+ <div>
+  <h4>Picks that cost the most</h4>
+  <div class="scroll"><table><thead><tr><th>Pick</th><th>Player</th><th>Pos</th><th>Team</th><th class="num">Edge</th></tr></thead>
+  <tbody><tr><td class='pk'>7.06</td><td class='pl'>MarShawn Lloyd</td><td class='pp'>RB</td><td>JMac010</td><td class='num neg'>-103.7</td></tr><tr><td class='pk'>11.08</td><td class='pl'>Mike Washington Jr.</td><td class='pp'>RB</td><td>mzacharias95</td><td class='num neg'>-84.9</td></tr><tr><td class='pk'>11.07</td><td class='pl'>Fernando Mendoza</td><td class='pp'>QB</td><td>johnny792</td><td class='num neg'>-63.7</td></tr><tr><td class='pk'>7.08</td><td class='pl'>Blake Corum</td><td class='pp'>RB</td><td>mzacharias95</td><td class='num neg'>-55.4</td></tr><tr><td class='pk'>5.05</td><td class='pl'>Carnell Tate</td><td class='pp'>WR</td><td>BenTheRN</td><td class='num neg'>-40.5</td></tr><tr><td class='pk'>14.03</td><td class='pl'>Jordyn Tyson</td><td class='pp'>WR</td><td>JMac010</td><td class='num neg'>-30.5</td></tr></tbody></table></div>
+ </div>
+</div>
+
+<h4 class="mt">Best and worst at every slot</h4>
+<div class="scroll"><table><thead><tr><th>Slot</th><th>Strongest</th><th class="num">Pts</th><th>Weakest</th><th class="num">Pts</th></tr></thead>
+<tbody><tr><td class='pp'>QB</td><td class='pl'>BenTheRN</td><td class='num'>808</td><td class='dim'>1browneric2025</td><td class='num dim'>696</td></tr><tr><td class='pp'>RB</td><td class='pl'>johnny792</td><td class='num'>665</td><td class='dim'>1browneric2025</td><td class='num dim'>443</td></tr><tr><td class='pp'>WR</td><td class='pl'>Jdbss94</td><td class='num'>662</td><td class='dim'>BenTheRN</td><td class='num dim'>471</td></tr><tr><td class='pp'>TE</td><td class='pl'>tylerdean</td><td class='num'>251</td><td class='dim'>BenTheRN</td><td class='num dim'>176</td></tr><tr><td class='pp'>FLEX</td><td class='pl'>1browneric2025</td><td class='num'>463</td><td class='dim'>mzacharias95</td><td class='num dim'>376</td></tr></tbody></table></div>
+</div></body></html>
