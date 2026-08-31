@@ -43,12 +43,13 @@ body{margin:0;background:var(--paper);color:var(--ink);
 .nav a:hover{color:#F2F0EC}
 .nav a.on{color:#F2F0EC;border-bottom-color:var(--amber)}
 .nav a:focus-visible{outline:2px solid var(--amber);outline-offset:-4px}
-.band .wrap.hero{padding-top:40px;padding-bottom:36px;display:flex;align-items:center;
+.band .wrap.hero{padding-top:24px;padding-bottom:24px;display:flex;align-items:center;
  justify-content:space-between;gap:22px}
-.heroimg{display:block;height:74px;width:auto;border-radius:8px;flex:0 0 auto;
- box-shadow:0 2px 14px rgba(0,0,0,.35)}
-@media(max-width:600px){.heroimg{height:52px}}
-@media(max-width:400px){.heroimg{display:none}}
+.heroimg{display:block;height:132px;width:auto;border-radius:10px;flex:0 0 auto;
+ box-shadow:0 3px 20px rgba(0,0,0,.4)}
+@media(max-width:760px){.heroimg{height:98px}}
+@media(max-width:520px){.heroimg{height:72px}}
+@media(max-width:380px){.heroimg{display:none}}
 .kick{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:12px;
  font-weight:500;color:var(--amber);margin:0 0 10px}
 h1{font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,58px);line-height:1;
@@ -228,9 +229,10 @@ table.h2h td{padding:7px 8px;border-bottom:1px solid var(--rule2);vertical-align
 @media(max-width:520px){.wkhi{gap:9px}.wkn,.wkp{font-size:14px}}
 
 .rost tbody tr:nth-child(odd){background:var(--rule2)}
-.rost tbody tr.sep{background:var(--band)}
-.rost tbody tr.sep td{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.13em;
- font-size:10px;color:var(--mute);padding:6px 10px;border-bottom:1px solid var(--rule)}
+.rost tbody tr.sep{background:var(--rule2)}
+.rost tbody tr.sep td{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.14em;
+ font-size:10.5px;font-weight:600;color:var(--ink2);padding:7px 11px;
+ border-top:2px solid var(--ink);border-bottom:1px solid var(--rule)}
 .rost tbody tr.sep+tr{background:transparent}
 
 table.h2h tbody tr:nth-child(odd){background:var(--rule2)}
@@ -280,7 +282,7 @@ table.h2h tbody tr:nth-child(odd){background:#E7EDF7}
 })();
 </script>
 <div class="band"><div class="wrap hero"><h1>Weekly Results</h1>
-      <img class="heroimg" src="header.gif" alt="" width="132" height="99"></div></div>
+      <img class="heroimg" src="header.gif" alt="" width="181" height="132"></div></div>
 <div class="wrap"><details class="wk"><summary>
           <span class="wkh">Week 5</span>
           <span class="wkhi"><span class="pill live">High score</span>
