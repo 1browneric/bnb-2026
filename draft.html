@@ -149,7 +149,6 @@ table.mini tr.tot td.num{font-family:Lato,sans-serif;font-size:15px;color:var(--
 .rost .pp{font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.06em;color:var(--mute);width:40px}
 .fold>summary .sm{font-family:Lato,sans-serif;font-weight:400;font-size:13px;letter-spacing:0;
  text-transform:none;color:var(--mute);margin-left:auto;margin-right:10px}
-.livehead{margin:0 0 12px;font-size:14.5px;color:var(--ink2)}
 .gs.win{color:var(--blue)}
 
 .wk{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin:0 0 14px;
@@ -188,13 +187,19 @@ table.h2h td{padding:7px 8px;border-bottom:1px solid var(--rule2);vertical-align
 .fold>summary .tr{font-family:Oswald,sans-serif;font-weight:700;font-size:15px;color:var(--mute);
  min-width:22px;display:inline-block}
 
-.fold>summary .by{font-family:Lato,sans-serif;font-weight:400;font-size:12.5px;letter-spacing:0;
- text-transform:none;color:var(--mute);margin-right:12px;white-space:nowrap}
-@media(max-width:620px){.fold>summary .by{display:none}}
 
 .fold>summary .tn{font-family:Lato,-apple-system,sans-serif;font-weight:700;font-size:16px;
  text-transform:none;letter-spacing:0;color:var(--ink)}
 .fold>summary:hover .tn{color:var(--blue)}
+
+.livehead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+ margin:0 0 14px}
+.lhl{display:flex;align-items:center;gap:9px}
+.lhr{font-style:italic;font-size:12.5px;color:var(--mute)}
+.lhhi{font-size:14.5px;color:var(--ink2);margin-left:auto;text-align:right}
+.lhhi b{color:var(--ink)}
+
+.cards.nav2{margin-top:26px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
 
 
 :root{
