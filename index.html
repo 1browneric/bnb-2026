@@ -89,7 +89,8 @@ th.num{text-align:right}
 .warn{background:var(--amber-bg);color:var(--amber);border-left:3px solid var(--amber);
  padding:9px 13px;margin:16px 0 0;font-weight:700;font-size:14.5px;border-radius:0 5px 5px 0}
 .grid{display:grid;grid-template-columns:minmax(240px,1fr) minmax(260px,1.1fr);gap:26px}
-@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.col{min-width:0}
+@media(max-width:720px){.grid{grid-template-columns:minmax(0,1fr)}}
 .lu td{padding:6px 8px}
 .lu .slot{font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
  color:var(--mute);width:52px}
@@ -119,13 +120,18 @@ summary:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 .pk td.pk,.pk .pk{font-family:Oswald,sans-serif;color:var(--mute);font-size:12.5px;width:54px}
 .pp{font-family:Oswald,sans-serif;font-size:11px;letter-spacing:.06em;color:var(--mute);width:42px}
 .bw{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;border-top:1px solid var(--rule2);padding-top:14px}
-@media(max-width:620px){.bw{grid-template-columns:1fr}}
+@media(max-width:620px){.bw{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:520px){.wrap{padding-left:14px;padding-right:14px}
+ .card{padding:18px 15px}
+ .hero{padding:32px 0 28px}
+ .grid{gap:20px}
+ .col{min-width:0}}
 .bwi{font-size:14.5px}
 .bwl{display:block;font-family:Oswald,sans-serif;font-size:9.5px;letter-spacing:.13em;
  text-transform:uppercase;margin-bottom:2px}
 .bwl.up{color:var(--blue)} .bwl.dn{color:var(--amber)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:26px}
-@media(max-width:760px){.two{grid-template-columns:1fr}}
+@media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
