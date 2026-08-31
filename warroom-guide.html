@@ -77,30 +77,24 @@ pre{background:var(--code-bg);color:var(--code-fg);margin:0;padding:18px 20px;
 
 
 <div class="band"><div class="wrap">
-<p class="kick">Fantasy football &middot; copy and paste</p>
+<p class="kick">Fantasy football &middot; build spec</p>
 <h1>War Room Build Prompt</h1>
-<p class="dek">Paste the block below into Claude Code and it builds the whole thing against your
-Yahoo league &mdash; <b>same layout, same fonts, same colors, same research spreadsheet.</b>
-Fill in the bracketed lines first.</p>
+<p class="dek">A complete build spec for a live draft console, written to be pasted straight into
+Claude Code. Exact design tokens, the VOR derivation, the CSV schema, and <b>the fifteen bugs that
+actually shipped</b> &mdash; most of which returned confidently wrong answers rather than errors.
+Built against Sleeper; every Yahoo divergence is called out.</p>
 </div></div>
 
 <div class="wrap">
 
-<h2>How to use it</h2>
-<ol class="steps">
-<li><b>Open Claude Code on your own computer.</b> Mac or Windows, in a terminal. Not the web app
-&mdash; the live feed runs as a local process on draft night, so it needs a machine you control.</li>
-<li><b>Fill in the bracketed lines.</b> Everything in double brackets is yours. If you leave one
-blank it will pull what it can from Yahoo and ask you to confirm.</li>
-<li><b>Paste the whole block and send it.</b> Then do the Yahoo authorization step it walks you
-through. Do that part days before the draft, not on draft night.</li>
-</ol>
+<p>Fill the <code>[[...]]</code> lines and paste. Needs a local session &mdash; the poller and
+server run on the machine, not in a cloud sandbox.</p>
+<p>Two things worth knowing before you start. Yahoo's access tokens expire hourly, so the refresh
+path has to be proven days ahead rather than discovered on draft night. And VOR baselines are
+league-specific &mdash; the spec makes Claude derive them from your slot counts and print them
+rather than inheriting anyone else's numbers.</p>
 
-<div class="warn"><span class="t">The one thing that will bite you</span>
-<p>Yahoo needs OAuth and its access tokens expire after one hour. Get authorization working and
-pull one real response early. Nobody wants to be re-authenticating with four minutes on the clock.</p></div>
-
-<h2>The prompt</h2>
+<h2>The spec</h2>
 <div class="promptbox">
 <div class="pbar"><span>Copy all of this</span><button id="copy" type="button">Copy</button></div>
 <pre id="p">Run this in a NEW Claude Code session on my own computer (Mac or Windows, in a terminal).
@@ -134,9 +128,9 @@ STEP 1 -- YAHOO ACCESS (do this first, days before the draft)
 =====================================================================
 Yahoo needs OAuth 2.0. This is the only genuinely hard part.
 
-1. Walk me through registering an app at developer.yahoo.com with Fantasy Sports read
-   permission. For a local script the redirect URI can be "oob".
-2. Use a library, do not hand-roll the handshake. Either:
+1. App registered at developer.yahoo.com with Fantasy Sports read scope; redirect URI "oob"
+   is fine for a local script. Ask me for the consumer key and secret.
+2. Use a library rather than hand-rolling the handshake:
      - yfpy                (github.com/uberfastman/yfpy)
      - yahoo-fantasy-api   (has a draft-results method that returns picks made SO FAR
                             while a draft is live -- that is the endpoint the feed needs)
@@ -455,8 +449,8 @@ Then give me the one command to start it, and a printable one-page cheat sheet o
 draft plan by round.
 </pre>
 </div>
-<p class="cap">If the Copy button does not work in your browser, click into the block, select all,
-and copy.</p>
+<p class="cap">351 lines. Adjust anything &mdash; the trap list and the VOR derivation are the parts
+worth keeping verbatim.</p>
 
 <script>
 document.getElementById('copy').addEventListener('click',async()=>{
