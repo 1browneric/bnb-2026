@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="light">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -17,20 +17,6 @@
  --amber:#8A5A00; --amber-bg:#FBEECE; --blue:#0B4DA2; --blue-bg:#D9E7FB;
  --onblue:#FFFFFF; --onamber:#FFFFFF;
  --shadow:0 1px 2px rgba(10,16,32,.06),0 8px 26px rgba(10,16,32,.08);
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
- --paper:#080C16; --card:#121A2B; --ink:#EEF2FA; --ink2:#BCC7DC; --mute:#98A6BF;
- --rule:#243149; --rule2:#1A2438; --band:#050912; --panel2:#0F1727;
- --amber:#F0B650; --amber-bg:#3B2C0E; --blue:#6FA5F5; --blue-bg:#152744;
- --onblue:#08101F; --onamber:#241905;
- --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 26px rgba(0,0,0,.4);
-}}
-:root[data-theme="dark"]{
- --paper:#080C16; --card:#121A2B; --ink:#EEF2FA; --ink2:#BCC7DC; --mute:#98A6BF;
- --rule:#243149; --rule2:#1A2438; --band:#050912; --panel2:#0F1727;
- --amber:#F0B650; --amber-bg:#3B2C0E; --blue:#6FA5F5; --blue-bg:#152744;
- --onblue:#08101F; --onamber:#241905;
- --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 26px rgba(0,0,0,.4);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);
@@ -257,12 +243,6 @@ table.h2h tbody tr.htot{background:transparent}
 table.h2h tbody tr:nth-child(odd){background:#E7EDF7}
 .stand tbody tr td{border-bottom:1px solid var(--rule2)}
 
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stand tbody tr:nth-child(odd),
- :root:not([data-theme="light"]) .rost tbody tr:nth-child(odd),
- :root:not([data-theme="light"]) table.h2h tbody tr:nth-child(odd){background:#182237}}
-:root[data-theme="dark"] .stand tbody tr:nth-child(odd),
-:root[data-theme="dark"] .rost tbody tr:nth-child(odd),
-:root[data-theme="dark"] table.h2h tbody tr:nth-child(odd){background:#182237}
 
 .fold>summary .sma{font-family:Lato,sans-serif;font-weight:400;font-size:14.5px;letter-spacing:0;
  text-transform:none;color:var(--ink2);font-variant-numeric:tabular-nums}
@@ -285,11 +265,17 @@ button.brand:focus-visible{outline:2px solid var(--amber);outline-offset:-2px;bo
 a:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:3px}
 
 
-.recap .tm{font-weight:700}
-.rlines{margin-top:14px}
-.rlines .rll{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.11em;
- font-size:10.5px;font-weight:600;color:var(--mute);width:210px;white-space:nowrap}
-@media(max-width:560px){.rlines .rll{width:auto;white-space:normal}}
+
+.rlead{font-size:16.5px;line-height:1.6;color:var(--ink2);margin:0 0 16px;max-width:74ch}
+.rlines{display:grid;margin-bottom:18px}
+.rl{display:flex;gap:16px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--rule2)}
+.rl:last-child{border-bottom:none}
+.rll{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.11em;font-size:10.5px;
+ font-weight:600;color:var(--mute);min-width:200px;flex:0 0 auto}
+.rlv{font-size:15px;color:var(--ink)}
+table.recap tbody tr:nth-child(odd){background:#E7EDF7}
+table.recap .tm{font-weight:700}
+@media(max-width:600px){.rl{flex-direction:column;gap:2px}.rll{min-width:0}}
 
 
 :root{
