@@ -284,6 +284,18 @@ button.brand{background:none;border:none;padding:0 13px 0 2px;cursor:pointer}
 button.brand:focus-visible{outline:2px solid var(--amber);outline-offset:-2px;border-radius:5px}
 a:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:3px}
 
+.rlead{font-size:16.5px;line-height:1.6;color:var(--ink2);margin:0 0 16px;max-width:74ch}
+.rlines{display:grid;gap:0;margin-bottom:16px}
+.rl{display:flex;gap:16px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--rule2)}
+.rl:last-child{border-bottom:none}
+.rll{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.11em;font-size:10.5px;
+ font-weight:600;color:var(--mute);min-width:190px;flex:0 0 auto}
+.rlv{font-size:15px;color:var(--ink)}
+table.recap td{padding:9px 10px;border-bottom:1px solid var(--rule2)}
+table.recap tr:last-child td{border-bottom:none}
+table.recap .dim{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em}
+@media(max-width:600px){.rl{flex-direction:column;gap:2px}.rll{min-width:0}}
+
 
 :root{
  --paper:#F7F5F0; --card:#FFFFFF; --ink:#141B2B; --ink2:#3B4459; --mute:#767C8C;
