@@ -95,8 +95,8 @@ td{padding:8px 10px;border-bottom:1px solid var(--rule2)}
 @media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:520px){.wrap{padding-left:14px;padding-right:14px}.card,.tile{padding:16px 14px}
  .band .wrap.hero{padding-top:28px;padding-bottom:26px}}
-.pill{font-family:Oswald,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.13em;
- text-transform:uppercase;padding:5px 12px;border-radius:5px;background:var(--rule2);color:var(--mute)}
+.pill{font-family:Oswald,sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;
+ text-transform:uppercase;padding:4px 10px;border-radius:4px;background:var(--rule2);color:var(--mute)}
 .pill.live{background:var(--blue-bg);color:var(--blue)}
 
 .brand{display:flex;align-items:center;padding:0 13px 0 2px;flex:0 0 auto}
@@ -110,11 +110,11 @@ td{padding:8px 10px;border-bottom:1px solid var(--rule2)}
 .fold{background:var(--card);border:1px solid var(--rule);border-radius:11px;margin:12px 0;
  box-shadow:var(--shadow);overflow:hidden}
 .fold>summary{font-family:Oswald,sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;
- letter-spacing:.13em;color:var(--ink);padding:15px 18px;cursor:pointer;list-style:none;
- display:flex;align-items:center;justify-content:space-between;gap:12px}
+ letter-spacing:.13em;color:var(--ink);padding:15px 20px;cursor:pointer;list-style:none;
+ display:flex;align-items:center;gap:14px}
 .fold>summary::-webkit-details-marker{display:none}
 .fold>summary::after{content:'+';font-family:Oswald,sans-serif;font-weight:400;font-size:21px;
- color:var(--mute);line-height:1}
+ color:var(--mute);line-height:1;margin-left:auto}
 .fold[open]>summary::after{content:'\2212'}
 .fold>summary:hover{color:var(--blue)}
 .fold>summary:focus-visible{outline:2px solid var(--blue);outline-offset:-3px}
@@ -147,11 +147,9 @@ table.mini tr.tot td.num{font-family:Lato,sans-serif;font-size:15px;color:var(--
 
 .rost .slot{font-family:Oswald,sans-serif;font-size:10px;letter-spacing:.1em;color:var(--mute);width:44px}
 .rost .pp{font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.06em;color:var(--mute);width:40px}
-.fold>summary .sm{font-family:Lato,sans-serif;font-weight:400;font-size:13.5px;letter-spacing:0;
- text-transform:none;color:var(--mute);margin-left:auto;margin-right:16px;
- display:inline-flex;align-items:baseline;gap:18px}
-.fold>summary .smr{font-weight:700;color:var(--ink2);min-width:34px}
-.fold>summary .sma{font-variant-numeric:tabular-nums}
+
+
+
 @media(max-width:520px){.fold>summary .sm{gap:11px;font-size:12.5px;margin-right:10px}}
 .gs.win{color:var(--blue)}
 
@@ -177,14 +175,19 @@ table.h2h td{padding:7px 8px;border-bottom:1px solid var(--rule2);vertical-align
 .h2h .hn.r{text-align:right}
 .h2h .hp{font-family:Oswald,sans-serif;font-weight:600;font-size:15px;width:56px;text-align:center;
  font-variant-numeric:tabular-nums;color:var(--mute)}
-.h2h .hp.w{color:var(--ink);background:var(--blue-bg);border-radius:5px}
+.h2h .hp{color:var(--mute);font-weight:500}
+.h2h .hp.w{color:var(--ink);font-weight:700}
+.h2h .hs{line-height:1.15;padding-top:5px;padding-bottom:5px}
+.mg{display:block;font-family:Lato,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:0;
+ text-transform:none;color:var(--blue);margin-top:1px}
 .h2h .hs{font-family:Oswald,sans-serif;font-size:10px;letter-spacing:.1em;color:var(--mute);
  text-align:center;width:52px;text-transform:uppercase}
 .h2h tr.htot td{border-top:2px solid var(--ink);border-bottom:none;padding-top:9px}
 .h2h tr.htot .hn{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em;
  font-size:10.5px;color:var(--mute);font-weight:500}
 .h2h tr.htot .hp{font-size:19px}
-.h2h tr.htot .hp.w{color:var(--blue)}
+.h2h tr.htot .hp{color:var(--mute)}
+.h2h tr.htot .hp.w{color:var(--blue);font-weight:700}
 @media(max-width:560px){table.h2h{font-size:12.5px}.h2h .hn{font-size:12.5px}
  .h2h .hp{width:46px;font-size:13.5px}.h2h .hs{width:40px;font-size:9px}}
 
@@ -192,8 +195,8 @@ table.h2h td{padding:7px 8px;border-bottom:1px solid var(--rule2);vertical-align
  min-width:22px;display:inline-block}
 
 
-.fold>summary .tn{font-family:Lato,-apple-system,sans-serif;font-weight:700;font-size:16px;
- text-transform:none;letter-spacing:0;color:var(--ink)}
+.fold>summary .tn{font-family:Oswald,sans-serif;font-weight:600;font-size:22px;
+ text-transform:none;letter-spacing:-.005em;color:var(--ink)}
 .fold>summary:hover .tn{color:var(--blue)}
 
 .livehead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
@@ -232,6 +235,31 @@ table.h2h tbody tr.htot{background:transparent}
 .gs{font-size:20px}
 .gs.win{color:var(--blue)}
 .game[open]>summary{background:var(--panel2);border-bottom:2px solid var(--ink)}
+
+/* tables sit on white so the zebra actually steps; the page ground was too close to it */
+.wrap > .scroll, .wrap > h2 + .scroll{background:var(--card);border:1px solid var(--rule);
+ border-radius:11px;box-shadow:var(--shadow);padding:4px 6px 6px}
+.wrap > .scroll table{width:100%}
+.stand tbody tr:nth-child(odd){background:#E7EDF7}
+.rost tbody tr:nth-child(odd){background:#E7EDF7}
+table.h2h tbody tr:nth-child(odd){background:#E7EDF7}
+.stand tbody tr td{border-bottom:1px solid var(--rule2)}
+
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stand tbody tr:nth-child(odd),
+ :root:not([data-theme="light"]) .rost tbody tr:nth-child(odd),
+ :root:not([data-theme="light"]) table.h2h tbody tr:nth-child(odd){background:#182237}}
+:root[data-theme="dark"] .stand tbody tr:nth-child(odd),
+:root[data-theme="dark"] .rost tbody tr:nth-child(odd),
+:root[data-theme="dark"] table.h2h tbody tr:nth-child(odd){background:#182237}
+
+.fold>summary .sma{font-family:Lato,sans-serif;font-weight:400;font-size:14.5px;letter-spacing:0;
+ text-transform:none;color:var(--ink2);font-variant-numeric:tabular-nums}
+.fold>summary .tr{font-size:17px}
+@media(max-width:520px){.fold>summary .tn{font-size:18px}.fold>summary{gap:9px;padding:13px 14px}}
+
+/* the rank td had a width but its th did not, so the Team header sat left of the names */
+.stand thead th:first-child{width:34px}
+.rost thead th:first-child{width:44px}
 
 
 :root{
