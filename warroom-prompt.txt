@@ -1,31 +1,4 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="light dark">
-<title>War Room Build Prompt</title>
-<style>
-:root{--bg:#F7F5F0;--fg:#141B2B;--mute:#767C8C;--code-bg:#161D2C;--code-fg:#DCE3F0;--blue:#24518F;--on:#fff}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101521;--fg:#F2F0EC;--mute:#8B93A5;--code-bg:#0A1020;--code-fg:#D3DCEE;--blue:#7BA6E8;--on:#0D1220}}
-:root[data-theme="dark"]{--bg:#101521;--fg:#F2F0EC;--mute:#8B93A5;--code-bg:#0A1020;--code-fg:#D3DCEE;--blue:#7BA6E8;--on:#0D1220}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);
- font-family:-apple-system,Segoe UI,Helvetica,sans-serif;font-size:16px;line-height:1.5}
-.w{max-width:960px;margin:0 auto;padding:26px 18px 60px}
-h1{font-size:21px;margin:0 0 4px;font-weight:800}
-p{color:var(--mute);font-size:14.5px;margin:0 0 16px}
-button{font:inherit;font-size:13px;font-weight:700;background:var(--blue);color:var(--on);
- border:none;border-radius:6px;padding:9px 18px;cursor:pointer;margin-bottom:12px}
-button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
-pre{background:var(--code-bg);color:var(--code-fg);border-radius:8px;padding:18px 20px;
- overflow-x:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;
- line-height:1.65;white-space:pre-wrap;word-wrap:break-word;margin:0}
-</style></head><body>
-<div class="w">
-<h1>War Room Build Prompt</h1>
-<p>Fill the <code>[[...]]</code> lines, paste into Claude Code in a local session.
-<a href="warroom-prompt.txt">Plain text version</a></p>
-<button id="c" type="button">Copy prompt</button>
-<pre id="p">Run this in a NEW Claude Code session on my own computer (Mac or Windows, in a terminal).
+Run this in a NEW Claude Code session on my own computer (Mac or Windows, in a terminal).
 Python 3 required. Not a cloud or web session -- the live draft feed runs as a local process
 and serves a local page on draft night.
 
@@ -375,14 +348,3 @@ Run and show me the results of every one of these:
 
 Then give me the one command to start it, and a printable one-page cheat sheet of my
 draft plan by round.
-</pre>
-</div>
-<script>
-document.getElementById('c').addEventListener('click',async()=>{
- const b=document.getElementById('c');
- try{await navigator.clipboard.writeText(document.getElementById('p').textContent);b.textContent='Copied';}
- catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById('p'));
-  const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected - press Cmd+C';}
- setTimeout(()=>b.textContent='Copy prompt',2500);
-});
-</script></body></html>
