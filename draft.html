@@ -147,8 +147,12 @@ table.mini tr.tot td.num{font-family:Lato,sans-serif;font-size:15px;color:var(--
 
 .rost .slot{font-family:Oswald,sans-serif;font-size:10px;letter-spacing:.1em;color:var(--mute);width:44px}
 .rost .pp{font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.06em;color:var(--mute);width:40px}
-.fold>summary .sm{font-family:Lato,sans-serif;font-weight:400;font-size:13px;letter-spacing:0;
- text-transform:none;color:var(--mute);margin-left:auto;margin-right:10px}
+.fold>summary .sm{font-family:Lato,sans-serif;font-weight:400;font-size:13.5px;letter-spacing:0;
+ text-transform:none;color:var(--mute);margin-left:auto;margin-right:16px;
+ display:inline-flex;align-items:baseline;gap:18px}
+.fold>summary .smr{font-weight:700;color:var(--ink2);min-width:34px}
+.fold>summary .sma{font-variant-numeric:tabular-nums}
+@media(max-width:520px){.fold>summary .sm{gap:11px;font-size:12.5px;margin-right:10px}}
 .gs.win{color:var(--blue)}
 
 .wk{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin:0 0 14px;
@@ -200,6 +204,14 @@ table.h2h td{padding:7px 8px;border-bottom:1px solid var(--rule2);vertical-align
 .lhhi b{color:var(--ink)}
 
 .cards.nav2{margin-top:26px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+
+.wkhi{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap}
+.wkn{font-size:15px}
+.wkp{font-family:Oswald,sans-serif;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;
+ color:var(--ink)}
+.wkd{font-family:Oswald,sans-serif;font-weight:600;font-size:13px;color:var(--blue);
+ background:var(--blue-bg);padding:2px 9px;border-radius:4px}
+@media(max-width:520px){.wkhi{gap:9px}.wkn,.wkp{font-size:14px}}
 
 
 :root{
