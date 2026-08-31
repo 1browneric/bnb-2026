@@ -200,8 +200,13 @@ table.h2h td{padding:7px 8px;border-bottom:1px solid var(--rule2);vertical-align
  margin:0 0 14px}
 .lhl{display:flex;align-items:center;gap:9px}
 .lhr{font-style:italic;font-size:12.5px;color:var(--mute)}
-.lhhi{font-size:14.5px;color:var(--ink2);margin-left:auto;text-align:right}
-.lhhi b{color:var(--ink)}
+.lhhi{margin-left:auto;display:inline-flex;align-items:center;gap:14px}
+.lhl2{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:10.5px;
+ color:var(--mute)}
+.lhn{font-size:15px;color:var(--ink)}
+.lhp{font-family:Oswald,sans-serif;font-weight:600;font-size:17px;color:var(--ink);
+ font-variant-numeric:tabular-nums}
+@media(max-width:520px){.lhhi{gap:9px}.lhn{font-size:13.5px}.lhp{font-size:15px}}
 
 .cards.nav2{margin-top:26px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
 
@@ -212,6 +217,21 @@ table.h2h td{padding:7px 8px;border-bottom:1px solid var(--rule2);vertical-align
 .wkd{font-family:Oswald,sans-serif;font-weight:600;font-size:13px;color:var(--blue);
  background:var(--blue-bg);padding:2px 9px;border-radius:4px}
 @media(max-width:520px){.wkhi{gap:9px}.wkn,.wkp{font-size:14px}}
+
+.rost tbody tr:nth-child(odd){background:var(--rule2)}
+.rost tbody tr.sep{background:var(--band)}
+.rost tbody tr.sep td{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.13em;
+ font-size:10px;color:var(--mute);padding:6px 10px;border-bottom:1px solid var(--rule)}
+.rost tbody tr.sep+tr{background:transparent}
+
+table.h2h tbody tr:nth-child(odd){background:var(--rule2)}
+table.h2h tbody tr.htot{background:transparent}
+
+.game>summary{padding:13px 8px}
+.gt{font-size:16px;font-weight:900;letter-spacing:-.01em}
+.gs{font-size:20px}
+.gs.win{color:var(--blue)}
+.game[open]>summary{background:var(--band);border-bottom:1px solid var(--rule)}
 
 
 :root{
