@@ -7,25 +7,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap">
 <style>:root{
- --paper:#F7F5F0; --card:#FFFFFF; --ink:#141B2B; --ink2:#3B4459; --mute:#767C8C;
- --rule:#DDD8CE; --rule2:#EBE7DF; --band:#141B2B;
- --amber:#8A4E06; --amber-bg:#FBEEDA; --blue:#24518F; --blue-bg:#E1E9F6;
+ --paper:#EEF1F7; --card:#FFFFFF; --ink:#0A1020; --ink2:#37425C; --mute:#6B7794;
+ --rule:#C9D3E3; --rule2:#E3E9F3; --band:#0A1020; --panel2:#F4F7FC;
+ --amber:#8A5A00; --amber-bg:#FBEECE; --blue:#0B4DA2; --blue-bg:#D9E7FB;
  --onblue:#FFFFFF; --onamber:#FFFFFF;
- --shadow:0 1px 2px rgba(20,27,43,.05),0 8px 28px rgba(20,27,43,.07);
+ --shadow:0 1px 2px rgba(10,16,32,.06),0 8px 26px rgba(10,16,32,.08);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
- --paper:#101521; --card:#171E2D; --ink:#F2F0EC; --ink2:#C3C8D4; --mute:#8B93A5;
- --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19;
- --amber:#E9A94C; --amber-bg:#3A2B14; --blue:#7BA6E8; --blue-bg:#1B2740;
- --onblue:#0D1220; --onamber:#241708;
- --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35);
+ --paper:#080C16; --card:#121A2B; --ink:#EEF2FA; --ink2:#BCC7DC; --mute:#8593AD;
+ --rule:#243149; --rule2:#1A2438; --band:#050912; --panel2:#0F1727;
+ --amber:#F0B650; --amber-bg:#3B2C0E; --blue:#6FA5F5; --blue-bg:#152744;
+ --onblue:#08101F; --onamber:#241905;
+ --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 26px rgba(0,0,0,.4);
 }}
 :root[data-theme="dark"]{
- --paper:#101521; --card:#171E2D; --ink:#F2F0EC; --ink2:#C3C8D4; --mute:#8B93A5;
- --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19;
- --amber:#E9A94C; --amber-bg:#3A2B14; --blue:#7BA6E8; --blue-bg:#1B2740;
- --onblue:#0D1220; --onamber:#241708;
- --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35);
+ --paper:#080C16; --card:#121A2B; --ink:#EEF2FA; --ink2:#BCC7DC; --mute:#8593AD;
+ --rule:#243149; --rule2:#1A2438; --band:#050912; --panel2:#0F1727;
+ --amber:#F0B650; --amber-bg:#3B2C0E; --blue:#6FA5F5; --blue-bg:#152744;
+ --onblue:#08101F; --onamber:#241905;
+ --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 26px rgba(0,0,0,.4);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);
@@ -95,8 +95,8 @@ td{padding:8px 10px;border-bottom:1px solid var(--rule2)}
 @media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:520px){.wrap{padding-left:14px;padding-right:14px}.card,.tile{padding:16px 14px}
  .band .wrap.hero{padding-top:28px;padding-bottom:26px}}
-.pill{font-family:Oswald,sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
- padding:2px 7px;border-radius:3px;background:var(--rule2);color:var(--mute)}
+.pill{font-family:Oswald,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.13em;
+ text-transform:uppercase;padding:5px 12px;border-radius:5px;background:var(--rule2);color:var(--mute)}
 .pill.live{background:var(--blue-bg);color:var(--blue)}
 
 .brand{display:flex;align-items:center;padding:0 13px 0 2px;flex:0 0 auto}
@@ -231,7 +231,7 @@ table.h2h tbody tr.htot{background:transparent}
 .gt{font-size:16px;font-weight:900;letter-spacing:-.01em}
 .gs{font-size:20px}
 .gs.win{color:var(--blue)}
-.game[open]>summary{background:var(--band);border-bottom:1px solid var(--rule)}
+.game[open]>summary{background:var(--panel2);border-bottom:2px solid var(--ink)}
 
 
 :root{
