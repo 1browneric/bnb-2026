@@ -43,7 +43,12 @@ body{margin:0;background:var(--paper);color:var(--ink);
 .nav a:hover{color:#F2F0EC}
 .nav a.on{color:#F2F0EC;border-bottom-color:var(--amber)}
 .nav a:focus-visible{outline:2px solid var(--amber);outline-offset:-4px}
-.band .wrap.hero{padding-top:40px;padding-bottom:36px}
+.band .wrap.hero{padding-top:40px;padding-bottom:36px;display:flex;align-items:center;
+ justify-content:space-between;gap:22px}
+.heroimg{display:block;height:74px;width:auto;border-radius:8px;flex:0 0 auto;
+ box-shadow:0 2px 14px rgba(0,0,0,.35)}
+@media(max-width:600px){.heroimg{height:52px}}
+@media(max-width:400px){.heroimg{display:none}}
 .kick{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:12px;
  font-weight:500;color:var(--amber);margin:0 0 10px}
 h1{font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,58px);line-height:1;
@@ -274,7 +279,8 @@ table.h2h tbody tr:nth-child(odd){background:#E7EDF7}
     .catch(function(){});
 })();
 </script>
-<div class="band"><div class="wrap hero"><h1>Weekly Results</h1></div></div>
+<div class="band"><div class="wrap hero"><h1>Weekly Results</h1>
+      <img class="heroimg" src="header.gif" alt="" width="132" height="99"></div></div>
 <div class="wrap"><div class="empty"><strong>Nothing to show yet</strong>
   Week 1 kicks off September 10. This fills in automatically every Tuesday morning.</div></div>
 </body></html>
