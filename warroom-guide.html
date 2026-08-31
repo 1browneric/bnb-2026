@@ -2,473 +2,474 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="light dark">
-<title>Build a Draft War Room</title>
+<title>War Room Build Prompt</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lato:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 :root{
  --paper:#F7F5F0; --card:#FFFFFF; --ink:#141B2B; --ink2:#3B4459; --mute:#767C8C;
- --rule:#DDD8CE; --rule2:#EBE7DF; --band:#141B2B; --code-bg:#1B2333; --code-fg:#DCE3F0;
+ --rule:#DDD8CE; --rule2:#EBE7DF; --band:#141B2B; --code-bg:#161D2C; --code-fg:#DCE3F0;
  --amber:#8A4E06; --amber-bg:#FBEEDA; --blue:#24518F; --blue-bg:#E1E9F6;
- --onblue:#FFFFFF; --onamber:#FFFFFF;
+ --onblue:#FFFFFF;
  --shadow:0 1px 2px rgba(20,27,43,.05),0 8px 28px rgba(20,27,43,.07);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
  --paper:#101521; --card:#171E2D; --ink:#F2F0EC; --ink2:#C3C8D4; --mute:#8B93A5;
- --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19; --code-bg:#0B1020; --code-fg:#D3DCEE;
+ --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19; --code-bg:#0A1020; --code-fg:#D3DCEE;
  --amber:#E9A94C; --amber-bg:#3A2B14; --blue:#7BA6E8; --blue-bg:#1B2740;
- --onblue:#0D1220; --onamber:#241708;
+ --onblue:#0D1220;
  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35);
 }}
 :root[data-theme="dark"]{
  --paper:#101521; --card:#171E2D; --ink:#F2F0EC; --ink2:#C3C8D4; --mute:#8B93A5;
- --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19; --code-bg:#0B1020; --code-fg:#D3DCEE;
+ --rule:#2A3346; --rule2:#222B3C; --band:#0B0F19; --code-bg:#0A1020; --code-fg:#D3DCEE;
  --amber:#E9A94C; --amber-bg:#3A2B14; --blue:#7BA6E8; --blue-bg:#1B2740;
- --onblue:#0D1220; --onamber:#241708;
+ --onblue:#0D1220;
  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);
  font-family:Lato,-apple-system,Segoe UI,sans-serif;font-size:16.5px;line-height:1.6;
  -webkit-font-smoothing:antialiased}
-.wrap{max-width:860px;margin:0 auto;padding:0 22px 80px}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 70px}
 .band{background:var(--band);color:#F2F0EC}
-.band .wrap{padding-top:44px;padding-bottom:38px}
+.band .wrap{padding-top:44px;padding-bottom:36px}
 .kick{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:12px;
  font-weight:500;color:var(--amber);margin:0 0 10px}
-h1{font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,54px);line-height:1;
- margin:0;letter-spacing:-.01em;text-wrap:balance}
-.dek{font-size:19px;line-height:1.5;color:#C9CEDA;max-width:64ch;margin:15px 0 0}
+h1{font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,52px);line-height:1;
+ margin:0;letter-spacing:-.01em}
+.dek{font-size:19px;line-height:1.5;color:#C9CEDA;max-width:62ch;margin:15px 0 0}
 .dek b{color:#F2F0EC}
-.band+.wrap{padding-top:8px}
-h2{font-family:Oswald,sans-serif;font-weight:700;font-size:26px;margin:46px 0 6px;
- letter-spacing:-.005em;text-wrap:balance}
-h2 .n{color:var(--amber);font-size:15px;letter-spacing:.14em;display:block;margin-bottom:5px;
- font-weight:500;text-transform:uppercase}
-h3{font-family:Oswald,sans-serif;font-weight:600;font-size:18px;margin:26px 0 6px;letter-spacing:.01em}
-p{margin:11px 0;color:var(--ink2);max-width:70ch}
-p.lead{color:var(--ink);font-size:17.5px}
-ul,ol{margin:11px 0;padding-left:22px;color:var(--ink2);max-width:70ch}
-li{margin:6px 0}
-b,strong{color:var(--ink)}
+.band+.wrap{padding-top:26px}
+h2{font-family:Oswald,sans-serif;font-weight:700;font-size:24px;margin:38px 0 8px}
+p{margin:11px 0;color:var(--ink2);max-width:72ch}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:16px 0}
+ol.steps>li{counter-increment:s;position:relative;padding-left:42px;margin:16px 0;color:var(--ink2)}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:-1px;
+ font-family:Oswald,sans-serif;font-weight:700;font-size:16px;
+ background:var(--blue);color:var(--onblue);width:28px;height:28px;border-radius:50%;
+ display:flex;align-items:center;justify-content:center}
+ol.steps>li b{color:var(--ink)}
 code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:.86em;
  background:var(--rule2);padding:2px 6px;border-radius:4px;color:var(--ink)}
-pre{background:var(--code-bg);color:var(--code-fg);border-radius:9px;padding:15px 17px;
- overflow-x:auto;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13.2px;
- line-height:1.62;margin:14px 0;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:inherit;font-size:inherit}
-.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0}
-table{border-collapse:collapse;width:100%;font-size:14.5px}
-th{font-family:Oswald,sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.08em;
- font-size:10.5px;color:var(--mute);text-align:left;padding:0 11px 7px;white-space:nowrap;
- border-bottom:1px solid var(--rule)}
-td{padding:9px 11px;border-bottom:1px solid var(--rule2);vertical-align:top;color:var(--ink2)}
-td b{color:var(--ink)}
-.num{text-align:right;font-variant-numeric:tabular-nums}
-.card{background:var(--card);border:1px solid var(--rule);border-radius:11px;padding:18px 20px;
- margin:16px 0;box-shadow:var(--shadow)}
+.promptbox{border:2px solid var(--blue);border-radius:12px;overflow:hidden;margin:20px 0 6px;
+ box-shadow:var(--shadow)}
+.pbar{background:var(--blue);color:var(--onblue);display:flex;align-items:center;
+ justify-content:space-between;gap:12px;padding:11px 15px}
+.pbar span{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.13em;
+ font-size:11.5px;font-weight:600}
+#copy{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.11em;font-size:11px;
+ font-weight:600;background:var(--onblue);color:var(--blue);border:none;border-radius:5px;
+ padding:7px 14px;cursor:pointer}
+#copy:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+pre{background:var(--code-bg);color:var(--code-fg);margin:0;padding:18px 20px;
+ overflow-x:auto;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12.6px;
+ line-height:1.68;white-space:pre-wrap;word-wrap:break-word;max-height:70vh;overflow-y:auto}
 .warn{background:var(--amber-bg);border-left:3px solid var(--amber);border-radius:0 8px 8px 0;
  padding:14px 17px;margin:16px 0}
-.warn p{color:var(--ink2);margin:6px 0 0;max-width:none}
 .warn .t{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:11px;
- font-weight:600;color:var(--amber)}
-.note{background:var(--blue-bg);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;
- padding:14px 17px;margin:16px 0}
-.note p{color:var(--ink2);margin:6px 0 0;max-width:none}
-.note .t{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:11px;
- font-weight:600;color:var(--blue)}
-.trap{border-bottom:1px solid var(--rule2);padding:14px 0}
-.trap:last-child{border-bottom:none}
-.trap .h{font-weight:900;color:var(--ink);font-size:16px}
-.trap p{margin:5px 0 0;font-size:15.3px}
-.steps{counter-reset:s;list-style:none;padding:0}
-.steps>li{counter-increment:s;position:relative;padding-left:44px;margin:20px 0}
-.steps>li::before{content:counter(s);position:absolute;left:0;top:-2px;
- font-family:Oswald,sans-serif;font-weight:700;font-size:17px;
- background:var(--blue);color:var(--onblue);width:30px;height:30px;border-radius:50%;
- display:flex;align-items:center;justify-content:center}
-.steps>li>b{display:block;font-size:17px;margin-bottom:3px}
-.toc{background:var(--card);border:1px solid var(--rule);border-radius:11px;padding:16px 20px;
- margin:22px 0;box-shadow:var(--shadow)}
-.toc ol{columns:2;column-gap:26px;margin:6px 0 0;padding-left:20px}
-@media(max-width:560px){.toc ol{columns:1}}
-.toc a{color:var(--ink2);text-decoration:none}
-.toc a:hover{color:var(--blue);text-decoration:underline}
-.tag{display:inline-block;font-family:Oswald,sans-serif;font-size:10px;letter-spacing:.12em;
- text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-right:6px;vertical-align:2px}
-.tag.hard{background:var(--amber-bg);color:var(--amber)}
-.tag.easy{background:var(--blue-bg);color:var(--blue)}
-a{color:var(--blue)}
+ font-weight:600;color:var(--amber);display:block}
+.warn p{color:var(--ink2);margin:6px 0 0;max-width:none}
+.cap{font-size:13.5px;color:var(--mute);margin:8px 0 0}
 </style>
 </head><body>
 
 
 <div class="band"><div class="wrap">
-<p class="kick">Fantasy football &middot; build guide</p>
-<h1>Build a Draft War Room</h1>
-<p class="dek">A live draft console that reads your league's feed, ranks the board on your own
-scoring, and tells you who to take next. <b>This is the exact build, including the fifteen things
-that broke.</b> Written from a Sleeper build; the Yahoo differences are called out at every step.</p>
+<p class="kick">Fantasy football &middot; copy and paste</p>
+<h1>War Room Build Prompt</h1>
+<p class="dek">Paste the block below into Claude Code and it builds the whole thing against your
+Yahoo league &mdash; <b>same layout, same fonts, same colors, same research spreadsheet.</b>
+Fill in the bracketed lines first.</p>
 </div></div>
 
 <div class="wrap">
 
-<div class="toc">
-<b>What's here</b>
-<ol>
-<li><a href="#what">What it does</a></li>
-<li><a href="#yahoo">The Yahoo problem</a></li>
-<li><a href="#arch">Architecture</a></li>
-<li><a href="#proj">Projections</a></li>
-<li><a href="#vor">The VOR model</a></li>
-<li><a href="#ui">What goes on screen</a></li>
-<li><a href="#live">Making it live</a></li>
-<li><a href="#day">Draft day</a></li>
-<li><a href="#traps">Fifteen traps</a></li>
-<li><a href="#files">File manifest</a></li>
-</ol>
-</div>
-
-<h2 id="what"><span class="n">01</span>What it does</h2>
-<p class="lead">One page, open next to the draft room, that answers a single question in under a
-second: <b>who should I take right now?</b></p>
-<p>It watches the league's draft feed, crosses off every player as they go, recalculates what's left
-against your own roster and your league's scoring, and puts one name at the top with the reason.
-Six-second refresh. No typing during the draft.</p>
-<p>Around that: a full player pool with every projection source, a round-by-round plan that
-recalculates as the board changes, live rosters for all eight teams, a running pick log, and a
-status tab for injuries and suspensions.</p>
-
-<h2 id="yahoo"><span class="n">02</span>The Yahoo problem</h2>
-<p class="lead">This is the one real difference, and it is worth knowing before writing any code.</p>
-<div class="scroll"><table>
-<thead><tr><th></th><th>Sleeper</th><th>Yahoo</th></tr></thead>
-<tbody>
-<tr><td><b>Auth</b></td><td>None. Open read-only</td><td>OAuth 2.0, three-legged</td></tr>
-<tr><td><b>Setup</b></td><td>Nothing</td><td>Register an app, consumer key and secret, redirect URI</td></tr>
-<tr><td><b>Tokens</b></td><td>N/A</td><td>Access token expires in 1 hour, must refresh</td></tr>
-<tr><td><b>Format</b></td><td>JSON</td><td>XML by default, JSON with <code>?format=json</code></td></tr>
-<tr><td><b>Shape</b></td><td>Flat arrays</td><td>Deeply nested, numeric string keys</td></tr>
-<tr><td><b>Rate limit</b></td><td>1000/min</td><td>Undocumented, be conservative</td></tr>
-</tbody></table></div>
-
-<div class="warn"><span class="t">Do this first, days ahead</span>
-<p>Get OAuth working and pull one real draft-results response <b>before</b> building anything else.
-Do not discover on draft night that your token expired. Yahoo access tokens last an hour;
-the poller has to refresh automatically or it dies mid-draft.</p></div>
-
-<h3>Getting connected</h3>
+<h2>How to use it</h2>
 <ol class="steps">
-<li><b>Register the app</b>
-Go to developer.yahoo.com, create an app, request Fantasy Sports read permission. You get a
-consumer key and consumer secret. For a local script the redirect URI can be
-<code>oob</code> (out of band) which gives you a paste-in code.</li>
-<li><b>Use a wrapper, do not hand-roll</b>
-<code>yfpy</code> handles the three-legged handshake and token refresh. It opens a browser,
-you paste the verification code once, and it caches the token. <code>yahoo-fantasy-api</code> is
-the other solid option and has a draft-results method that returns picks made so far
-<b>while the draft is running</b>, which is exactly the endpoint this needs.</li>
-<li><b>Find your league key</b>
-Yahoo keys look like <code>{game_key}.l.{league_id}</code>, for example <code>nfl.l.123456</code>.
-The game key changes every season, so pull it from the API rather than hardcoding it.</li>
-<li><b>Pull one real response and save it</b>
-Save the raw JSON to disk. Build the parser against that file, not against the live API. You will
-iterate on the parser twenty times and you do not want twenty live calls per iteration.</li>
+<li><b>Open Claude Code on your own computer.</b> Mac or Windows, in a terminal. Not the web app
+&mdash; the live feed runs as a local process on draft night, so it needs a machine you control.</li>
+<li><b>Fill in the bracketed lines.</b> Everything in double brackets is yours. If you leave one
+blank it will pull what it can from Yahoo and ask you to confirm.</li>
+<li><b>Paste the whole block and send it.</b> Then do the Yahoo authorization step it walks you
+through. Do that part days before the draft, not on draft night.</li>
 </ol>
 
-<div class="note"><span class="t">Yahoo's response shape</span>
-<p>Yahoo nests everything in objects keyed by <code>"0"</code>, <code>"1"</code>, <code>"count"</code>
-and mixes lists and dicts at the same level. Write one flattening helper early and run everything
-through it. Trying to index it inline produces unreadable code and silent wrong answers.</p></div>
+<div class="warn"><span class="t">The one thing that will bite you</span>
+<p>Yahoo needs OAuth and its access tokens expire after one hour. Get authorization working and
+pull one real response early. Nobody wants to be re-authenticating with four minutes on the clock.</p></div>
 
-<h2 id="arch"><span class="n">03</span>Architecture</h2>
-<p class="lead">Three pieces. The important design decision is that <b>the page never talks to the
-fantasy API directly.</b></p>
-<pre><code>  Yahoo/Sleeper API
-        |
-        v
-  poller  (runs every 5s, own process)
-        |  writes feed.json atomically
-        v
-  local web server  (python3 -m http.server)
-        |  serves the page + feed.json from the same origin
-        v
-  war_room.html  (fetches feed.json every 6s, re-renders in place)</code></pre>
+<h2>The prompt</h2>
+<div class="promptbox">
+<div class="pbar"><span>Copy all of this</span><button id="copy" type="button">Copy</button></div>
+<pre id="p">Run this in a NEW Claude Code session on my own computer (Mac or Windows, in a terminal).
+Python 3 required. Not a cloud or web session -- the live draft feed runs as a local process
+and serves a local page on draft night.
 
-<h3>Why a poller instead of fetching from the page</h3>
-<ul>
-<li><b>CORS.</b> Neither Yahoo nor Sleeper sends permissive CORS headers, so browser fetch is blocked.</li>
-<li><b>Secrets.</b> The Yahoo token cannot go in a page anyone can view source on.</li>
-<li><b>Blast radius.</b> A bad API response corrupts one small file, not your ranked board.</li>
-</ul>
-<p>The board and projections are baked into the HTML once, before the draft. The feed only carries
-who-took-whom. That separation is what keeps a bad poll from destroying the rankings.</p>
+Build me a live fantasy football draft war room for my Yahoo league, plus a research CSV.
 
-<div class="warn"><span class="t">Write feed.json atomically</span>
-<p>Write to <code>feed.json.tmp</code> then <code>os.replace()</code>. Without it the browser
-eventually reads a half-written file and throws a JSON parse error mid-draft.</p></div>
+=====================================================================
+MY LEAGUE -- fill in / confirm before building
+=====================================================================
+Platform:            Yahoo Fantasy Sports
+League ID or URL:    [[PASTE YOUR YAHOO LEAGUE URL]]
+Number of teams:     [[10 or 12]]
+Draft type:          [[snake or auction]]
+Draft date and time: [[e.g. Thu Sep 3, 8:00 PM CT]]
+My draft slot:       [[e.g. 7th]]      (auction: my budget [[$200]])
+Starting lineup:     [[e.g. QB, RB, RB, WR, WR, TE, FLEX, K, DEF]]
+Bench spots:         [[e.g. 6]]
+Scoring:             [[full PPR / half PPR / standard]]
+Passing TD:          [[4 or 6]]
+Any premiums:        [[e.g. TE premium, 0.5 per first down -- or "none"]]
+Keepers:             [[none, or list them with the round each costs]]
 
-<pre><code>tmp = 'feed.json.tmp'
-json.dump(out, open(tmp,'w'), separators=(',',':'))
-os.replace(tmp, 'feed.json')   # atomic on POSIX</code></pre>
+Anything I left blank: pull it from the Yahoo API, show me what you found, and get my
+confirmation BEFORE you build. Do not guess at scoring settings -- every number in this
+tool depends on them.
 
-<h2 id="proj"><span class="n">04</span>Projections</h2>
-<p class="lead">Never use a site's published fantasy point total. Pull the <b>raw stat lines</b> and
-rescore them under your league's own settings.</p>
-<p>A site's number assumes standard scoring. If your league gives 6 points for a passing touchdown,
-or full PPR, or a tight-end premium, every published total is wrong for you, and wrong by different
-amounts at different positions.</p>
-<pre><code>OFF = ['pass_yd','pass_td','pass_int','pass_2pt','rush_yd','rush_td',
-       'rush_2pt','rec','rec_yd','rec_td','rec_2pt','fum_lost']
+=====================================================================
+STEP 1 -- YAHOO ACCESS (do this first, days before the draft)
+=====================================================================
+Yahoo needs OAuth 2.0. This is the only genuinely hard part.
 
-def score(stats, scoring):            # scoring = league's own settings dict
-    return sum(scoring.get(k,0.0) * stats.get(k,0.0) for k in OFF)</code></pre>
-<p>Four sources were blended and averaged per player: the platform's own projections, FFToday, ESPN
-and CBS. Averaging matters more than picking a favourite. Where sources disagree wildly, the spread
-itself is the signal.</p>
-<div class="card">
-<b>A real example.</b> Two running backs, similar average. One had a 12-point spread across four
-sources, the other 25. The tight one was the safer pick, and knowing that changed the call.
-Keep the per-source columns and the spread visible, not just the average.
+1. Walk me through registering an app at developer.yahoo.com with Fantasy Sports read
+   permission. For a local script the redirect URI can be "oob".
+2. Use a library, do not hand-roll the handshake. Either:
+     - yfpy                (github.com/uberfastman/yfpy)
+     - yahoo-fantasy-api   (has a draft-results method that returns picks made SO FAR
+                            while a draft is live -- that is the endpoint the feed needs)
+3. Yahoo league keys look like {game_key}.l.{league_id}, e.g. nfl.l.123456. The game key
+   changes every season -- pull it from the API, never hardcode it.
+4. Add ?format=json to every call. Yahoo returns XML by default.
+5. Pull ONE real draft-results response and SAVE IT TO DISK. Build the parser against that
+   saved file, not against the live API.
+6. Write one flattening helper early. Yahoo nests everything in objects keyed "0", "1",
+   "count" and mixes lists and dicts at the same level. Run every response through it.
+7. Access tokens expire in ONE HOUR. The poller must refresh automatically or it dies
+   mid-draft. Prove the refresh works before draft day.
+
+Tell me clearly when this step is done and working.
+
+=====================================================================
+STEP 2 -- PROJECTIONS (never use a site's published fantasy point total)
+=====================================================================
+Pull RAW STAT LINES from at least four sources and rescore every player under MY league's
+settings. A published total assumes standard scoring and is wrong for my league by a
+different amount at every position.
+
+Sources to blend: Yahoo's own projections, FFToday, ESPN, CBS. Add FantasyPros if reachable.
+
+Score offense from raw stats:
+  keys = pass_yd, pass_td, pass_int, pass_2pt, rush_yd, rush_td, rush_2pt,
+         rec, rec_yd, rec_td, rec_2pt, fum_lost
+  points = sum(my_scoring[k] * stats[k] for k in keys)
+
+Kickers and defenses: score separately from distance-bucketed and defensive stat lines.
+If my league pays more for a 50+ yard field goal, a big leg on a stalling offense is worth
+real points over a volume kicker -- that never shows in a raw total.
+
+Store PER-SOURCE numbers, not just the average. The spread between sources is signal:
+a player whose four sources sit 12 points apart is a safer pick than one spread 25 apart,
+even at the same average. Show both.
+
+=====================================================================
+STEP 3 -- VOR (this is the whole edge -- do not skip or approximate)
+=====================================================================
+Rank on value over replacement, NEVER on projected points.
+
+Derive replacement level from MY league, do not use a rule of thumb and do not copy
+numbers from anyone else's league:
+  a. Count every starting skill slot in the league: teams x slots.
+  b. Walk the projection board top down, assigning each player to a slot he is eligible
+     for, until every one of those slots is full.
+  c. Replacement level per position = the best player left over.
+  d. Report the resulting baselines to me (e.g. "QB13, RB30, WR36, TE11") so I can sanity
+     check them. They move a LOT with team count and roster format.
+
+VOR = projected points - replacement level for that position.
+
+Then, for recommendations, use MARGINAL value, not raw VOR:
+  FILL = one replacement-level dummy per starting slot, EACH WITH A UNIQUE NAME
+  def marginal(player, roster):
+      return lineup(roster + [player] + FILL).total - lineup(roster + FILL).total
+Without this, an empty starting slot makes every player at that position look worth his
+entire projection, and the tool will recommend nothing but quarterbacks.
+
+=====================================================================
+STEP 4 -- THE RESEARCH CSV (build this, I want it as a spreadsheet too)
+=====================================================================
+Export the full board as CSV and XLSX, one row per player, sorted by VOR rank.
+Use exactly these columns, adapted to my sources:
+
+  vor_rank, player, pos, team, bye,
+  avg_with_platform, proj_avg,
+  yahoo, fftoday, espn, cbs, fantasypros,
+  n_sources, source_spread,
+  replacement, vor,
+  adp, market_rank, vor_minus_market_rank,
+  weekly_sd,
+  aav_avg, aav_sources, aav_spread, aav_yahoo, aav_espn, aav_other
+
+Notes on the columns:
+  - avg_with_platform  = blended average with the platform's own number in parentheses
+  - source_spread      = max minus min across sources; high spread = low confidence
+  - vor_minus_market_rank = where my model disagrees with ADP. Large positive numbers are
+    the bargains; this is the most useful sorting column in the file.
+  - weekly_sd = per-week average x positional coefficient of variation
+    (QB .30, RB .55, WR .62, TE .68, K .45, DEF .72). High swing is good if my league has
+    a weekly high-score pot, bad if I just need to win matchups.
+  - status = blank, or the injury / suspension note for that player (see step 5)
+  - aav_* columns only matter for an auction. Skip if snake.
+
+TEAM COUNT CHANGES EVERYTHING IN THIS FILE. My league is 8-team superflex and its
+baselines came out QB17, RB24, WR26, TE9. Yours will not be close to that. Derive them,
+then sanity check against roughly what to expect:
+
+  10-team, 1 QB, 2RB/2WR/TE/FLEX : about QB11, RB26, WR31, TE11
+  12-team, 1 QB, 2RB/2WR/TE/FLEX : about QB13, RB31, WR37, TE13
+  10 or 12-team SUPERFLEX        : QB baseline jumps roughly 8-10 spots deeper, because
+                                   nearly every team starts two quarterbacks
+
+Those are sanity checks, NOT values to hardcode. Compute mine from my actual slots and
+print them. If your computed number is far from the guide above, say so and show your work
+before continuing -- it usually means a roster slot was miscounted.
+
+The practical effect: in a 12-team league replacement level is much deeper, so ordinary
+starters are worth more VOR and the elite tier separates less. In a 10-team league the
+waiver wire is strong and VOR spreads compress further. Do not reuse anyone else's numbers.
+
+=====================================================================
+STEP 5 -- PLAYER STATUS: INJURIES, SUSPENSIONS, EXEMPT LIST
+=====================================================================
+This is not optional garnish. On my draft day a running back landed on the commissioner
+exempt list that morning and was still sitting there as the 12th best available player on
+the board, live to be recommended in round 2. Build this.
+
+Three hand-editable JSON files, merged into the page payload at build time. Each is a flat
+map of player name to a short note:
+
+  injuries.json  soft flags -- injury and practice status
+                 {"Player Name": "low ankle sprain - Wk1 in doubt, not long term"}
+  nodraft.json   hard availability -- suspension, commissioner exempt list, legal, holdout
+                 {"Player Name": "Commissioner exempt list (8/30) - cannot practice or play,
+                  indefinite. Draftable, but the projection assumes a full season"}
+  news.json      role changes -- the backup who just inherited a starting job
+                 {"Player Name": "Lead back now - projection here does NOT reflect that"}
+
+Rendering:
+  - A small uppercase pill after the player's name in the pool: INJ (amber), EXEMPT (dark),
+    NEWS (blue). Hovering any pill shows the full note.
+  - Use ONE fixed-position tooltip element appended to the body. A CSS ::after tooltip
+    inside the table gets clipped to the row height by the overflow container -- I hit this.
+  - When THE CALL lands on a flagged player, print the note in full under the verdict so I
+    cannot take a hurt player without seeing it.
+  - A STATUS tab listing every flagged player sorted by VOR: name, pill, pos, team, bye,
+    VOR, projection, the full note, and who drafted them. One row per player -- if a name
+    appears in two files, the hard flag wins and the soft one is suppressed.
+  - Carry a "status" column into the CSV so the spreadsheet matches the page.
+
+THE RULE THAT MATTERS: a flag INFORMS, it never BLOCKS. Do not strike the player out, do
+not remove him from rankings, do not exclude him from recommendations. He is still a legal
+pick and possibly a smart late stash. That call is mine. What you SHOULD do is say plainly
+that his projection is stale, because a full-season number for a man who cannot play is
+simply wrong.
+
+Populating it: before the draft, search for each of these separately -- injury reports, the
+commissioner exempt list, suspensions, holdouts, trades, releases, depth-chart changes.
+Check the DATE on every result; a cheat sheet written three days ago is stale on cutdown
+weekend. Re-run the sweep an hour before the draft and again if the draft runs long.
+
+=====================================================================
+STEP 6 -- THE WAR ROOM PAGE (match this design EXACTLY)
+=====================================================================
+One self-contained HTML file, generated by a Python script, with the board data inlined.
+
+FONT
+  Barlow from Google Fonts, weights 400 500 600 700, for all headings, numbers and labels.
+  System sans for body copy. font-variant-numeric: tabular-nums on every number.
+  Uppercase labels get letter-spacing .06em to .13em at 10-11.5px.
+
+COLOR TOKENS -- use these hex values verbatim
+  Light:
+    --ground:#EDF0F5  --panel:#FFFFFF  --panel2:#F5F7FA  --rule:#D3DAE5
+    --ink:#0F1724     --ink2:#43506A   --mute:#77839A
+    --buy:#1F63C4     --buy-bg:#DDE8FA --fade:#9A5B08    --fade-bg:#FBEBD5
+    --hot:#0F1724     --band:#E4E9F1   --zebra:#E7ECF4
+    --shadow:0 1px 2px rgba(15,23,36,.07),0 6px 20px rgba(15,23,36,.06)
+  Dark:
+    --ground:#0B1220  --panel:#141E30  --panel2:#101929  --rule:#26344B
+    --ink:#E8EDF6     --ink2:#AEBBD1   --mute:#7F8CA3
+    --buy:#6FA8FF     --buy-bg:#16294A --fade:#E9A94E    --fade-bg:#3A2A11
+    --hot:#FFFFFF     --band:#1B273C   --zebra:#18243A
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35)
+
+  Define the full light palette on bare :root. Redefine ONLY the tokens inside
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){...}} and again inside
+  :root[data-theme="dark"]{...}. Never put a color's only definition inside a media query.
+  Give body an explicit background from a token.
+  IMPORTANT: no red/green pairs anywhere. Blue means good, amber means caution. Every color
+  cue must also carry a text or shape label.
+
+LAYOUT, top to bottom
+  1. Title line: league name, format, draft date. A small status pill beside it showing the
+     live feed state: WAITING / LIVE + pick count / DRAFT OVER / RECONNECTING / FEED DOWN.
+  2. Status strip -- five equal tiles in a flex row that always fills the width with no
+     empty cell (use flex-wrap with flex:1 1 165px, NOT a fixed grid):
+       ON THE CLOCK   pick label + which team, e.g. "3.04" / "mikesteam"
+       YOUR NEXT PICK pick label + "N picks away"
+       BIGGEST HOLE   the starting slot I still need most
+       PROJ PTS/WK    my starting lineup total / number of weeks
+       WEEKLY SWING   sqrt of the sum of squared per-player weekly standard deviations
+  3. THE CALL -- one big card. Player name at ~34px, VOR and weekly swing beside it, then
+     position/team/bye/projection/ADP on one line, then one sentence saying why, then a
+     second line naming the best player available regardless of roster fit. If the two
+     differ, say so explicitly. If the player carries an injury or status note, print it.
+  4. THE ROOM -- horizontal scrolling tiles, one per upcoming pick through my next turn,
+     each showing pick label, team name, their unfilled starting slots as chips, their
+     current position counts, and their projected points per week. Highlight the team on
+     the clock and my own turn. Clicking a tile opens that team's full roster.
+  5. Tabs: PLAYER POOL / ROUND PLAN / MY TEAM / EVERY PICK / STATUS / RESEARCH / RULES
+
+  PLAYER POOL: every player, sortable by any column, filterable by position, a search box,
+    and a HIDE DRAFTED toggle. Columns: player, pos, bye, VOR, proj, platform proj, weekly
+    swing, ADP, survival %, source count, DRAFTED BY. Drafted players are struck through and
+    the drafted-by cell reads "TEAMNAME (3.04)". Zebra striping. My own players in blue.
+  ROUND PLAN: one card per pick I own. Rounds already played show WHO I ACTUALLY TOOK, not
+    a suggestion. Future rounds show the best available with the players the market is
+    expected to take beforehand REMOVED, plus a "then" line with the next three. No player
+    may headline two different rounds. Tap any card to expand the full tier at that pick.
+  MY TEAM: my starting lineup by slot with an empty marker for unfilled slots, my bench,
+    then a table of ALL teams in the league sorted by projected points per week, clickable
+    to open each roster in a modal.
+  EVERY PICK: the full draft log, sorted by OVERALL pick number, showing pick label, round,
+    team, player, position, projection, VOR.
+  STATUS: every flagged player -- injuries, suspensions, anything affecting availability --
+    sorted by VOR, with the full note and who drafted them.
+  RESEARCH: the entire CSV from step 4 rendered as a sortable table.
+  RULES: my league's scoring and roster settings, plainly listed.
+
+  SURVIVAL PROBABILITY: for each available player, the odds he lasts to my next pick. Rank
+  the available pool by ADP, let n = picks until my turn, and for the i-th ranked player
+  P(survives) = 1 - phi((n - (i+1)) / 7) using a normal CDF. Show as a percentage. This is
+  the single most useful derived number on the page.
+
+  RESPONSIVE: no horizontal page scroll at 375px. Wide tables scroll inside their own
+  overflow-x:auto container. Grid children need min-width:0 or long content pushes the page
+  sideways.
+
+=====================================================================
+STEP 7 -- LIVE UPDATING
+=====================================================================
+Architecture -- the page must NEVER call the Yahoo API directly:
+
+  Yahoo API  ->  poller (own process, every 5s)  ->  feed.json
+                                                        |
+                 local web server (python3 -m http.server) serves page + feed.json
+                                                        |
+                 page fetches feed.json every 6s, re-renders in place, no reload
+
+Why: Yahoo sends no permissive CORS headers, the OAuth token must never appear in a page
+anyone can view source on, and a bad API response should corrupt one small file rather than
+the ranked board.
+
+Rules:
+  - The board and projections are baked into the HTML ONCE before the draft. feed.json
+    carries ONLY who-took-whom. Keep them separate.
+  - Write feed.json atomically: write feed.json.tmp then os.replace(). Otherwise the browser
+    eventually reads a half-written file and throws mid-draft.
+  - Guard the poller so the page still works opened as a plain file:
+      if(!/^https?:$/.test(location.protocol)) return;
+  - Browsers throttle timers to ~1 per minute in a hidden tab. Also refresh on
+    visibilitychange and focus, or flipping back from the draft room shows a stale board.
+  - On a dead feed, keep the last good board on screen and show FEED DOWN. Never blank it.
+  - Give me ONE command that starts the poller and the server and prints the URL.
+
+=====================================================================
+STEP 8 -- FIFTEEN THINGS THAT WILL BREAK (these all actually happened)
+=====================================================================
+Most of these produce a confidently WRONG answer rather than an error. Handle every one and
+tell me you did.
+
+ 1. A name regex requiring two consecutive letters before a space silently drops A.J. Brown,
+    D.J. Moore, T.J. Hockenson. Test against every punctuation style.
+ 2. HTML table parsers glue team codes onto names: "KC Kenneth Walker III" becomes a second,
+    draftable copy of a rostered player. Strip a leading team abbreviation ONLY when what
+    remains still has two name tokens -- otherwise you rename KC Concepcion.
+ 3. Nicknames create duplicate players: Kenny/Kenneth Gainwell, Chig/Chigoziem Okonkwo,
+    Josh/Joshua Palmer. Merge on surname + position + team where one first name is a prefix
+    of the other or a known nickname. Do NOT merge on first initial: Bijan Robinson and
+    Brian Robinson Jr. are two different Atlanta running backs.
+ 4. Replacement-level filler players must have UNIQUE names. If they share a name the lineup
+    builder dedupes them and every marginal calculation is silently wrong.
+ 5. Defenses never match by name -- the feed says "Texans"/"HOU", projections say "Houston
+    Texans". Match defenses on team code and assert all 32 resolve.
+ 6. Print pick labels as round + IN-ROUND pick zero-padded ("4.06"), not round + overall
+    ("4.30"). And if anything SORTS by parsing that label, fix it too -- a log sorted that
+    way came out 1.01, 2.01, 3.01, 1.02.
+ 7. A CSS rule like .modal{display:flex} overrides the browser's [hidden]{display:none} and
+    the close button does nothing. Add .modal[hidden]{display:none}.
+ 8. An absolutely positioned tooltip inside an overflow-x:auto table gets clipped to the row
+    height. Use one fixed-position tooltip element on the body.
+ 9. Printing "current best available" on every round card names the same player in rounds 1
+    through 6. Remove expected market takes per pick AND carry a running exclusion set.
+10. Keep manual overrides in a separate namespace from feed state and rebuild feed state
+    from scratch every poll, so a corrected feed self-heals. Stale localStorage from testing
+    will otherwise follow you into the real draft.
+11. Do not make table rows clickable to mark players drafted. Far too easy to hit by accident
+    while scrolling on a clock. If the feed works, manual marking is not needed.
+12. Scan for AVAILABILITY, not just injuries -- suspensions, commissioner exempt list,
+    holdouts, trades, releases, depth-chart changes. Run each as its own search. No injury
+    search will ever surface a legal suspension.
+13. Flagging is not deciding. Show the status, never block the pick. An unavailable player is
+    still draftable as a stash and that call is MINE, not the tool's.
+14. Encode the player board columnar -- a key list plus flat rows rebuilt at load -- not as an
+    array of objects. Repeated key names were 57% of the payload. But profile first: if every
+    render is under 20ms, runtime is not your problem.
+15. Never patch generated code with a blind str.replace(). Assert the anchor exists before
+    replacing, then grep the built output to confirm. A silent no-op reports success and a
+    bad slice deletes render functions nobody notices for an hour.
+
+=====================================================================
+BEFORE YOU TELL ME IT IS DONE
+=====================================================================
+Run and show me the results of every one of these:
+  - Every player name on the board resolves to something the live feed can produce.
+    Zero unmatched. Print the count.
+  - All 32 defenses resolve by team code.
+  - No duplicate players anywhere on the board.
+  - Simulate a full draft through the real page: every roster slot filled, no player
+    recommended twice, no already-drafted player ever recommended, no console errors.
+  - Inject a fake feed.json with picks and confirm the live page updates WITHOUT a reload.
+  - Kill the server and confirm the page shows FEED DOWN and keeps the last good board.
+  - No horizontal page scroll at 375px, 768px and 1280px.
+  - Both light and dark mode legible, contrast 4.5:1 or better on every badge and label.
+  - Every name in injuries.json, nodraft.json and news.json exists on the board -- no typos.
+  - A flagged player still appears in rankings and can still be recommended.
+  - The STATUS tab shows one row per player with no duplicates.
+  - Hovering a status pill shows the full note, not a clipped sliver.
+  - The CSV opens in Excel with the right column count and no mojibake.
+
+Then give me the one command to start it, and a printable one-page cheat sheet of my
+draft plan by round.
+</pre>
 </div>
+<p class="cap">If the Copy button does not work in your browser, click into the block, select all,
+and copy.</p>
 
-<h3>Kickers and defenses</h3>
-<p>Score these separately from a distance-bucketed stat line. If your league pays 5 points for a
-50-plus yard field goal and 3 for anything shorter, a big-legged kicker on a stalling offense is
-worth real points over a volume kicker on a touchdown offense. That never shows up in a raw total.</p>
-
-<h2 id="vor"><span class="n">05</span>The VOR model</h2>
-<p class="lead">This is the part that makes the tool smarter than the draft room. Raw projected
-points are a trap.</p>
-<p>In a superflex league a quarterback might project 380 and a receiver 270. The quarterback looks
-110 points better. He is not, because the quarterback you can get four rounds later projects 335,
-and the receiver you can get four rounds later projects 208.</p>
-<div class="scroll"><table>
-<thead><tr><th>Player</th><th class="num">Projected</th><th class="num">Replacement</th><th class="num">VOR</th></tr></thead>
-<tbody>
-<tr><td><b>Quarterback</b></td><td class="num">383.8</td><td class="num">334.9</td><td class="num"><b>48.9</b></td></tr>
-<tr><td><b>Receiver</b></td><td class="num">270.4</td><td class="num">208.1</td><td class="num"><b>62.3</b></td></tr>
-</tbody></table></div>
-<p>The receiver is the better pick by 13 points, and the raw numbers say the opposite by 113. Every
-recommendation runs on VOR, never on projected points.</p>
-
-<h3>Deriving replacement level, correctly</h3>
-<p>Do not use a rule of thumb. Compute it from your league's actual starting slots:</p>
-<ol class="steps">
-<li><b>Count every starting skill slot in the league</b>
-Teams times slots. Eight teams starting QB, 2RB, 2WR, TE, 2FLEX, SUPERFLEX is 72 skill slots.</li>
-<li><b>Fill them greedily</b>
-Walk the projection board top down, assigning each player to a slot he is eligible for, until all
-72 are full.</li>
-<li><b>Replacement is the best player left over</b>
-Per position. That produced QB17, RB24, WR26, TE9 in this league. The flex resolved to zero tight
-ends and the superflex absorbed eight quarterbacks, which is why tight end replacement sat so high.</li>
-</ol>
-<p>Recompute this for your league. The numbers move a lot with roster size and format.</p>
-
-<h3>Marginal value, not raw VOR</h3>
-<div class="warn"><span class="t">The bug that makes every quarterback look elite</span>
-<p>Scoring a candidate on raw VOR means an empty starting slot is worth the player's whole
-projection. With no quarterback rostered, every quarterback scores about +400 and the tool
-recommends nothing else. Score the <b>gain over a replacement-level filler</b> instead: build the
-lineup with nine dummy players at replacement level, then measure how much the real candidate
-improves it.</p></div>
-<pre><code>FILL = [replacement_player(pos) for pos in slots]   # unique names, see trap 4
-
-def marginal(player, roster):
-    before = lineup(roster + FILL).total
-    after  = lineup(roster + [player] + FILL).total
-    return after - before</code></pre>
-
-<h2 id="ui"><span class="n">06</span>What goes on screen</h2>
-<p class="lead">You have sixty seconds on the clock. Everything is built for a single glance.</p>
-<div class="card">
-<b>The call.</b> One name, huge, with VOR, weekly swing, the reason in one sentence, and a second
-line naming the best player available regardless of fit. Two numbers to compare, never a list to
-read.
-</div>
-<div class="card">
-<b>Status strip.</b> Five tiles: who is on the clock right now and which team, your next pick and how
-many picks away, your biggest roster hole, projected points per week, weekly swing. Nothing else
-earns a tile.
-</div>
-<div class="card">
-<b>The room.</b> Horizontal tiles for the teams picking before you, each showing their unfilled
-starting slots and their points per week. This is how you predict what goes next.
-</div>
-<div class="card">
-<b>Player pool.</b> Every player, sortable, filterable by position, with all source projections
-side by side, VOR, weekly swing, ADP, survival probability, and a drafted-by column that fills in
-live as picks land.
-</div>
-<div class="card">
-<b>Round plan.</b> One card per pick you own. Rounds already played show who you took. Future rounds
-show who is likely to be there, with the market's expected takes removed. Tap for the full tier.
-</div>
-<div class="card">
-<b>Status tab.</b> Every flagged player: injuries, suspensions, and anything that changes
-availability. Sorted by VOR so the ones that matter are at the top.
-</div>
-
-<h3>Survival probability</h3>
-<p>For each available player, the odds he lasts until your next pick. Rank the pool by ADP, count
-the picks between now and your turn, and run it through a normal CDF. A player with an 80 percent
-chance of surviving is one you can wait on; a 20 percent one you take now. This is the single most
-useful derived number on the page.</p>
-
-<h2 id="live"><span class="n">07</span>Making it live</h2>
-<p class="lead">Two browser behaviours will bite. Both are cheap to handle and expensive to discover
-on draft night.</p>
-
-<div class="warn"><span class="t">Hidden tabs get throttled to one timer per minute</span>
-<p>Flip to the draft room and back and your board is up to sixty seconds stale, silently. Fire an
-extra refresh on <code>visibilitychange</code> and <code>focus</code> so returning to the tab
-updates instantly.</p></div>
-
-<pre><code>setInterval(tick, 6000);
-document.addEventListener('visibilitychange', () =&gt; { if(!document.hidden) tick(); });
-window.addEventListener('focus', tick);</code></pre>
-
-<div class="warn"><span class="t">A published page cannot reach an external API</span>
-<p>If you host the war room anywhere with a content security policy, external fetches are blocked
-outright. That is why the poller writes a <b>same-origin</b> file. Guard the poller so the page
-still works as a static file:</p></div>
-
-<pre><code>if(!/^https?:$/.test(location.protocol)) return;   // static file, no polling</code></pre>
-
-<h3>Show the feed's real state</h3>
-<p>A badge reading <code>waiting</code>, <code>live &middot; 24 picks</code>, <code>reconnecting</code>
-or <code>feed down</code>. When the feed dies, keep the last good board on screen rather than
-blanking it. Mid-draft you need to know instantly whether you are looking at live data or a corpse.</p>
-
-<h2 id="day"><span class="n">08</span>Draft day</h2>
-<ol class="steps">
-<li><b>Start it early</b>
-One command that launches the poller and the server and prints the URL. Have it running before the
-first pick, not at the first pick.</li>
-<li><b>Split screen</b>
-Draft room on one side, war room on the other, both visible. Both visible means no timer
-throttling.</li>
-<li><b>Verify name matching before it matters</b>
-Assert that every player on your board resolves to a name the feed can produce. One unmatched name
-is a player who never gets crossed off, and you will not notice until you draft someone who is
-already gone.</li>
-<li><b>Keep a revert copy</b>
-Copy the working build before every draft-day change. When something breaks with four minutes to
-your pick, you restore, you do not debug.</li>
-</ol>
-
-<h2 id="traps"><span class="n">09</span>Fifteen traps</h2>
-<p class="lead">Every one of these actually happened. Most produced a confidently wrong answer rather
-than an error, which is what makes them dangerous.</p>
-
-<div class="card">
-<div class="trap"><div class="h">1. Names with initials get silently dropped</div>
-<p>A regex requiring two consecutive letters before a space discards A.J. Brown, D.J. Moore and
-T.J. Hockenson. One of them was a keeper candidate and was missing from three of four sources for
-days. Test your name parser against every punctuation style you can think of.</p></div>
-
-<div class="trap"><div class="h">2. Team codes glued onto names</div>
-<p>An HTML table parser produced "KC Kenneth Walker III" as a separate player from "Kenneth Walker."
-The duplicate showed as available while the real player was rostered. Strip a leading team
-abbreviation, but only when what remains still has two name tokens, or you will rename a player
-whose actual first name is KC.</p></div>
-
-<div class="trap"><div class="h">3. Nicknames create duplicate players</div>
-<p>Kenny and Kenneth Gainwell. Chig and Chigoziem Okonkwo. Josh and Joshua Palmer. All appeared
-twice, and a simulation drafted the same man in two rounds. Merge on surname plus position plus
-team, where one first name is a prefix of the other or a known nickname. Do not merge on initials:
-Bijan and Brian Robinson are two different Atlanta running backs.</p></div>
-
-<div class="trap"><div class="h">4. Identical filler names collapse</div>
-<p>The replacement-level dummy players were all named the same thing. The lineup builder deduped by
-name, so only one was ever placed, and every marginal calculation was wrong. Give them unique
-names.</p></div>
-
-<div class="trap"><div class="h">5. Defenses never match</div>
-<p>The feed calls it "Texans" or "HOU"; the projection source calls it "Houston Texans." A drafted
-defense silently stays on the board. Match defenses on team code, not name, and assert all 32
-resolve.</p></div>
-
-<div class="trap"><div class="h">6. Pick labels versus overall pick number</div>
-<p>Printing round plus overall pick gives "4.30" instead of "4.06". Worse, a table sorted by parsing
-that label reordered the entire pick log into 1.01, 2.01, 3.01, 1.02. A format someone parses is an
-API: grep every consumer before changing one.</p></div>
-
-<div class="trap"><div class="h">7. CSS display beats the hidden attribute</div>
-<p><code>.modal{display:flex}</code> overrides the browser's <code>[hidden]{display:none}</code>, so
-the close button did nothing and an empty overlay sat on the page from load. Add
-<code>.modal[hidden]{display:none}</code>. And test on computed style, not on the property you just
-set: the property was flipping correctly the whole time while the screen stayed broken.</p></div>
-
-<div class="trap"><div class="h">8. Tooltips clipped by scroll containers</div>
-<p>An absolutely positioned tooltip inside a table with <code>overflow-x:auto</code> gets clipped to
-the row height. Render one fixed-position tooltip element on the body instead.</p></div>
-
-<div class="trap"><div class="h">9. The round plan shows the same player every round</div>
-<p>Printing current best-available on every round card names the same man in rounds one through six.
-Two fixes: remove the players the market takes before each pick, and carry a running exclusion set
-so two of your own picks never headline the same player.</p></div>
-
-<div class="trap"><div class="h">10. Stale local storage</div>
-<p>A player marked drafted during testing persisted into the real draft and skewed the pick math.
-Keep manual overrides in a separate namespace from feed state, and rebuild feed state from scratch
-on every poll so a corrected feed self-heals.</p></div>
-
-<div class="trap"><div class="h">11. Row clicks that mark players drafted</div>
-<p>Far too easy to trigger by accident while scrolling on a clock. If the feed is reliable, do not
-build manual marking at all.</p></div>
-
-<div class="trap"><div class="h">12. Injury scans miss non-injury absences</div>
-<p>A running back landed on the commissioner exempt list the morning of the draft and was still the
-twelfth-best available player on the board. No injury search finds a legal suspension. Sweep
-suspensions, exempt lists, holdouts, trades, releases and depth-chart changes as separate
-searches.</p></div>
-
-<div class="trap"><div class="h">13. Flagging is not deciding</div>
-<p>Having found that player, the tool struck him out and refused to recommend him. That is the
-tool overriding the manager. He was still draftable and still a defensible late stash. Surface the
-status, never enforce it.</p></div>
-
-<div class="trap"><div class="h">14. Big payloads make the page feel frozen</div>
-<p>290 players as an array of objects was 94KB of repeated key names. Columnar encoding, a key list
-plus flat rows rebuilt at load, cut the payload by 57 percent. Profile before optimising: every
-render was under 20ms, so runtime was never the problem.</p></div>
-
-<div class="trap"><div class="h">15. Blind string replacement in build scripts</div>
-<p>The most expensive one. Patching generated code with <code>str.replace()</code> that matches
-nothing returns success and reports a fix that never happened. Assert the anchor exists before
-replacing, then grep the built output to confirm. One bad slice deleted two render functions and
-nobody noticed for an hour.</p></div>
-</div>
-
-<h2 id="files"><span class="n">10</span>File manifest</h2>
-<p class="lead">Ten files, about 1,300 lines of Python plus one generated HTML page.</p>
-<div class="scroll"><table>
-<thead><tr><th>File</th><th class="num">Lines</th><th>Does</th></tr></thead>
-<tbody>
-<tr><td><code>build.py</code></td><td class="num">147</td><td>Parse every projection source, rescore from raw stats, merge and dedupe</td></tr>
-<tr><td><code>vor.py</code></td><td class="num">82</td><td>Fill all starting slots, derive replacement level, emit the ranked board</td></tr>
-<tr><td><code>payload.py</code></td><td class="num">127</td><td>Build the page payload: players, keepers, plan, rules, columnar encoding</td></tr>
-<tr><td><code>feed.py</code></td><td class="num">47</td><td>One API poll, write <code>feed.json</code> atomically. Never touches the board</td></tr>
-<tr><td><code>mkwar.py</code></td><td class="num">867</td><td>Generate the war room HTML with the payload inlined</td></tr>
-<tr><td><code>start.sh</code></td><td class="num">20</td><td>Launch the poll loop and the server, print the URL</td></tr>
-<tr><td><code>injuries.json</code></td><td class="num">-</td><td>Hand-maintained status notes, merged into the payload</td></tr>
-<tr><td><code>export.py</code></td><td class="num">60</td><td>CSV and spreadsheet export of the full board</td></tr>
-</tbody></table></div>
-
-<div class="note"><span class="t">Where to start</span>
-<p>Get OAuth working and save one real draft-results response. Then build the projection merge and
-the VOR board, which is where the actual edge lives and which needs no live data at all. The live
-feed is the last piece and the easiest.</p></div>
-
-<h3>Useful libraries</h3>
-<ul>
-<li><a href="https://github.com/uberfastman/yfpy">yfpy</a> &mdash; handles the OAuth handshake and token refresh, broad endpoint coverage</li>
-<li><a href="https://yahoo-fantasy-api.readthedocs.io/en/latest/yahoo_fantasy_api.html">yahoo-fantasy-api</a> &mdash; has a draft-results method that returns picks made so far during a live draft</li>
-</ul>
-
+<script>
+document.getElementById('copy').addEventListener('click',async()=>{
+  const b=document.getElementById('copy'), t=document.getElementById('p').textContent;
+  try{ await navigator.clipboard.writeText(t); b.textContent='Copied'; }
+  catch(e){
+    const r=document.createRange(); r.selectNodeContents(document.getElementById('p'));
+    const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+    b.textContent='Select all, then copy';
+  }
+  setTimeout(()=>{b.textContent='Copy';},2600);
+});
+</script>
 </div>
 
 </body></html>
