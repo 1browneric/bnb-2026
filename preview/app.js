@@ -12,7 +12,9 @@ const ESPN='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboar
 const M=C.money, WKPAY=M.weekly_pool, POT=M.entry*M.teams;
 const SLOTS=C.slots;
 const SLAB={SUPER_FLEX:'SFLX',DEF:'DST'};
-const ELIG={QB:['QB'],RB:['RB'],WR:['WR'],TE:['TE'],K:['K'],DEF:['DEF'],
+// Keys are Sleeper's roster_positions; values are the positions players.js
+// reports. A defense sits in a slot called DEF and reports its position as DST.
+const ELIG={QB:['QB'],RB:['RB'],WR:['WR'],TE:['TE'],K:['K'],DEF:['DST'],
   FLEX:['RB','WR','TE'],SUPER_FLEX:['QB','RB','WR','TE'],REC_FLEX:['WR','TE']};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const nm=id=>(PL[id]&&PL[id][0])||id;
@@ -267,6 +269,25 @@ function standings(D){
     .sort((a,b)=>(b.w-a.w)||(b.pf-a.pf));
   return {rec,rows,weekly};
 }
+// The highest-scoring legal lineup this roster could have started.
+// Eligibility here is laminar - QB and RB/WR/TE sit inside FLEX, FLEX sits
+// inside SUPER_FLEX, K and DST overlap nothing - so filling the most
+// restrictive slot first with its best available man is provably optimal.
+function bestLineup(ids,pts,slots){
+  const use=(slots||SLOTS).slice()
+    .sort((a,b)=>(ELIG[a]||['RB','WR','TE']).length-(ELIG[b]||['RB','WR','TE']).length);
+  const used=new Set(); const picks=[]; let total=0;
+  use.forEach(sl=>{
+    const ok=ELIG[sl]||['RB','WR','TE'];
+    let best=null;
+    ids.forEach(id=>{
+      if(!id||used.has(id)||!ok.includes(pos(id))) return;
+      if(best===null||(pts[id]||0)>(pts[best]||0)) best=id;
+    });
+    if(best!==null){ used.add(best); total+=pts[best]||0; picks.push([sl,best]); }
+  });
+  return {total,picks,used};
+}
 function fillSlots(ids,slots){
   const use=slots||SLOTS, out=[];
   const used=new Set();
@@ -278,7 +299,7 @@ function fillSlots(ids,slots){
   });
   return {out,used};
 }
-window.BNB={C,esc,nm,pos,tm,inj,f1,j,API,LG,load,pair,standings,fillSlots,SLOTS,SLAB,WKPAY,POT,M,
+window.BNB={C,esc,nm,pos,tm,inj,f1,j,API,LG,load,pair,standings,fillSlots,bestLineup,SLOTS,SLAB,WKPAY,POT,M,
   TEAMS,paint,logo,head,avatar,lfb,hfb,games,projections,ctx,slotState,summarize,winProb,gameLine,kick,
   err(el,msg){el.innerHTML='<div class="empty"><strong>'+esc(msg||'Cannot reach Sleeper')+
     '</strong>This page reads live from Sleeper. Refresh in a moment.</div>';},

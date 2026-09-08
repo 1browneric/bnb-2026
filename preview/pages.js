@@ -154,43 +154,131 @@ function gameChip(g){
     +'</div>';
 }
 
-/* ---------- weekly recap ---------- */
+/* ---------- weekly recap ----------
+   Written from the week's own numbers. Every line is traceable to something
+   printed on this page, and the language scales to the margin: a nine point
+   win is not a beating. */
+const VERB=m=>m<5?'edged':m<15?'beat':m<30?'handled':'buried';
+const SKILL=['QB','RB','WR','TE'];
+
+// What each team started against the best legal lineup it was holding.
+function benchReport(D,games){
+  const out=[];
+  games.forEach(g=>{
+    [[g.ea,g.a],[g.eb,g.b]].forEach(pairT=>{
+      const e=pairT[0], t=pairT[1];
+      const pp=e.players_points||{};
+      const ids=(e.players||[]).filter(Boolean);
+      const st=(e.starters||[]).filter(id=>id&&id!=='0');
+      const act=st.reduce((s,id)=>s+(pp[id]||0),0);
+      const best=B.bestLineup(ids,pp,D.slots).total;
+      const bench=ids.filter(id=>st.indexOf(id)<0);
+      let tb=null;
+      bench.forEach(id=>{ if(tb===null||(pp[id]||0)>(pp[tb]||0)) tb=id; });
+      out.push({t:t,act:act,best:best,
+        left:Math.max(0,round1(best)-round1(act))/10,   // off the printed numbers
+        tb:tb,tbp:tb?(pp[tb]||0):0});
+    });
+  });
+  return out.sort((a,b)=>b.left-a.left);
+}
+// Season lines: the money, the leader, and any streak worth naming.
+function seasonLines(D,S){
+  const out=[];
+  const earn={}; S.rows.forEach(r=>{ earn[r.t]=r.high*B.WKPAY; });
+  const paid=S.rows.reduce((a,r)=>a+r.high*B.WKPAY,0);
+  const won=Object.keys(earn).filter(t=>earn[t]>0).sort((a,b)=>earn[b]-earn[a]);
+  if(won.length) out.push(['Money so far',
+    won.map(t=>t+' $'+earn[t]).join(', ')+'. $'+paid+' of $'+(B.WKPAY*B.C.regWeeks)+' paid out']);
+  const seq={}; Object.keys(S.rec).forEach(t=>{ seq[t]=[]; });
+  S.weekly.forEach(w=>w.games.forEach(g=>{
+    if(round1(g.pa)===round1(g.pb)){ seq[g.a].push('T'); seq[g.b].push('T'); return; }
+    const up=g.pa>g.pb?g.a:g.b, dn=g.pa>g.pb?g.b:g.a;
+    if(seq[up]) seq[up].push('W');
+    if(seq[dn]) seq[dn].push('L');
+  }));
+  const run=t=>{
+    const s=seq[t]||[]; if(s.length<3) return null;
+    const c=s[s.length-1]; let n=0;
+    for(let i=s.length-1;i>=0&&s[i]===c;i--) n++;
+    return (n>=3&&c!=='T')?[c,n]:null;
+  };
+  const lead=S.rows[0];
+  if(lead){
+    // the leader's own streak rides in his clause; nobody is named twice
+    const lr=run(lead.t);
+    const runs=Object.keys(seq).filter(t=>t!==lead.t).map(t=>[t,run(t)]).filter(r=>r[1])
+      .map(r=>r[0]+' has '+(r[1][0]==='W'?'won':'lost')+' '+r[1][1]+' straight');
+    out.push(['Standings',lead.t+' leads at '+lead.w+'-'+lead.l+(lead.tie?'-'+lead.tie:'')
+      +' on '+f1(lead.pf)+' points'
+      +(lr?', '+(lr[0]==='W'?'winning':'losing')+' the last '+lr[1]:'')
+      +(runs.length?'. '+runs.join(', '):'')]);
+  }
+  return out;
+}
 function recap(D,S){
   if(!S.weekly.length) return '';
   const x=S.weekly[S.weekly.length-1];
-  const gs=x.games.slice().sort((a,b)=>marg(b.pa,b.pb)-marg(a.pa,a.pb));
-  const blow=gs[0], close=gs[gs.length-1];
-  const sc=[]; x.games.forEach(g=>{sc.push([g.pa,g.a]);sc.push([g.pb,g.b]);});
+  const gs=x.games;
+  if(!gs.length) return '';
+  const mar=g=>marg(g.pa,g.pb);
+  const won=g=>g.pa>g.pb?[g.a,g.pa,g.b,g.pb]:[g.b,g.pb,g.a,g.pa];
+  const spread=gs.slice().sort((a,b)=>mar(b)-mar(a));
+  const blow=spread[0], close=spread[spread.length-1];
+  const bm=mar(blow), cm=mar(close), bw=won(blow), cw=won(close);
+  const sc=[]; gs.forEach(g=>{ sc.push([g.pa,g.a]); sc.push([g.pb,g.b]); });
   sc.sort((a,b)=>b[0]-a[0]);
   const hi=sc[0], lo=sc[sc.length-1];
-  const w=g=>g.pa>g.pb?[g.a,g.pa,g.b,g.pb]:[g.b,g.pb,g.a,g.pa];
-  const bw=w(blow), cw=w(close), bm=marg(blow.pa,blow.pb), cm=marg(close.pa,close.pb);
+
+  // every starter in the league this week, best first
   const all=[];
-  x.games.forEach(g=>{
-    [[g.ea,g.a],[g.eb,g.b]].forEach(([e,t])=>{
-      (e.starters||[]).filter(Boolean).forEach(id=>all.push([(e.players_points||{})[id]||0,B.nm(id),t]));});
-  });
+  gs.forEach(g=>[[g.ea,g.a],[g.eb,g.b]].forEach(pairT=>{
+    const e=pairT[0], t=pairT[1], pp=e.players_points||{};
+    (e.starters||[]).filter(id=>id&&id!=='0').forEach(id=>all.push([pp[id]||0,id,t]));
+  }));
   all.sort((a,b)=>b[0]-a[0]);
-  const best=all[0], duds=all.filter(p=>p[0]<4).slice(-3);
-  const lines=[['High score',hi[1]+' at '+f1(hi[0])+', worth $'+B.WKPAY],
-    ['Low score',lo[1]+' at '+f1(lo[0])],
-    ['Blowout',bw[0]+' over '+bw[2]+' by '+f1(bm)],
-    ['Closest',cw[0]+' over '+cw[2]+' by '+f1(cm)]];
-  if(best) lines.push(['Top scorer',best[1]+' ('+best[2]+') with '+f1(best[0])]);
-  if(duds.length) lines.push(['Started and forgot to score',
-    duds.map(d=>d[1]+' '+f1(d[0])).join(', ')]);
-  const rows=x.games.slice().sort((a,b)=>Math.max(b.pa,b.pb)-Math.max(a.pa,a.pb)).map(g=>{
-    const q=w(g);
+  const best=all[0];
+  const busts=all.filter(p=>SKILL.indexOf(B.pos(p[1]))>=0&&p[0]<5).slice(-3).reverse();
+
+  let lead='<b>'+esc(hi[1])+'</b> put up '+f1(hi[0])+' to take the weekly money.';
+  if(bm<5) lead+=' Nobody won by more than '+f1(bm)+' all week, and the widest of them was '
+    +esc(bw[0])+' over '+esc(bw[2])+'.';
+  else {
+    lead+=' '+esc(bw[0])+' '+VERB(bm)+' '+esc(bw[2])+' by '+f1(bm)+', the widest of the week';
+    // "edged" only while it was actually close; a 14 point closest game is not edged
+    lead+=(gs.length>1&&close!==blow)
+      ?', and '+esc(cw[0])+' '+(cm<8?'edged':VERB(cm))+' '+esc(cw[2])+' by '+f1(cm)+'.':'.';
+  }
+
+  const board=gs.slice().sort((a,b)=>Math.max(b.pa,b.pb)-Math.max(a.pa,a.pb)).map(g=>{
+    const q=won(g);
     return '<tr><td class="l tm">'+esc(q[0])+'</td><td class="num b">'+f1(q[1])+'</td>'
-      +'<td class="num dim">'+f1(q[3])+'</td><td class="l">'+esc(q[2])+'</td>'
-      +'<td class="num">'+f1(marg(g.pa,g.pb))+'</td></tr>';}).join('');
+      +'<td class="num dim">'+f1(q[3])+'</td><td class="l">'+esc(q[2])+'</td></tr>';}).join('');
+
+  const opt=benchReport(D,gs);
+  const bench='<div class="scroll"><table class="recap"><thead><tr><th class="l">Team</th>'
+    +'<th class="num">Started</th><th class="num">Best</th><th class="num">Left</th>'
+    +'</tr></thead><tbody>'+opt.map(o=>'<tr><td class="l tm">'+esc(o.t)+'</td>'
+    +'<td class="num">'+f1(o.act)+'</td><td class="num dim">'+f1(o.best)+'</td>'
+    +'<td class="num b">'+f1(o.left)+'</td></tr>').join('')+'</tbody></table></div>';
+
+  const lines=[['High score',hi[1]+' at '+f1(hi[0])+', worth $'+B.WKPAY],
+    ['Low score',lo[1]+' at '+f1(lo[0])]];
+  if(best) lines.push(['Top scorer',B.nm(best[1])+' ('+best[2]+') with '+f1(best[0])]);
+  const worst=opt[0];
+  if(worst&&worst.left>0) lines.push(['Left on the bench',
+    worst.t+' left '+f1(worst.left)+(worst.tb?', with '+B.nm(worst.tb)+' scoring '
+      +f1(worst.tbp)+' from the bench':'')]);
+  if(busts.length) lines.push(['Started and forgot to score',
+    busts.map(b=>B.nm(b[1])+' '+f1(b[0])+' ('+b[2]+')').join(', ')]);
+  seasonLines(D,S).forEach(l=>lines.push(l));
+
   return '<h2>Week '+x.week+' recap</h2><div class="card">'
-    +'<p class="rlead">'+esc(hi[1])+' put up '+f1(hi[0])+' to take the weekly money. '
-    +esc(bw[0])+' handed '+esc(bw[2])+' the worst beating of the week by '+f1(bm)+', while '
-    +esc(cw[0])+' edged '+esc(cw[2])+' by '+f1(cm)+'.</p>'
+    +'<p class="rlead">'+lead+'</p>'
     +'<div class="scroll"><table class="recap"><thead><tr><th class="l">Winner</th>'
     +'<th class="num">Score</th><th class="num">Opp</th><th class="l">Loser</th>'
-    +'<th class="num">Margin</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
+    +'</tr></thead><tbody>'+board+'</tbody></table></div>'
+    +'<h4 class="mt">What everyone left on the bench</h4>'+bench
     +'<div class="rlines">'+lines.map(l=>'<div class="rl"><span class="rll">'+esc(l[0])
       +'</span><span class="rlv">'+esc(l[1])+'</span></div>').join('')+'</div></div>';
 }
