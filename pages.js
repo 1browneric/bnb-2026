@@ -88,9 +88,10 @@ function matchCard(D,g,ctx,live){
     const A=B.summarize((g.ea.starters||[]).filter(x=>x&&x!=='0'),g.ea.players_points||{},ctx);
     const Bs=B.summarize((g.eb.starters||[]).filter(x=>x&&x!=='0'),g.eb.players_points||{},ctx);
     const anyLive=A.live+Bs.live>0;
+    // A tag only when it carries something: LIVE, or FINAL. Nothing before
+    // kickoff - two zeroes already say the week has not started.
     if(anyLive) mid='<span class="tag live">Live</span>';
     else if(A.yet+Bs.yet===0) mid='<span class="tag final">Final</span>';
-    else if(A.done+Bs.done===0) mid='<span class="tag pre">Pregame</span>';
     const wp=B.winProb(A,Bs);
     // Nothing left to play: the margin is the story, not a probability.
     if(A.yet+Bs.yet===0) return card(D,g,mid,margin(g));
