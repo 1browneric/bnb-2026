@@ -97,8 +97,10 @@ let GCACHE=null, GAT=0;
 async function games(){
   if(GCACHE && Date.now()-GAT<20000) return GCACHE;
   const byTeam=new Map(), list=[];
+  let week=null;
   try{
     const d=await j(ESPN);
+    week=d.week&&d.week.number||null;
     (d.events||[]).forEach(ev=>{
       const c=(ev.competitions||[])[0]; if(!c) return;
       const st=c.status||{}, t=st.type||{};
@@ -119,7 +121,8 @@ async function games(){
       const g={id:ev.id,kickoff:ev.date,state:t.state,detail:t.shortDetail||'',period,clock,elapsed,
         home:H,away:A,homeScore:Number(home.score||0),awayScore:Number(away.score||0),
         possession:s.possession?(s.possession===home.id?H:A):null,
-        redzone:!!s.isRedZone,down:s.downDistanceText||''};
+        redzone:!!s.isRedZone,down:s.downDistanceText||'',
+        broadcast:(((c.broadcasts||[])[0]||{}).names||[])[0]||''};
       list.push(g);
       [[H,A,true],[A,H,false]].forEach(function(x){
         const me=x[0],op=x[1],isHome=x[2];
@@ -131,7 +134,7 @@ async function games(){
     });
   }catch(e){ /* the scoreboard is decoration; points still render without it */ }
   list.sort((a,b)=>new Date(a.kickoff)-new Date(b.kickoff));
-  GCACHE={byTeam,list}; GAT=Date.now();
+  GCACHE={byTeam,list,week}; GAT=Date.now();
   return GCACHE;
 }
 const ALIAS={WSH:'WAS',JAC:'JAX',LA:'LAR',OAK:'LV',SD:'LAC',STL:'LAR'};
@@ -213,6 +216,9 @@ function summarize(ids,pp,ctx){
   out.yet=out.live+out.left;
   return out;
 }
+// Kickoff, in Central whatever zone the reader's phone is in.
+const kick=iso=>new Date(iso).toLocaleString('en-US',
+  {weekday:'short',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})+' CT';
 // One short line of game context for a player: who, when, or the live clock.
 function gameLine(id,pts,ctx){
   if(!id) return '';
@@ -269,7 +275,7 @@ function fillSlots(ids,slots){
   return {out,used};
 }
 window.BNB={C,esc,nm,pos,tm,inj,f1,j,API,LG,load,pair,standings,fillSlots,SLOTS,SLAB,WKPAY,POT,M,
-  TEAMS,paint,logo,head,avatar,lfb,hfb,games,projections,ctx,slotState,summarize,winProb,gameLine,
+  TEAMS,paint,logo,head,avatar,lfb,hfb,games,projections,ctx,slotState,summarize,winProb,gameLine,kick,
   err(el,msg){el.innerHTML='<div class="empty"><strong>'+esc(msg||'Cannot reach Sleeper')+
     '</strong>This page reads live from Sleeper. Refresh in a moment.</div>';},
   wait(el){el.innerHTML='<div class="empty"><strong>Loading</strong>Pulling the latest from Sleeper.</div>';}

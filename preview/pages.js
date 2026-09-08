@@ -125,6 +125,35 @@ function rec(D,name){
   return '<span class="rec">'+r.w+'-'+r.l+(r.tie?'-'+r.tie:'')+'</span>';
 }
 
+/* ---------- the NFL slate ----------
+   Every game on the board: logos, score, clock, who has the ball and whether
+   they are in the red zone. Live games first, then what has not kicked off,
+   then the finals. */
+function gameChip(g){
+  const cls=['game'];
+  if(g.state==='in') cls.push('live');
+  if(g.state==='in'&&g.redzone) cls.push('rz');
+  const side=(ab,score,other)=>{
+    const trail=g.state!=='pre'&&score<other;
+    const ball=g.state==='in'&&g.possession===ab
+      ? '<span class="poss">'+(g.redzone?'RED ZONE':'BALL')+'</span>' : '';
+    return '<div class="t'+(trail?' trail':'')+'"><span class="ab">'+B.logo(ab,'lg')
+      +'<span>'+esc(ab)+'</span>'+ball+'</span>'
+      +'<span class="s">'+(g.state==='pre'?'':score)+'</span></div>';
+  };
+  let st;
+  if(g.state==='in') st='<span class="tag live">Live</span><span class="clk">'+esc(g.detail)+'</span>';
+  else if(g.state==='post') st='<span class="tag final">Final</span>';
+  else st='<span>'+esc(B.kick(g.kickoff))+'</span>'
+    +(g.broadcast?'<span class="tv">'+esc(g.broadcast)+'</span>':'');
+  return '<div class="'+cls.join(' ')+'" style="'+B.paint(g.away)+';--to:'
+    +((B.TEAMS[g.home]||{}).p||'#777')+'">'
+    +side(g.away,g.awayScore,g.homeScore)+side(g.home,g.homeScore,g.awayScore)
+    +'<div class="st">'+st+'</div>'
+    +(g.state==='in'&&g.down?'<div class="st sub">'+esc(g.down)+'</div>':'')
+    +'</div>';
+}
+
 /* ---------- weekly recap ---------- */
 function recap(D,S){
   if(!S.weekly.length) return '';
@@ -178,6 +207,23 @@ function EMPTY(D){
 
 window.RENDER={
  _card:matchCard,
+ async nfl(){
+  const el=$('#nflWrap');
+  try{
+    const g=await B.games();
+    const list=g.list||[];
+    if(!list.length){ el.innerHTML='<div class="empty"><strong>No games on the board</strong>'
+      +'The NFL scoreboard is empty right now.</div>'; return; }
+    const live=list.filter(x=>x.state==='in').length;
+    const done=list.filter(x=>x.state==='post').length;
+    const rank=x=>x.state==='in'?0:x.state==='pre'?1:2;
+    const sorted=list.slice().sort((a,b)=>rank(a)-rank(b)||new Date(a.kickoff)-new Date(b.kickoff));
+    el.innerHTML='<div class="livehead"><span class="lhl">'
+      +'<span class="pill'+(live?' live':'')+'">'+(g.week?'Week '+g.week:'This week')+'</span>'
+      +'<span class="lhr">'+live+' live, '+done+' final, '+list.length+' games</span></span></div>'
+      +'<div class="games">'+sorted.map(gameChip).join('')+'</div>';
+  }catch(e){ B.err(el,'Cannot reach the NFL scoreboard'); }
+ },
  async home(){
   const el=$('#standWrap'), rl=$('#recapWrap');
   try{
