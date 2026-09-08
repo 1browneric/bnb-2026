@@ -1,61 +1,140 @@
-/* Page renderers. Each page calls the one it needs; everything is live. */
+/* Page renderers. Each page calls the one it needs; every number is live. */
 (function(){
 const B=window.BNB, esc=B.esc, f1=B.f1;
 const $=s=>document.querySelector(s);
+const round1=v=>Math.round(v*10);                 // margins come off the numbers
+const marg=(a,b)=>Math.abs(round1(a)-round1(b))/10;   // the reader can actually see
 
-function standTable(rows,limit){
+/* ---------- standings ---------- */
+function standTable(D,rows,limit){
   const r=limit?rows.slice(0,limit):rows;
   return '<div class="scroll"><table class="stand"><thead><tr><th></th><th>Team</th>'
    +'<th class="num">Record</th><th class="num">PF</th><th class="num">PA</th>'
    +'<th class="num">Avg</th><th class="num">Won</th></tr></thead><tbody>'
-   +r.map((x,i)=>'<tr><td class="rk">'+(i+1)+'</td><td class="tm">'+esc(x.t)+'</td>'
+   +r.map((x,i)=>'<tr><td class="rk">'+(i+1)+'</td>'
+     +'<td><span class="tmc">'+B.avatar(D.AVT[x.t])+'<span class="tn2">'+esc(x.t)+'</span></span></td>'
      +'<td class="num b">'+x.w+'-'+x.l+(x.tie?'-'+x.tie:'')+'</td>'
      +'<td class="num">'+f1(x.pf)+'</td><td class="num dim">'+f1(x.pa)+'</td>'
      +'<td class="num">'+f1(x.pf/x.scores.length)+'</td>'
      +'<td class="num b">$'+(x.high*B.WKPAY)+'</td></tr>').join('')
    +'</tbody></table></div>';
 }
-function h2h(g){
-  const la=(g.ea.starters||[]).filter(Boolean), lb=(g.eb.starters||[]).filter(Boolean);
-  const pa=g.ea.players_points||{}, pb=g.eb.players_points||{};
-  const n=Math.max(la.length,lb.length,B.SLOTS.length);
-  let rows='';
-  for(let i=0;i<n;i++){
-    const A=la[i], Bd=lb[i];
-    const av=A?(pa[A]||0):0, bv=Bd?(pb[Bd]||0):0;
-    const sl=B.SLAB[B.SLOTS[i]]||B.SLOTS[i]||'';
-    const d=Math.abs(Math.round(av*10)-Math.round(bv*10))/10;
-    const ar=av>bv?'◂':'▸';
-    const mg=d>=0.05?('<span class="mg">'+(av>bv?ar:'')+f1(d)+(bv>av?ar:'')+'</span>'):'';
-    rows+='<tr><td class="hn">'+esc(A?B.nm(A):'')+'</td>'
-      +'<td class="hp'+(av>bv?' w':'')+'">'+f1(av)+'</td>'
-      +'<td class="hs">'+esc(sl)+mg+'</td>'
-      +'<td class="hp'+(bv>av?' w':'')+'">'+f1(bv)+'</td>'
-      +'<td class="hn r">'+esc(Bd?B.nm(Bd):'')+'</td></tr>';
+
+/* ---------- head to head ----------
+   One starting slot per row: his player on the left, the other on the right,
+   so a whole matchup reads down a single column of slot labels. */
+function cell(id,pts,ctx,right){
+  const cls=['c',right?'them':'me'];
+  let sub='', val='';
+  if(!id) return '<div class="'+cls.join(' ')+'"><span class="bar"></span>'
+    +'<div class="t"><span class="nm dim">Empty</span></div></div>';
+  if(ctx){
+    const st=B.slotState(id,pts,ctx);
+    if(st.state==='in') cls.push('live'); else if(st.state==='post') cls.push('done');
+    else if(st.state==='pre') cls.push('pre');
+    if(st.rz) cls.push('rz');
+    sub='<span class="sub">'+B.logo(B.tm(id))+'<span>'+esc(B.gameLine(id,pts,ctx))+'</span></span>';
+    val='<div class="v"><b>'+(st.state==='pre'?'--':f1(pts))+'</b><small>'+f1(st.proj)+'</small></div>';
+  }else{
+    sub='<span class="sub">'+B.logo(B.tm(id))+'<span>'+esc(B.pos(id))+'</span></span>';
+    val='<div class="v"><b>'+f1(pts)+'</b></div>';
   }
-  rows+='<tr class="htot"><td class="hn">Total</td><td class="hp'+(g.pa>g.pb?' w':'')+'">'+f1(g.pa)+'</td>'
-    +'<td class="hs"></td><td class="hp'+(g.pb>g.pa?' w':'')+'">'+f1(g.pb)+'</td>'
-    +'<td class="hn r">Total</td></tr>';
-  return '<div class="scroll"><table class="h2h"><tbody>'+rows+'</tbody></table></div>';
+  const ij=B.inj(id);
+  return '<div class="'+cls.join(' ')+'" style="'+B.paint(B.tm(id))+'"><span class="bar"></span>'
+    +B.head(id,'sm')
+    +'<div class="t"><span class="nm"><span class="pn">'+esc(shortName(id))+'</span>'
+    +(ij?'<span class="inj">'+esc(ij.slice(0,3).toUpperCase())+'</span>':'')+'</span>'+sub+'</div>'
+    +val+'</div>';
 }
-function gameBlock(g){
-  return '<details class="game"><summary><span class="gt">'+esc(g.a)+'</span>'
-    +'<span class="gs'+(g.pa>g.pb?' win':'')+'">'+f1(g.pa)+'</span><span class="gv">vs</span>'
-    +'<span class="gs'+(g.pb>g.pa?' win':'')+'">'+f1(g.pb)+'</span>'
-    +'<span class="gt r">'+esc(g.b)+'</span></summary>'
-    +'<div class="gbody1">'+h2h(g)+'</div></details>';
+const SUF=/^(jr\.?|sr\.?|ii|iii|iv|v)$/i;
+function shortName(id){
+  const n=B.nm(id);
+  if(B.pos(id)==='DST') return n;
+  const w=String(n).split(' ').filter(x=>!SUF.test(x));
+  return w.length>1?w[0][0]+'. '+w.slice(1).join(' '):n;
 }
-function recap(S){
+function h2h(g,slots,ctx){
+  const la=(g.ea.starters||[]), lb=(g.eb.starters||[]);
+  const pa=g.ea.players_points||{}, pb=g.eb.players_points||{};
+  const n=Math.max(la.length,lb.length,slots.length);
+  let out='<div class="h2h"><div class="r hd"><span class="c">'+esc(g.a)+'</span>'
+    +'<span class="mid">PTS</span><span class="c them">'+esc(g.b)+'</span></div>';
+  for(let i=0;i<n;i++){
+    const A=la[i]&&la[i]!=='0'?la[i]:null, Bd=lb[i]&&lb[i]!=='0'?lb[i]:null;
+    const sl=B.SLAB[slots[i]]||slots[i]||'';
+    out+='<div class="r">'+cell(A,A?(pa[A]||0):0,ctx,false)
+      +'<span class="mid">'+esc(sl)+'</span>'+cell(Bd,Bd?(pb[Bd]||0):0,ctx,true)+'</div>';
+  }
+  out+='<div class="r ft"><span class="c"><span class="tl">Total</span>'
+    +'<span class="tot'+(g.pa<g.pb?' trail':'')+'">'+f1(g.pa)+'</span></span>'
+    +'<span class="mid"></span>'
+    +'<span class="c them"><span class="tot'+(g.pb<g.pa?' trail':'')+'">'+f1(g.pb)+'</span>'
+    +'<span class="tl">Total</span></span></div></div>';
+  return out;
+}
+
+/* ---------- one matchup ----------
+   live: projected finish and win probability ride along. A finished week only
+   gets the score and the margin - there is nothing left to project. */
+function matchCard(D,g,ctx,live){
+  // name over record over score, so a long Sleeper handle is never clipped
+  const side=(name,score,other,right)=>
+    '<div class="side'+(right?' r':'')+'">'
+    +'<div class="idr">'+B.avatar(D.AVT[name])+'<span class="n">'+esc(name)+'</span></div>'
+    +rec(D,name)
+    +'<span class="sc'+(round1(score)<round1(other)?' trail':'')+'">'+f1(score)+'</span></div>';
+  let mid='<span class="vs">VS</span>', extra='';
+  if(live&&ctx){
+    const A=B.summarize((g.ea.starters||[]).filter(x=>x&&x!=='0'),g.ea.players_points||{},ctx);
+    const Bs=B.summarize((g.eb.starters||[]).filter(x=>x&&x!=='0'),g.eb.players_points||{},ctx);
+    const anyLive=A.live+Bs.live>0;
+    if(anyLive) mid='<span class="tag live">Live</span>';
+    else if(A.yet+Bs.yet===0) mid='<span class="tag final">Final</span>';
+    else if(A.done+Bs.done===0) mid='<span class="tag pre">Pregame</span>';
+    const wp=B.winProb(A,Bs);
+    // Nothing left to play: the margin is the story, not a probability.
+    if(A.yet+Bs.yet===0) return card(D,g,mid,margin(g));
+    extra='<div class="proj"><span>proj finish <b>'+f1(A.projFinal)+'</b></span><span></span>'
+      +'<span class="r">proj finish <b>'+f1(Bs.projFinal)+'</b></span></div>'
+      +'<div class="wp"><div class="lab"><span>'+esc(g.a)+' win probability, est.</span>'
+      +'<b>'+Math.round(wp*100)+'%</b></div>'
+      +'<div class="wpbar"><i style="width:'+Math.round(wp*100)+'%"></i><i></i></div>'
+      +'<div class="left"><span><b>'+A.yet+'</b> of '+A.n+' yet to play</span>'
+      +'<span><b>'+Bs.yet+'</b> of '+Bs.n+' yet to play</span></div></div>';
+  }else{
+    extra=margin(g);
+  }
+  return card(D,g,mid,extra);
+
+  function card(D,g,mid,extra){
+    return '<details class="mc" data-k="'+esc(g.a)+'"><summary><div class="top">'
+      +side(g.a,g.pa,g.pb,false)+mid+side(g.b,g.pb,g.pa,true)+'</div>'+extra
+      +'<div class="open"><span class="more">Lineups</span><span class="less">Hide lineups</span></div>'
+      +'</summary>'+h2h(g,D.slots,live?ctx:null)+'</details>';
+  }
+}
+function margin(g){
+  const w=g.pa>g.pb?g.a:g.b;
+  return '<div class="proj"><span>'+esc(w)+' by <b>'+f1(marg(g.pa,g.pb))+'</b></span>'
+    +'<span></span><span class="r"></span></div>';
+}
+function rec(D,name){
+  const r=D._rec&&D._rec[name];
+  if(!r||!r.scores.length) return '';
+  return '<span class="rec">'+r.w+'-'+r.l+(r.tie?'-'+r.tie:'')+'</span>';
+}
+
+/* ---------- weekly recap ---------- */
+function recap(D,S){
   if(!S.weekly.length) return '';
   const x=S.weekly[S.weekly.length-1];
-  const mar=g=>Math.abs(Math.round(g.pa*10)-Math.round(g.pb*10))/10;
-  const gs=x.games.slice().sort((a,b)=>mar(b)-mar(a));
+  const gs=x.games.slice().sort((a,b)=>marg(b.pa,b.pb)-marg(a.pa,a.pb));
   const blow=gs[0], close=gs[gs.length-1];
   const sc=[]; x.games.forEach(g=>{sc.push([g.pa,g.a]);sc.push([g.pb,g.b]);});
   sc.sort((a,b)=>b[0]-a[0]);
   const hi=sc[0], lo=sc[sc.length-1];
   const w=g=>g.pa>g.pb?[g.a,g.pa,g.b,g.pb]:[g.b,g.pb,g.a,g.pa];
-  const bw=w(blow), cw=w(close), bm=mar(blow), cm=mar(close);
+  const bw=w(blow), cw=w(close), bm=marg(blow.pa,blow.pb), cm=marg(close.pa,close.pb);
   const all=[];
   x.games.forEach(g=>{
     [[g.ea,g.a],[g.eb,g.b]].forEach(([e,t])=>{
@@ -74,7 +153,7 @@ function recap(S){
     const q=w(g);
     return '<tr><td class="l tm">'+esc(q[0])+'</td><td class="num b">'+f1(q[1])+'</td>'
       +'<td class="num dim">'+f1(q[3])+'</td><td class="l">'+esc(q[2])+'</td>'
-      +'<td class="num">'+f1(mar(g))+'</td></tr>';}).join('');
+      +'<td class="num">'+f1(marg(g.pa,g.pb))+'</td></tr>';}).join('');
   return '<h2>Week '+x.week+' recap</h2><div class="card">'
     +'<p class="rlead">'+esc(hi[1])+' put up '+f1(hi[0])+' to take the weekly money. '
     +esc(bw[0])+' handed '+esc(bw[2])+' the worst beating of the week by '+f1(bm)+', while '
@@ -85,33 +164,42 @@ function recap(S){
     +'<div class="rlines">'+lines.map(l=>'<div class="rl"><span class="rll">'+esc(l[0])
       +'</span><span class="rlv">'+esc(l[1])+'</span></div>').join('')+'</div></div>';
 }
-const EMPTY='<div class="empty"><strong>Nothing to show yet</strong>'
- +'Week 1 kicks off September 10. This fills in on its own as games are played.</div>';
+// The kickoff date comes from Sleeper, not from a constant that goes stale
+// the moment the schedule shifts.
+function EMPTY(D){
+  const d=D&&D.state&&D.state.season_start_date;
+  const when=d?new Date(d+'T12:00:00Z').toLocaleDateString('en-US',
+    {weekday:'long',month:'long',day:'numeric',timeZone:'UTC'}):null;
+  return '<div class="empty"><strong>Nothing to show yet</strong>'
+    +(when?'Week 1 kicks off '+when+'. ':'')
+    +'This fills in on its own as games are played.</div>';
+}
 
 window.RENDER={
- _game:gameBlock,
+ _card:matchCard,
  async home(){
   const el=$('#standWrap'), rl=$('#recapWrap');
   try{
-    const D=await B.load(), S=B.standings(D);
-    el.innerHTML=S.rows.length?standTable(S.rows,8):EMPTY;
-    rl.innerHTML=recap(S);
+    const D=await B.load(), S=B.standings(D); D._rec=S.rec;
+    el.innerHTML=S.rows.length?standTable(D,S.rows,8):EMPTY(D);
+    rl.innerHTML=recap(D,S);
     const wc=$('#wkCount'); if(wc) wc.textContent=S.weekly.length+' of '+B.C.regWeeks+' weeks played';
   }catch(e){ B.err(el); }
  },
  async standings(){
   const el=$('#standWrap');
   try{
-    const D=await B.load(), S=B.standings(D);
-    if(!S.rows.length){ el.innerHTML=EMPTY; return; }
+    const D=await B.load(), S=B.standings(D); D._rec=S.rec;
+    if(!S.rows.length){ el.innerHTML=EMPTY(D); return; }
     const avg=S.rows.slice().sort((a,b)=>(b.pf/b.scores.length)-(a.pf/a.scores.length));
     const earn={}; S.rows.forEach(r=>earn[r.t]=r.high*B.WKPAY);
     const paid=Object.values(earn).reduce((a,b)=>a+b,0);
-    el.innerHTML='<h2>By record</h2>'+standTable(S.rows)
+    el.innerHTML='<h2>By record</h2>'+standTable(D,S.rows)
       +'<h2>By scoring average</h2><div class="scroll"><table class="stand"><thead><tr><th></th>'
       +'<th>Team</th><th class="num">Avg</th><th class="num">Best</th><th class="num">Worst</th>'
       +'</tr></thead><tbody>'+avg.map((x,i)=>'<tr><td class="rk">'+(i+1)+'</td>'
-      +'<td class="tm">'+esc(x.t)+'</td><td class="num b">'+f1(x.pf/x.scores.length)+'</td>'
+      +'<td><span class="tmc">'+B.avatar(D.AVT[x.t])+'<span class="tn2">'+esc(x.t)+'</span></span></td>'
+      +'<td class="num b">'+f1(x.pf/x.scores.length)+'</td>'
       +'<td class="num">'+f1(Math.max.apply(null,x.scores))+'</td>'
       +'<td class="num dim">'+f1(Math.min.apply(null,x.scores))+'</td></tr>').join('')
       +'</tbody></table></div>'
@@ -125,7 +213,8 @@ window.RENDER={
       +'<div class="scroll"><table class="stand"><thead><tr><th></th><th>Team</th>'
       +'<th class="num">Won</th><th class="num">Weeks</th></tr></thead><tbody>'
       +Object.entries(earn).sort((a,b)=>b[1]-a[1]).map((e,i)=>'<tr><td class="rk">'+(i+1)+'</td>'
-      +'<td class="tm">'+esc(e[0])+'</td><td class="num b">$'+e[1]+'</td>'
+      +'<td><span class="tmc">'+B.avatar(D.AVT[e[0]])+'<span class="tn2">'+esc(e[0])+'</span></span></td>'
+      +'<td class="num b">$'+e[1]+'</td>'
       +'<td class="num dim">'+(e[1]/B.WKPAY)+'</td></tr>').join('')
       +'</tbody></table></div></details>';
   }catch(e){ B.err(el); }
@@ -133,7 +222,7 @@ window.RENDER={
  async teams(){
   const el=$('#teamsWrap');
   try{
-    const D=await B.load(), S=B.standings(D);
+    const D=await B.load(), S=B.standings(D); D._rec=S.rec;
     const order={}; S.rows.forEach((r,i)=>order[r.t]=i);
     const pts={};                       // season points per player
     D.weeks.forEach(wk=>wk.raw.forEach(e=>{
@@ -144,23 +233,27 @@ window.RENDER={
       .sort((a,b)=>a.rank-b.rank);
     el.innerHTML=list.map((x,i)=>{
       const ids=(x.r.players||[]);
-      const starters=(x.r.starters||[]).filter(Boolean);
-      const filled=starters.length===B.SLOTS.length
-        ? B.SLOTS.map((s,k)=>[B.SLAB[s]||s,starters[k]])
-        : B.fillSlots(ids).out.map(o=>[B.SLAB[o[0]]||o[0],o[1]]);
+      const starters=(x.r.starters||[]).filter(id=>id&&id!=='0');
+      const filled=starters.length===D.slots.length
+        ? D.slots.map((s,k)=>[B.SLAB[s]||s,starters[k]])
+        : B.fillSlots(ids,D.slots).out.map(o=>[B.SLAB[o[0]]||o[0],o[1]]);
       const used=new Set(filled.map(f=>f[1]));
       const bench=ids.filter(id=>!used.has(id));
       const row=(slot,id,dim)=>'<tr><td class="slot'+(dim?' dim':'')+'">'+esc(slot)+'</td>'
-        +'<td class="l">'+esc(id?B.nm(id):'empty')+'</td><td class="pp">'+esc(B.pos(id))+'</td>'
-        +'<td class="pp">'+esc(B.tm(id))+'</td>'
+        +'<td class="l"><span class="pl">'+(id?B.head(id,'sm'):'')
+        +'<span class="pn">'+esc(id?B.nm(id):'empty')
+        +(id&&B.inj(id)?'<span class="inj">'+esc(B.inj(id).slice(0,4).toUpperCase())+'</span>':'')
+        +'</span></span></td>'
+        +'<td class="pp">'+esc(B.pos(id))+'</td>'
+        +'<td>'+(id&&B.tm(id)?B.logo(B.tm(id)):'<span class="pp dim">FA</span>')+'</td>'
         +'<td class="num'+(dim?' dim':' b')+'">'+(pts[id]!==undefined?f1(pts[id]):(nwk?'0.0':'-'))+'</td>'
         +'<td class="num'+(dim?' dim':'')+'">'+(nwk?f1((pts[id]||0)/nwk):'-')+'</td></tr>';
-      const rec=S.rec[x.t];
-      const sub=rec&&rec.scores.length
-        ? '<span class="pill live">'+rec.w+'-'+rec.l+'</span><span class="sma">'
-          +f1(rec.pf/rec.scores.length)+' avg</span>' : '';
+      const r=S.rec[x.t];
+      const sub=r&&r.scores.length
+        ? '<span class="pill">'+r.w+'-'+r.l+'</span><span class="sma">'
+          +f1(r.pf/r.scores.length)+' avg</span>' : '';
       return '<details class="fold"><summary><span class="tr">'+(i+1)+'</span>'
-        +'<span class="tn">'+esc(x.t)+'</span>'+sub+'</summary>'
+        +B.avatar(D.AVT[x.t])+'<span class="tn">'+esc(x.t)+'</span>'+sub+'</summary>'
         +'<div class="scroll"><table class="rost"><thead><tr><th></th><th>Player</th>'
         +'<th>Position</th><th>Team</th><th class="num">2026 points</th>'
         +'<th class="num">Pts / week</th></tr></thead><tbody>'
@@ -174,14 +267,14 @@ window.RENDER={
  async weeks(){
   const el=$('#weeksWrap');
   try{
-    const D=await B.load(), S=B.standings(D);
-    if(!S.weekly.length){ el.innerHTML=EMPTY; return; }
+    const D=await B.load(), S=B.standings(D); D._rec=S.rec;
+    if(!S.weekly.length){ el.innerHTML=EMPTY(D); return; }
     el.innerHTML=S.weekly.slice().reverse().map(x=>
       '<details class="wk"><summary><span class="wkh">Week '+x.week+'</span>'
-      +'<span class="wkhi"><span class="pill live">High score</span>'
+      +'<span class="wkhi"><span class="pill">High score</span>'
       +'<b class="wkn">'+esc(x.hi[0])+'</b><span class="wkp">'+f1(x.hi[1])+'</span>'
       +'<span class="wkd">$'+B.WKPAY+'</span></span></summary>'
-      +'<div class="wkbody">'+x.games.map(gameBlock).join('')+'</div></details>').join('');
+      +'<div class="wkbody">'+x.games.map(g=>matchCard(D,g,null,false)).join('')+'</div></details>').join('');
   }catch(e){ B.err(el); }
  },
  async waivers(){
@@ -199,22 +292,25 @@ window.RENDER={
         const bid=(t.settings&&t.settings.waiver_bid)||0;
         (t.roster_ids||[]).forEach(r=>{const nme=D.RT[r]; if(nme&&bid) spent[nme]=(spent[nme]||0)+bid;});
         items.push({week:w,type:t.type,team:who.join(', '),bid:bid,
-          adds:Object.keys(t.adds||{}).map(B.nm),drops:Object.keys(t.drops||{}).map(B.nm),
+          adds:Object.keys(t.adds||{}),drops:Object.keys(t.drops||{}),
           created:t.created});
       });
     }
     items.sort((a,b)=>b.created-a.created);
     const label={waiver:'Waiver',free_agent:'Free agent',trade:'Trade'};
+    const plist=ids=>ids.length?ids.map(id=>'<span class="pl">'+B.head(id,'sm')
+      +'<span class="pn">'+esc(B.nm(id))+'</span></span>').join('') : '<span class="dim">-</span>';
     const budgets='<div class="scroll"><table class="stand"><thead><tr><th></th><th>Team</th>'
       +'<th class="num">Spent</th><th class="num">Left</th></tr></thead><tbody>'
       +Object.entries(spent).sort((a,b)=>b[1]-a[1]).map((e,i)=>'<tr><td class="rk">'+(i+1)+'</td>'
-      +'<td class="tm">'+esc(e[0])+'</td><td class="num b">$'+e[1]+'</td>'
+      +'<td><span class="tmc">'+B.avatar(D.AVT[e[0]])+'<span class="tn2">'+esc(e[0])+'</span></span></td>'
+      +'<td class="num b">$'+e[1]+'</td>'
       +'<td class="num">$'+(budget-e[1])+'</td></tr>').join('')+'</tbody></table></div>';
     const rows=items.length? items.map(t=>'<tr><td class="num dim">'+t.week+'</td>'
       +'<td class="pp">'+esc(label[t.type]||t.type)+'</td>'
-      +'<td class="tm l">'+esc(t.team)+'</td>'
-      +'<td class="l">'+(t.adds.length?esc(t.adds.join(', ')):'<span class="dim">-</span>')+'</td>'
-      +'<td class="l dim">'+(t.drops.length?esc(t.drops.join(', ')):'-')+'</td>'
+      +'<td class="l tm">'+esc(t.team)+'</td>'
+      +'<td class="l">'+plist(t.adds)+'</td>'
+      +'<td class="l dim">'+plist(t.drops)+'</td>'
       +'<td class="num b">'+(t.bid?'$'+t.bid:'<span class="dim">-</span>')+'</td></tr>').join('')
       : '<tr><td colspan="6" class="l dim">No moves yet.</td></tr>';
     el.innerHTML='<h2>FAAB budgets</h2>'+budgets
