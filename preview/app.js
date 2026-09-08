@@ -76,11 +76,15 @@ async function load(){
   const RT={}, ROS={}, AVT={};
   rosters.forEach(r=>{ RT[r.roster_id]=UN[r.owner_id]||('roster '+r.roster_id);
     ROS[r.roster_id]=r; AVT[RT[r.roster_id]]=AV[r.owner_id]||null; });
-  const week=5;
+  const week=6;
   const season='2025';
-  // every week that has actually been scored
+  // Only weeks Sleeper has already moved past. A week still being played has
+  // real points in it from the games that have finished, and counting those
+  // would post a half-finished week as a result: fake records in the standings
+  // and a recap naming a high score on a Sunday afternoon. The live tab is
+  // where an in-progress week belongs.
   const weeks=[];
-  for(let w=1;w<=Math.min(C.regWeeks,week);w++){
+  for(let w=1;w<Math.min(C.regWeeks+1,week);w++){
     let m; try{ m=await j(API+'league/'+LG+'/matchups/'+w);}catch(e){break;}
     if(!m||!m.some(x=>(x.points||0)>0)) break;
     weeks.push({week:w,raw:m});
