@@ -29,8 +29,10 @@ const paint=ab=>{const t=TEAMS[ab];return t?'--tp:'+t.p+';--ts:'+t.s:'--tp:#333;
 function logo(ab,cls){
   const c='tlogo'+(cls?' '+cls:''), t=TEAMS[ab];
   if(!t) return '<span class="shield'+(cls?' '+cls:'')+'" style="'+paint(ab)+'">'+esc(ab||'?')+'</span>';
+  // eager: 32 tiny files the browser caches across every page, and a row that
+  // paints without its team logo looks broken for the second it takes to arrive
   return '<img class="'+c+'" src="'+t.logo+'" alt="'+esc(t.name)+'" width="20" height="20"'
-    +' loading="lazy" decoding="async" data-ab="'+esc(ab)+'" data-cls="'+esc(cls||'')+'"'
+    +' decoding="async" data-ab="'+esc(ab)+'" data-cls="'+esc(cls||'')+'"'
     +' onerror="BNB.lfb(this)">';
 }
 function initials(name){
