@@ -136,7 +136,7 @@ function gameChip(g){
   const side=(ab,score,other)=>{
     const trail=g.state!=='pre'&&score<other;
     const ball=g.state==='in'&&g.possession===ab
-      ? '<span class="poss">'+(g.redzone?'RED ZONE':'BALL')+'</span>' : '';
+      ? B.FOOTBALL+(g.redzone?'<span class="poss">Red zone</span>':'') : '';
     return '<div class="t'+(trail?' trail':'')+'"><span class="ab">'+B.logo(ab,'lg')
       +'<span>'+esc(ab)+'</span>'+ball+'</span>'
       +'<span class="s">'+(g.state==='pre'?'':score)+'</span></div>';
@@ -146,12 +146,18 @@ function gameChip(g){
   else if(g.state==='post') st='<span class="tag final">Final</span>';
   else st='<span>'+esc(B.kick(g.kickoff))+'</span>'
     +(g.broadcast?'<span class="tv">'+esc(g.broadcast)+'</span>':'');
+  // the last snap, called out when it put points on the board
+  const lp=(g.state==='in'&&g.play)
+    ? '<div class="lp'+(g.scored>0?' scored':'')+'">'
+      +(g.scored>0&&g.playType?'<span class="lpt">'+esc(g.playType)+'</span>':'')
+      +esc(g.play)+'</div>' : '';
+  if(g.scored>0&&g.state==='in') cls.push('score');
   return '<div class="'+cls.join(' ')+'" style="'+B.paint(g.away)+';--to:'
     +((B.TEAMS[g.home]||{}).p||'#777')+'">'
     +side(g.away,g.awayScore,g.homeScore)+side(g.home,g.homeScore,g.awayScore)
     +'<div class="st">'+st+'</div>'
     +(g.state==='in'&&g.down?'<div class="st sub">'+esc(g.down)+'</div>':'')
-    +'</div>';
+    +lp+'</div>';
 }
 
 /* ---------- weekly recap ----------

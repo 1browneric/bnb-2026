@@ -64,6 +64,14 @@ function hfb(img){                       // headshot missing -> initials
   s.textContent=img.getAttribute('data-i')||'';
   img.replaceWith(s);
 }
+// Possession, drawn rather than spelled. A shape, not an icon font and not an
+// emoji; red zone still says RED ZONE in words next to it.
+const FOOTBALL='<svg class="fb" viewBox="0 0 24 15" width="21" height="13" aria-hidden="true" focusable="false">'
+ +'<ellipse cx="12" cy="7.5" rx="11.4" ry="6.9" fill="#7A4521"/>'
+ +'<path d="M5.4 2.4a13 13 0 0 0 0 10.2M18.6 2.4a13 13 0 0 1 0 10.2" stroke="#F5F2EA" stroke-width="1.3" fill="none"/>'
+ +'<path d="M8.6 7.5h6.8" stroke="#F5F2EA" stroke-width="1.4"/>'
+ +'<path d="M10.2 5.9v3.2M12 5.9v3.2M13.8 5.9v3.2" stroke="#F5F2EA" stroke-width="1.2"/>'
+ +'</svg>';
 const avatar=a=>a?'<img class="tav" src="https://sleepercdn.com/avatars/thumbs/'+encodeURIComponent(a)
   +'" alt="" width="26" height="26" loading="lazy" decoding="async">':'<span class="tav"></span>';
 
@@ -128,6 +136,11 @@ async function games(){
         home:H,away:A,homeScore:Number(home.score||0),awayScore:Number(away.score||0),
         possession:s.possession?(s.possession===home.id?H:A):null,
         redzone:!!s.isRedZone,down:s.downDistanceText||'',
+        // the last snap, and what it was worth: scoreValue is 0 on an ordinary
+        // play and the points on a touchdown, field goal, safety or two point try
+        play:((s.lastPlay||{}).text||'').trim(),
+        playType:(((s.lastPlay||{}).type||{}).text||'').trim(),
+        scored:Number((s.lastPlay||{}).scoreValue||0),
         broadcast:(((c.broadcasts||[])[0]||{}).names||[])[0]||''};
       list.push(g);
       [[H,A,true],[A,H,false]].forEach(function(x){
@@ -301,6 +314,7 @@ function fillSlots(ids,slots){
 }
 window.BNB={C,esc,nm,pos,tm,inj,f1,j,API,LG,load,pair,standings,fillSlots,bestLineup,SLOTS,SLAB,WKPAY,POT,M,
   TEAMS,paint,logo,head,avatar,lfb,hfb,games,projections,ctx,slotState,summarize,winProb,gameLine,kick,
+  FOOTBALL,
   err(el,msg){el.innerHTML='<div class="empty"><strong>'+esc(msg||'Cannot reach Sleeper')+
     '</strong>This page reads live from Sleeper. Refresh in a moment.</div>';},
   wait(el){el.innerHTML='<div class="empty"><strong>Loading</strong>Pulling the latest from Sleeper.</div>';}

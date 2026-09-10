@@ -284,14 +284,24 @@ table.recap tbody tr:nth-child(odd){background:var(--zebra)}
 .game .t .s{font-family:var(--display);font-weight:800;font-size:28px;
  font-variant-numeric:tabular-nums;flex:none}
 .game .t.trail .s,.game .t.trail .ab{color:var(--mute)}
+.game .fb{flex:none;display:block;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
 .game .poss{font-family:var(--display);font-weight:700;font-size:9.5px;letter-spacing:.08em;
- color:#1A0A00;background:var(--signal);padding:3px 5px;border-radius:4px;white-space:nowrap}
+ color:#1A0A00;background:var(--signal);padding:3px 5px;border-radius:4px;white-space:nowrap;
+ text-transform:uppercase}
 .game .st{display:flex;align-items:center;justify-content:flex-end;gap:9px;margin-top:8px;
  font-size:12.5px;color:var(--ink2);flex-wrap:wrap;text-align:right}
 .game .st .clk{font-family:var(--display);font-weight:800;font-size:15px;color:var(--ink);
  font-variant-numeric:tabular-nums}
 .game .st .tv{color:var(--mute)}
 .game .st.sub{margin-top:3px;font-size:11.5px;color:var(--mute)}
+/* the last snap, across the bottom of a live card */
+.game .lp{margin-top:9px;padding-top:8px;border-top:1px solid var(--rule);font-size:12px;
+ line-height:1.35;color:var(--ink2)}
+.game .lp.scored{color:var(--ink)}
+.game .lp .lpt{display:inline-block;font-family:var(--display);font-weight:800;font-size:10.5px;
+ letter-spacing:.08em;text-transform:uppercase;color:var(--signal-ink);background:var(--signal-bg);
+ padding:2px 5px;border-radius:3px;margin-right:6px;vertical-align:1px}
+
 /* live is a ring plus the LIVE tag; red zone is a ring plus the words RED ZONE */
 .game.live{box-shadow:var(--shadow),0 0 0 2px var(--signal)}
 .game.live.rz{box-shadow:var(--shadow),0 0 0 2px var(--red)}
@@ -432,7 +442,7 @@ table.recap .tm{font-weight:700}
  <img class="heroimg" src="header.gif" alt="" width="181" height="132"></div></div>
 <div class="wrap"><div id="weeksWrap"></div></div>
 <div id="champ" hidden><img src="champs.jpg" alt="Boats And Bros Super Bowl Champs"></div>
-<script src="config.js?v=9fc3eba4"></script><script src="players.js?v=164f6a3b"></script><script src="teams.js?v=8794b724"></script><script src="app.js?v=4eab6132"></script><script src="pages.js?v=2588109c"></script>
+<script src="config.js?v=9fc3eba4"></script><script src="players.js?v=164f6a3b"></script><script src="teams.js?v=8794b724"></script><script src="app.js?v=03e51194"></script><script src="pages.js?v=5cdf76ee"></script>
 <script>
 (function(){
   var b=document.getElementById('brandBtn'), c=document.getElementById('champ');
