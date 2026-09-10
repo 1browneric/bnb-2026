@@ -366,10 +366,15 @@ table.recap tbody tr:nth-child(odd){background:var(--zebra)}
 .mc .proj b{font-family:var(--display);font-size:15px;color:var(--ink);
  font-variant-numeric:tabular-nums}
 .mc .wp{padding:0 14px 12px}
-.mc .wp .lab{display:flex;justify-content:space-between;align-items:center;
- font-family:var(--display);font-weight:700;font-size:11.5px;letter-spacing:.1em;
+.mc .wp .lab{display:flex;justify-content:space-between;align-items:baseline;
+ font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.1em;
  text-transform:uppercase;color:var(--ink2);margin-bottom:5px;gap:10px}
-.mc .wp .lab b{color:var(--ink);font-size:14px}
+.mc .wp .lab span{text-align:center}
+/* each number takes its end of the bar's colour; the side it sits on says whose */
+.mc .wp .lab b{font-size:22px;font-weight:800;letter-spacing:0;line-height:1;
+ font-variant-numeric:tabular-nums}
+.mc .wp .lab b.a{color:var(--sky-ink)}
+.mc .wp .lab b.b{color:var(--signal-ink)}
 .mc .wpbar{height:9px;border-radius:999px;background:var(--panel2);overflow:hidden;display:flex}
 .mc .wpbar i{display:block;height:100%;background:var(--sky);
  transition:width .8s cubic-bezier(.2,.8,.2,1)}
@@ -400,14 +405,24 @@ table.recap tbody tr:nth-child(odd){background:var(--zebra)}
 .game .t .s{font-family:var(--display);font-weight:800;font-size:28px;
  font-variant-numeric:tabular-nums;flex:none}
 .game .t.trail .s,.game .t.trail .ab{color:var(--mute)}
+.game .fb{flex:none;display:block;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
 .game .poss{font-family:var(--display);font-weight:700;font-size:9.5px;letter-spacing:.08em;
- color:#1A0A00;background:var(--signal);padding:3px 5px;border-radius:4px;white-space:nowrap}
+ color:#1A0A00;background:var(--signal);padding:3px 5px;border-radius:4px;white-space:nowrap;
+ text-transform:uppercase}
 .game .st{display:flex;align-items:center;justify-content:flex-end;gap:9px;margin-top:8px;
  font-size:12.5px;color:var(--ink2);flex-wrap:wrap;text-align:right}
 .game .st .clk{font-family:var(--display);font-weight:800;font-size:15px;color:var(--ink);
  font-variant-numeric:tabular-nums}
 .game .st .tv{color:var(--mute)}
 .game .st.sub{margin-top:3px;font-size:11.5px;color:var(--mute)}
+/* the last snap, across the bottom of a live card */
+.game .lp{margin-top:9px;padding-top:8px;border-top:1px solid var(--rule);font-size:12px;
+ line-height:1.35;color:var(--ink2)}
+.game .lp.scored{color:var(--ink)}
+.game .lp .lpt{display:inline-block;font-family:var(--display);font-weight:800;font-size:10.5px;
+ letter-spacing:.08em;text-transform:uppercase;color:var(--signal-ink);background:var(--signal-bg);
+ padding:2px 5px;border-radius:3px;margin-right:6px;vertical-align:1px}
+
 /* live is a ring plus the LIVE tag; red zone is a ring plus the words RED ZONE */
 .game.live{box-shadow:var(--shadow),0 0 0 2px var(--signal)}
 .game.live.rz{box-shadow:var(--shadow),0 0 0 2px var(--red)}
