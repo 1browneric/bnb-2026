@@ -292,11 +292,16 @@ function recap(D,S){
 // the moment the schedule shifts.
 function EMPTY(D){
   const d=D&&D.state&&D.state.season_start_date;
-  const when=d?new Date(d+'T12:00:00Z').toLocaleDateString('en-US',
+  const start=d?new Date(d+'T12:00:00Z'):null;
+  const when=start?start.toLocaleDateString('en-US',
     {weekday:'long',month:'long',day:'numeric',timeZone:'UTC'}):null;
+  // Before kickoff it names the date; once Week 1 is under way that sentence is
+  // wrong, so it says when the first results land instead.
+  const started=start&&Date.now()>=start.getTime();
   return '<div class="empty"><strong>Nothing to show yet</strong>'
-    +(when?'Week 1 kicks off '+when+'. ':'')
-    +'This fills in on its own as games are played.</div>';
+    +(started?'Week 1 is under way. Results post here once it is final, on Tuesday. '
+      :when?'Week 1 kicks off '+when+'. ':'')
+    +'Live scores are on the Live tab.</div>';
 }
 
 window.RENDER={
