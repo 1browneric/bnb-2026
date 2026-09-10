@@ -97,8 +97,10 @@ function matchCard(D,g,ctx,live){
     if(A.yet+Bs.yet===0) return card(D,g,mid,margin(g));
     extra='<div class="proj"><span>proj finish <b>'+f1(A.projFinal)+'</b></span><span></span>'
       +'<span class="r">proj finish <b>'+f1(Bs.projFinal)+'</b></span></div>'
-      +'<div class="wp"><div class="lab"><span>'+esc(g.a)+' win probability, est.</span>'
-      +'<b>'+Math.round(wp*100)+'%</b></div>'
+      // both sides' odds, each over its own team and its own end of the bar;
+      // the two always add to 100
+      +'<div class="wp"><div class="lab"><b class="a">'+Math.round(wp*100)+'%</b>'
+      +'<span>Win probability, est.</span><b class="b">'+(100-Math.round(wp*100))+'%</b></div>'
       +'<div class="wpbar"><i style="width:'+Math.round(wp*100)+'%"></i><i></i></div>'
       +'<div class="left"><span><b>'+A.yet+'</b> of '+A.n+' yet to play</span>'
       +'<span><b>'+Bs.yet+'</b> of '+Bs.n+' yet to play</span></div></div>';

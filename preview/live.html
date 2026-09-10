@@ -250,10 +250,15 @@ table.recap tbody tr:nth-child(odd){background:var(--zebra)}
 .mc .proj b{font-family:var(--display);font-size:15px;color:var(--ink);
  font-variant-numeric:tabular-nums}
 .mc .wp{padding:0 14px 12px}
-.mc .wp .lab{display:flex;justify-content:space-between;align-items:center;
- font-family:var(--display);font-weight:700;font-size:11.5px;letter-spacing:.1em;
+.mc .wp .lab{display:flex;justify-content:space-between;align-items:baseline;
+ font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.1em;
  text-transform:uppercase;color:var(--ink2);margin-bottom:5px;gap:10px}
-.mc .wp .lab b{color:var(--ink);font-size:14px}
+.mc .wp .lab span{text-align:center}
+/* each number takes its end of the bar's colour; the side it sits on says whose */
+.mc .wp .lab b{font-size:22px;font-weight:800;letter-spacing:0;line-height:1;
+ font-variant-numeric:tabular-nums}
+.mc .wp .lab b.a{color:var(--sky-ink)}
+.mc .wp .lab b.b{color:var(--signal-ink)}
 .mc .wpbar{height:9px;border-radius:999px;background:var(--panel2);overflow:hidden;display:flex}
 .mc .wpbar i{display:block;height:100%;background:var(--sky);
  transition:width .8s cubic-bezier(.2,.8,.2,1)}
@@ -442,7 +447,7 @@ table.recap .tm{font-weight:700}
  <img class="heroimg" src="header.gif" alt="" width="181" height="132"></div></div>
 <div class="wrap"><div id="liveWrap"></div></div>
 <div id="champ" hidden><img src="champs.jpg" alt="Boats And Bros Super Bowl Champs"></div>
-<script src="config.js?v=9fc3eba4"></script><script src="players.js?v=164f6a3b"></script><script src="teams.js?v=8794b724"></script><script src="app.js?v=03e51194"></script><script src="pages.js?v=18d3fe8f"></script>
+<script src="config.js?v=9fc3eba4"></script><script src="players.js?v=164f6a3b"></script><script src="teams.js?v=8794b724"></script><script src="app.js?v=03e51194"></script><script src="pages.js?v=f589a853"></script>
 <script>
 (function(){
   var b=document.getElementById('brandBtn'), c=document.getElementById('champ');
