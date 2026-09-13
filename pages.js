@@ -154,12 +154,152 @@ function gameChip(g){
       +(g.scored>0&&g.playType?'<span class="lpt">'+esc(g.playType)+'</span>':'')
       +esc(g.play)+'</div>' : '';
   if(g.scored>0&&g.state==='in') cls.push('score');
+  // how the points went on the board: the last five here, all of them in the sheet
+  const plays=((B.SUM[g.id]||{}).plays)||[];
+  const sc=(g.state!=='pre'&&plays.length)?scoringList(g,plays,5):'';
   return '<div class="'+cls.join(' ')+'" style="'+B.paint(g.away)+';--to:'
-    +((B.TEAMS[g.home]||{}).p||'#777')+'">'
+    +((B.TEAMS[g.home]||{}).p||'#777')+'" role="button" tabindex="0" data-gid="'+esc(g.id)
+    +'" aria-label="'+esc(g.away+' at '+g.home+', open game')+'">'
     +side(g.away,g.awayScore,g.homeScore)+side(g.home,g.homeScore,g.awayScore)
     +'<div class="st">'+st+'</div>'
     +(g.state==='in'&&g.down?'<div class="st sub">'+esc(g.down)+'</div>':'')
-    +lp+'</div>';
+    +lp+sc+'</div>';
+}
+/* ---------- scoring plays ----------
+   Logo, what it was and when, the play, the drive line for an offensive
+   score, then the score after it with the scoring team's number in ink.
+   `limit` keeps the newest N and says how many came before; no limit lists
+   every score under its quarter. */
+const KIND=p=>{
+  const k=(p.kind||'').toUpperCase();
+  if(k==='TOUCHDOWN'&&/(interception|fumble|blocked|punt return|kickoff return|kick return)/i.test(p.type)) return 'DEFENSIVE TD';
+  if(k==='FIELD GOAL'&&/missed|no good|blocked/i.test(p.type)) return 'FIELD GOAL MISSED';
+  return k||(p.type||'').toUpperCase();
+};
+const QN=n=>['','1st','2nd','3rd','4th'][n]||(n+'th');
+function scoringList(g,plays,limit){
+  const shown=(limit&&plays.length>limit)?plays.slice(-limit):plays;
+  let h='<div class="scoring"><div class="sh"><span class="lab">Scoring</span>'
+    +'<span class="col">'+esc(g.away)+'</span><span class="col">'+esc(g.home)+'</span></div>';
+  if(shown.length<plays.length) h+='<div class="more">'+(plays.length-shown.length)+' earlier, open the game for all '+plays.length+'</div>';
+  let period=0;
+  shown.forEach(p=>{
+    if(!limit&&p.period!==period){ period=p.period; h+='<div class="q">'+(period>4?'Overtime':QN(period)+' quarter')+'</div>'; }
+    h+='<div class="sp'+(p.team===g.home?' hm':'')+'">'+B.logo(p.team)
+      +'<div class="w"><div class="k"><b>'+esc(KIND(p))+'</b><span>'+(limit?esc(p.period>4?'OT ':'Q'+p.period+' '):'')+esc(p.clock)+'</span></div>'
+      +'<div class="tx">'+esc(p.text)+'</div>'+(p.drive?'<div class="dr">'+esc(p.drive)+'</div>':'')+'</div>'
+      +'<span class="sc'+(p.team===g.away?' on':'')+'">'+p.awayScore+'</span>'
+      +'<span class="sc'+(p.team===g.home?' on':'')+'">'+p.homeScore+'</span></div>';
+  });
+  return h+'</div>';
+}
+
+/* ---------- game sheet ----------
+   One game expanded, in three tabs: SUMMARY (last play, every scoring play),
+   TEAM STATS and PLAYERS (the box score, ESPN's shape: the two teams side by
+   side, then every player on the chosen team by group). It redraws in place
+   on each refresh while it is open. */
+const OPEN={id:null,tab:'summary',side:null};
+function openGame(id){
+  const g=(B.games.last||[]).find(x=>x.id===id); if(!g) return;
+  OPEN.id=id; OPEN.tab='summary'; OPEN.side=g.away;
+  document.querySelectorAll('.modal').forEach(m=>m.remove());
+  const modal=document.createElement('div'); modal.className='modal';
+  modal.innerHTML='<div class="sheet" role="dialog" aria-label="'+esc(g.away+' at '+g.home)+'"></div>';
+  modal.addEventListener('click',e=>{
+    if(e.target===modal){ closeGame(); return; }
+    const x=e.target.closest('[data-x]'); if(x){ closeGame(); return; }
+    const t=e.target.closest('[data-tab]'); if(t){ OPEN.tab=t.getAttribute('data-tab'); drawSheet(); modal.querySelector('.sheet').scrollTop=0; return; }
+    const sd=e.target.closest('[data-side]'); if(sd){ OPEN.side=sd.getAttribute('data-side'); drawSheet(); }
+  });
+  document.body.appendChild(modal);
+  drawSheet();
+  const x=modal.querySelector('[data-x]'); if(x) x.focus();
+  B.summaries([g],g.id).then(ch=>{ if(ch) drawSheet(); });
+}
+function closeGame(){ OPEN.id=null; document.querySelectorAll('.modal').forEach(m=>m.remove()); }
+function drawSheet(){
+  const sheet=document.querySelector('.modal .sheet'); if(!sheet||!OPEN.id) return;
+  const g=(B.games.last||[]).find(x=>x.id===OPEN.id); if(!g) return;
+  const top=sheet.scrollTop;
+  sheet.setAttribute('style',B.paint(g.away)+';--to:'+((B.TEAMS[g.home]||{}).p||'#555'));
+  const side=(ab,score,other,right)=>{
+    const ball=g.state==='in'&&g.possession===ab?B.FOOTBALL+(g.redzone?'<span class="poss">Red zone</span>':''):'';
+    return '<div class="gside'+(right?' r':'')+'">'+B.logo(ab,'xl')+'<div class="gab">'+esc(ab)+ball+'</div>'
+      +'<div class="gsc'+(g.state!=='pre'&&score<other?' trail':'')+'">'+(g.state==='pre'?'':score)+'</div></div>';
+  };
+  let mid='';
+  if(g.state!=='pre') mid+='<span class="tag '+(g.state==='in'?'live':'final')+'">'+(g.state==='in'?'Live':'Final')+'</span>';
+  mid+='<div class="gdet">'+esc(g.state==='in'?g.detail:g.state==='post'?'Final':B.kick(g.kickoff))+'</div>';
+  if(g.state==='in'&&g.down) mid+='<div class="gdown">'+esc(g.down)+'</div>';
+  if(g.broadcast) mid+='<div class="gtv">'+esc(g.broadcast)+'</div>';
+  let h='<div class="hd">'+side(g.away,g.awayScore,g.homeScore,false)+'<div class="gmid">'+mid+'</div>'
+    +side(g.home,g.homeScore,g.awayScore,true)+'<button type="button" class="x" data-x>Close</button></div>';
+  h+='<div class="chips" role="tablist">'+[['summary','Summary'],['team','Team stats'],['players','Players']].map(t=>
+    '<button type="button" class="chip" role="tab" data-tab="'+t[0]+'" aria-pressed="'+(OPEN.tab===t[0])+'" aria-selected="'+(OPEN.tab===t[0])+'">'+t[1]+'</button>').join('')+'</div>';
+  const sum=B.SUM[g.id];
+  if(OPEN.tab==='summary') h+=sheetSummary(g,sum);
+  else if(OPEN.tab==='team') h+=sheetTeam(g,sum);
+  else h+=sheetPlayers(g,sum);
+  sheet.innerHTML=h; sheet.scrollTop=top;
+}
+function notYet(g,sum,what){
+  if(g.state==='pre') return '<div class="empty"><strong>'+esc(what)+'</strong>Once the game kicks off.</div>';
+  if(!sum) return '<div class="stat">Loading</div>';
+  return '';
+}
+function sheetSummary(g,sum){
+  let h='';
+  if(g.state==='in'&&g.play) h+='<div class="sec">Last play</div><div class="stat">'+esc(g.play)+'</div>';
+  const plays=(sum||{}).plays||[];
+  if(g.state!=='pre'){
+    h+='<div class="sec">Scoring plays'+(plays.length?' ('+plays.length+')':'')+'</div>';
+    h+=plays.length?scoringList(g,plays,0):'<div class="stat">'+(sum?'No score yet':'Loading')+'</div>';
+  } else h+='<div class="empty"><strong>Kickoff '+esc(B.kick(g.kickoff))+'</strong>'+(g.broadcast?esc(g.broadcast):'')+'</div>';
+  return h;
+}
+function sheetTeam(g,sum){
+  const ny=notYet(g,sum,'Team stats'); if(ny) return ny;
+  const away=sum.box.teams.find(t=>t.team===g.away), home=sum.box.teams.find(t=>t.team===g.home);
+  if(!away||!home||!away.stats.length||!home.stats.length) return '<div class="stat">No team stats yet</div>';
+  const homeBy=new Map(home.stats);
+  let h='<div class="tsw"><table class="ts"><tr><th class="v">'+B.logo(g.away)+esc(g.away)+'</th><th class="l">Team stats</th>'
+    +'<th class="v r">'+B.logo(g.home)+esc(g.home)+'</th></tr>';
+  away.stats.forEach(([label,av])=>{
+    h+='<tr><td class="v">'+esc(av)+'</td><td class="l">'+esc(label)+'</td><td class="v r">'+esc(homeBy.has(label)?homeBy.get(label):'')+'</td></tr>';
+  });
+  return h+'</table></div><div class="note">'+(g.state==='in'?'Refreshes with the game while this is open':'Final box score')+'</div>';
+}
+function sheetPlayers(g,sum){
+  const ny=notYet(g,sum,'Player stats'); if(ny) return ny;
+  let h='';
+  const leaders=sum.box.leaders;
+  if(leaders.some(l=>l.cats.length)){
+    h+='<div class="sec">Leaders</div><div class="ldrs">';
+    ['passingYards','rushingYards','receivingYards'].forEach(c=>{
+      const A=((leaders.find(l=>l.team===g.away)||{}).cats||[]).find(x=>x.name===c);
+      const H=((leaders.find(l=>l.team===g.home)||{}).cats||[]).find(x=>x.name===c);
+      if(!A&&!H) return;
+      h+='<div class="lc">'+esc((A||H).label)+'</div>';
+      [[A,g.away],[H,g.home]].forEach(([L,ab])=>{
+        h+='<div class="lr">'+B.logo(ab)+'<div class="w"><div class="n">'+esc(L?L.who:'--')+'</div><div class="v">'+esc(L?L.value:'')+'</div></div></div>';
+      });
+    });
+    h+='</div>';
+  }
+  h+='<div class="chips side">'+[g.away,g.home].map(ab=>'<button type="button" class="chip" data-side="'+esc(ab)+'" aria-pressed="'+(OPEN.side===ab)+'">'
+    +B.logo(ab)+esc((B.TEAMS[ab]||{}).name||ab)+'</button>').join('')+'</div>';
+  const team=sum.box.players.find(p=>p.team===OPEN.side);
+  if(!team||!team.groups.length) return h+'<div class="stat">No player stats yet</div>';
+  team.groups.forEach(grp=>{
+    h+='<div class="sec">'+esc(grp.label)+'</div><div class="scroll"><table class="bx"><tr><th>'+(grp.name==='defensive'?'Player':'')+'</th>'
+      +grp.labels.map(l=>'<th>'+esc(l)+'</th>').join('')+'</tr>';
+    grp.rows.forEach(r=>{ h+='<tr><td>'+esc(r.name)+'</td>'+r.stats.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>'; });
+    if(grp.rows.length>1&&grp.totals.some(v=>v!==''&&v!=null))
+      h+='<tr class="tot"><td>Team</td>'+grp.totals.map(v=>'<td>'+esc(v==null?'':v)+'</td>').join('')+'</tr>';
+    h+='</table></div>';
+  });
+  return h;
 }
 
 /* ---------- weekly recap ----------
@@ -319,10 +459,20 @@ window.RENDER={
     const done=list.filter(x=>x.state==='post').length;
     const rank=x=>x.state==='in'?0:x.state==='pre'?1:2;
     const sorted=list.slice().sort((a,b)=>rank(a)-rank(b)||new Date(a.kickoff)-new Date(b.kickoff));
-    el.innerHTML='<div class="livehead"><span class="lhl">'
+    B.games.last=list;
+    const paint=()=>{ el.innerHTML='<div class="livehead"><span class="lhl">'
       +'<span class="pill'+(live?' live':'')+'">'+(g.week?'Week '+g.week:'This week')+'</span>'
       +'<span class="lhr">'+live+' live, '+done+' final, '+list.length+' games</span></span></div>'
-      +'<div class="games">'+sorted.map(gameChip).join('')+'</div>';
+      +'<div class="games">'+sorted.map(gameChip).join('')+'</div>'; };
+    paint();
+    if(!el._wired){ el._wired=true;
+      el.addEventListener('click',e=>{ const c=e.target.closest('[data-gid]'); if(c) openGame(c.getAttribute('data-gid')); });
+      el.addEventListener('keydown',e=>{ if(e.key!=='Enter'&&e.key!==' ') return; const c=e.target.closest('[data-gid]'); if(c){ e.preventDefault(); openGame(c.getAttribute('data-gid')); } });
+    }
+    drawSheet();
+    // scoring plays and box scores ride behind the scoreboard: read only when a
+    // score moved (and every refresh for the live game whose sheet is open)
+    B.summaries(list,OPEN.id).then(ch=>{ if(ch){ paint(); drawSheet(); } });
   }catch(e){ B.err(el,'Cannot reach the NFL scoreboard'); }
  },
  async home(){

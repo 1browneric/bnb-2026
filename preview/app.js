@@ -159,6 +159,59 @@ async function games(){
 const ALIAS={WSH:'WAS',JAC:'JAX',LA:'LAR',OAK:'LV',SD:'LAC',STL:'LAR'};
 function ab(x){const u=(x||'').toUpperCase();return ALIAS[u]||u;}
 
+/* ---------- one game's summary (ESPN): scoring plays and the box score ----------
+   A large document, so it is read only when the scoreboard shows a score the
+   cache has not seen (once for a final, on each score while live) - or every
+   refresh for the one live game whose sheet is open, so its box score keeps
+   up. SUM[gameId] = {key, plays, box}. A failed read keeps the last one. */
+const SUMMARY='https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=';
+const SUM={};
+const OFFENSIVE={TD:1,FG:1};
+function parseScoring(d){
+  const driveOf=new Map();
+  (((d||{}).drives||{}).previous||[]).forEach(dr=>{
+    if(!OFFENSIVE[String(dr.result||'').toUpperCase()]) return;
+    (dr.plays||[]).forEach(p=>driveOf.set(String(p.id),dr.description||''));
+  });
+  return ((d||{}).scoringPlays||[]).map(p=>{
+    const id=String(p.id||'');
+    return {id,period:Number((p.period||{}).number||0),clock:(p.clock||{}).displayValue||'',
+      team:ab((p.team||{}).abbreviation),kind:(p.scoringType||{}).displayName||'',type:(p.type||{}).text||'',
+      text:(p.text||'').trim(),awayScore:Number(p.awayScore||0),homeScore:Number(p.homeScore||0),
+      drive:driveOf.get(id)||''};
+  });
+}
+const GROUP={passing:'Passing',rushing:'Rushing',receiving:'Receiving',fumbles:'Fumbles',defensive:'Defense',
+  interceptions:'Interceptions',kickReturns:'Kick returns',puntReturns:'Punt returns',kicking:'Kicking',punting:'Punting'};
+function parseBox(d){
+  const b=(d||{}).boxscore||{};
+  const teams=(b.teams||[]).map(t=>({team:ab((t.team||{}).abbreviation),
+    stats:(t.statistics||[]).map(s=>[s.label||s.name||'',s.displayValue==null?'':s.displayValue])}));
+  const players=(b.players||[]).map(p=>({team:ab((p.team||{}).abbreviation),
+    groups:(p.statistics||[]).filter(g=>(g.athletes||[]).length).map(g=>({
+      name:g.name||'',label:GROUP[g.name]||g.text||g.name||'',labels:g.labels||[],
+      rows:g.athletes.map(a=>({id:String((a.athlete||{}).id||''),name:(a.athlete||{}).displayName||'',stats:a.stats||[]})),
+      totals:g.totals||[]}))}));
+  const leaders=((d||{}).leaders||[]).map(l=>({team:ab((l.team||{}).abbreviation),
+    cats:(l.leaders||[]).filter(c=>(c.leaders||[])[0]).map(c=>({name:c.name||'',label:c.displayName||c.name||'',
+      who:(c.leaders[0].athlete||{}).displayName||'',value:c.leaders[0].displayValue||''}))}));
+  return {teams,players,leaders};
+}
+async function summaries(list,force){
+  const due=(list||[]).filter(g=>g.state!=='pre'&&((SUM[g.id]||{}).key!==g.awayScore+'-'+g.homeScore
+    ||(g.state==='in'&&force&&force===g.id)));
+  if(!due.length) return false;
+  let changed=false;
+  await Promise.all(due.map(async g=>{
+    try{
+      const d=await j(SUMMARY+g.id);
+      SUM[g.id]={key:g.awayScore+'-'+g.homeScore,plays:parseScoring(d),box:parseBox(d),at:Date.now()};
+      changed=true;
+    }catch(e){ /* keep the last one */ }
+  }));
+  return changed;
+}
+
 /* ---------- weekly projections (Sleeper), scored under this league ---------- */
 let PCACHE=null, PKEY='';
 async function projections(D,week){
@@ -314,7 +367,7 @@ function fillSlots(ids,slots){
 }
 window.BNB={C,esc,nm,pos,tm,inj,f1,j,API,LG,load,pair,standings,fillSlots,bestLineup,SLOTS,SLAB,WKPAY,POT,M,
   TEAMS,paint,logo,head,avatar,lfb,hfb,games,projections,ctx,slotState,summarize,winProb,gameLine,kick,
-  FOOTBALL,
+  FOOTBALL,summaries,SUM,
   err(el,msg){el.innerHTML='<div class="empty"><strong>'+esc(msg||'Cannot reach Sleeper')+
     '</strong>This page reads live from Sleeper. Refresh in a moment.</div>';},
   wait(el){el.innerHTML='<div class="empty"><strong>Loading</strong>Pulling the latest from Sleeper.</div>';}
