@@ -539,7 +539,7 @@ table.recap .tm{font-weight:700}
  <img class="heroimg" src="header.gif" alt="" width="181" height="132"></div></div>
 <div class="wrap"><div id="liveWrap"></div></div>
 <div id="champ" hidden><img src="champs.jpg" alt="Boats And Bros Super Bowl Champs"></div>
-<script src="config.js?v=9fc3eba4"></script><script src="players.js?v=164f6a3b"></script><script src="teams.js?v=8794b724"></script><script src="app.js?v=2d61877b"></script><script src="pages.js?v=4be8f55d"></script>
+<script src="config.js?v=9fc3eba4"></script><script src="players.js?v=164f6a3b"></script><script src="teams.js?v=8794b724"></script><script src="app.js?v=134bbcf8"></script><script src="pages.js?v=4be8f55d"></script>
 <script>
 (function(){
   var b=document.getElementById('brandBtn'), c=document.getElementById('champ');
@@ -548,7 +548,7 @@ table.recap .tm{font-weight:700}
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){c.hidden=true;document.body.style.overflow='';}});
   // the Live tab label carries the current week
   fetch('https://api.sleeper.app/v1/state/nfl',{cache:'no-store'}).then(function(r){return r.json();})
-   .then(function(s){var w=s.display_week||s.week; if(!w) return;
+   .then(function(s){var w=s.week||s.display_week; if(!w) return;
      var a=document.querySelector('.nav a[data-p="live.html"]'); if(a) a.textContent='Live Wk '+w;
      var t=document.getElementById('liveH1'); if(t) t.textContent='Live Scoring - Week '+w;}).catch(function(){});
 })();
@@ -559,7 +559,7 @@ table.recap .tm{font-weight:700}
   B.wait(W);
   async function tick(){
     try{
-      var st=await B.j(B.API+'state/nfl'); WK=st.display_week||st.week||WK;
+      var st=await B.j(B.API+'state/nfl'); WK=st.week||st.display_week||WK;
       var D=await B.load(); var S=B.standings(D); D._rec=S.rec;
       var m=await B.j(B.API+'league/'+B.LG+'/matchups/'+WK);
       var gs=B.pair(m,D.RT);

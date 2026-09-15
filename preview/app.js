@@ -86,6 +86,10 @@ async function load(){
   const RT={}, ROS={}, AVT={};
   rosters.forEach(r=>{ RT[r.roster_id]=UN[r.owner_id]||('roster '+r.roster_id);
     ROS[r.roster_id]=r; AVT[RT[r.roster_id]]=AV[r.owner_id]||null; });
+  // state.week is the NFL week Sleeper is on and moves on Tuesday once the
+  // Monday game is final; display_week trails it by a day (2026-09-15, a
+  // Tuesday: week 2, display_week 1) and read first it kept week 1 "under way"
+  // all Tuesday - no standings, no recap, no results.
   const week=6;
   const season='2025';
   // Only weeks Sleeper has already moved past. A week still being played has

@@ -1108,7 +1108,7 @@ table.recap .tm{font-weight:700}
   c.addEventListener('click',function(){c.hidden=true;document.body.style.overflow='';});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){c.hidden=true;document.body.style.overflow='';}});
   fetch('https://api.sleeper.app/v1/state/nfl',{cache:'no-store'}).then(function(r){return r.json();})
-   .then(function(s){var w=s.display_week||s.week; if(!w) return;
+   .then(function(s){var w=s.week||s.display_week; if(!w) return;
      var a=document.querySelector('.nav a[data-p="live.html"]'); if(a) a.textContent='Live Wk '+w;}).catch(function(){});
 })();
 </script></body></html>

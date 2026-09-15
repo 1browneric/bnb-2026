@@ -1107,8 +1107,8 @@ table.recap .tm{font-weight:700}
   b.addEventListener('click',function(){c.hidden=false;document.body.style.overflow='hidden';});
   c.addEventListener('click',function(){c.hidden=true;document.body.style.overflow='';});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){c.hidden=true;document.body.style.overflow='';}});
-  Promise.resolve({display_week:6})
-   .then(function(s){var w=s.display_week||s.week; if(!w) return;
+  Promise.resolve({week:6,display_week:6})
+   .then(function(s){var w=s.week||s.display_week; if(!w) return;
      var a=document.querySelector('.nav a[data-p="live.html"]'); if(a) a.textContent='Live Wk '+w;}).catch(function(){});
 })();
 </script></body></html>
